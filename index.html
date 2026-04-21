@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-<title>Countdown Dashboard</title> 
-<link rel="stylesheet" href="style.css?v=1">>
-</head> 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Countdown Dashboard</title>
+<link rel="stylesheet" href="style.css">
+</head>
 
 <body>
 
@@ -19,46 +19,44 @@
   <a href="#" data-target="petit">Petit Planet</a>
 </div>
 
-<div class="dashboard"> 
+<div class="dashboard">
 
 <section id="zzz">
 <h2>Zenless Zone Zero</h2>
-<iframe src="https://count.live/?date=2026-04-29T01%3A00%3A00-07%3A00&title=Heidemarie%20(CZN)&font=display&bgimg=https%3A%2F%2Fblog.prydwen.gg%2Fwp-content%2Fuploads%2F2026%2F04%2Fmaxresdefault-2.webp&units=w,d,h,m,s&showtz=1&progress=1&percent=1&start=2026-04-20T00%3A00%3A00-07%3A00&tz=America%2FTijuana"></iframe> 
+<iframe src="https://count.live/?date=2026-04-29T01%3A00%3A00-07%3A00&title=Heidemarie%20(CZN)&font=display&bgimg=https%3A%2F%2Fblog.prydwen.gg%2Fwp-content%2Fuploads%2F2026%2F04%2Fmaxresdefault-2.webp&units=w,d,h,m,s&showtz=1&progress=1&percent=1&start=2026-04-20T00%3A00%3A00-07%3A00&tz=America%2FTijuana"></iframe>
 </section>
+
+<div class="divider"></div>
 
 <section id="hsr">
 <h2>Honkai Star Rail</h2>
 <iframe src="https://count.live/?date=2026-05-13T15%3A00%3A00-07%3A00&title=Evanescia%20(HSR)&font=display&bgimg=https%3A%2F%2Fi.redd.it%2Fwith-the-design-reveal-of-evanescia-and-sparxie-it-feels-v0-1cu4wje40ndg1.jpg%3Fwidth%3D1920%26format%3Dpjpg%26auto%3Dwebp%26s%3De41a3002a5357463537e9624314a0cd803a63a84&units=w,d,h,m,s&showtz=1&progress=1&percent=1&start=2026-04-20T00%3A00%3A00-07%3A00&tz=America%2FTijuana"></iframe>
 </section>
 
+<div class="divider"></div>
+
 <section id="petit">
 <h2>Petit Planet</h2>
 <iframe src="https://count.live/?date=2026-04-23T18%3A00%3A00-07%3A00&title=Beta%20Access%20(Petit%20Planet)&font=display&bgimg=https%3A%2F%2Ffastcdn.hoyoverse.com%2Fstatic-resource-v2%2F2026%2F03%2F25%2Fcf6e120d2032ac9c62cdc31e0d7504df_3968736085113746422.png&units=w,d,h,m,s&showtz=1&progress=1&percent=1&start=2026-04-20T00%3A00%3A00-07%3A00&tz=America%2FTijuana"></iframe>
 </section>
 
-</div> 
+</div>
 
 <script>
-document.addEventListener("DOMContentLoaded", function(){
+document.addEventListener("DOMContentLoaded", () => {
 
-  const toggle = document.querySelector(".sidebar-toggle");
-  const sidebar = document.querySelector(".sidebar");
   const links = document.querySelectorAll(".sidebar a");
   const sections = document.querySelectorAll("section");
-
-  toggle.addEventListener("click", () => {
-    sidebar.classList.toggle("open");
-  });
+  const dividers = document.querySelectorAll(".divider");
 
   function show(mode) {
 
     document.body.classList.toggle("all-mode", mode === "all");
 
     sections.forEach(sec => {
+      const visible = (mode === "all" || sec.id === mode);
 
-      const show = (mode === "all" || sec.id === mode);
-
-      if (show) {
+      if (visible) {
         sec.style.display = "block";
         requestAnimationFrame(() => {
           sec.style.opacity = "1";
@@ -66,19 +64,19 @@ document.addEventListener("DOMContentLoaded", function(){
         });
       } else {
         sec.style.opacity = "0";
-        sec.style.transform = "translateY(8px)";
-        setTimeout(() => {
-          sec.style.display = "none";
-        }, 200);
+        sec.style.transform = "translateY(10px)";
+        setTimeout(() => sec.style.display = "none", 200);
       }
-
     });
 
-    sidebar.classList.remove("open");
+    dividers.forEach(div => {
+      div.style.display = (mode === "all") ? "block" : "none";
+    });
+
   }
 
   links.forEach(link => {
-    link.addEventListener("click", (e) => {
+    link.addEventListener("click", e => {
       e.preventDefault();
       show(link.dataset.target);
     });
