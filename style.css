@@ -78,8 +78,30 @@ body {
 
   padding: 80px 20px 20px;
 
-  align-items: start; /* FIXES vertical misalignment */
+  align-items: start;
 }
+
+/* =========================================================
+   📏 ALL VIEW = VERTICAL LIST (FIXED SIZING)
+========================================================= */
+
+body.all-view .dashboard {
+  display: flex;
+  flex-direction: column;
+}
+
+/* IMPORTANT: keep same width/height as grid cards */
+body.all-view .card {
+  width: 100%;
+  max-width: 420px; /* matches grid min size */
+  height: 260px;    /* forces same shape everywhere */
+}
+
+/* center list nicely */
+body.all-view .dashboard {
+  align-items: center;
+}
+⚙️ 2. FIX JS (IMPORTANT)
 
 /* =========================================================
    🧱 CARD STYLE
