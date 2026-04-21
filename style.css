@@ -55,7 +55,7 @@ body {
   padding: 80px 20px;
 }
 
-/* ================= SECTION ================= */
+/* ================= SECTIONS ================= */
 
 section {
   width: 420px;
@@ -79,18 +79,18 @@ section h2 {
   margin-bottom: 22px;
 }
 
-/* ================= 🔥 CLEAN DIVIDER (FIXED PROPERLY) ================= */
+/* ================= 🔥 PERFECT LINE SYSTEM ================= */
 
 .divider {
   width: 100vw;
   height: 1px;
   margin: 0 0 34px -20px;
   position: relative;
-  pointer-events: none;
   overflow: hidden;
+  pointer-events: none;
 }
 
-/* 🌫️ STATIC EDGE FADE (NEVER ANIMATED) */
+/* 1. STATIC FADED EDGES (NEVER MOVE, NEVER CHANGE) */
 .divider::before {
   content: "";
   position: absolute;
@@ -99,14 +99,15 @@ section h2 {
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(79,195,255,0.05) 10%,
-    rgba(79,195,255,0.9) 50%,
-    rgba(79,195,255,0.05) 90%,
+    transparent 12%,
+    rgba(79,195,255,0.9) 12%,
+    rgba(79,195,255,0.9) 88%,
+    transparent 88%,
     transparent 100%
   );
 }
 
-/* ✨ MOVING GLOW (ONLY CENTER PART ANIMATES) */
+/* 2. MOVING CENTER HIGHLIGHT ONLY (NO COLOR CHANGE) */
 .divider::after {
   content: "";
   position: absolute;
@@ -115,24 +116,20 @@ section h2 {
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(192,132,252,0.8),
-    rgba(79,195,255,0.8),
+    rgba(192,132,252,0.9),
+    rgba(79,195,255,0.9),
+    rgba(192,132,252,0.9),
     transparent
   );
 
   background-size: 200% 100%;
-  animation: wave 12s linear infinite;
+  animation: slide 10s linear infinite;
 
   mix-blend-mode: screen;
-  opacity: 0.9;
-
-  box-shadow:
-    0 0 10px rgba(79,195,255,0.25),
-    0 0 14px rgba(192,132,252,0.15);
 }
 
-/* 🔥 PURE POSITION ANIMATION ONLY (NO COLOR SHIFT, NO DIMMING) */
-@keyframes wave {
+/* ONLY MOVES POSITION — NOTHING ELSE */
+@keyframes slide {
   0% { background-position: 0% 50%; }
   100% { background-position: 200% 50%; }
 }
