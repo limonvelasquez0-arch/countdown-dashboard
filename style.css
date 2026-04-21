@@ -133,3 +133,7 @@ body.all-mode section:not(:last-of-type)::after {
   0% { background-position: 0% 50%; }
   100% { background-position: 200% 50%; }
 }
+
+section.hidden {
+  display: none;
+}
