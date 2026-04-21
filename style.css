@@ -156,3 +156,16 @@ body.all-mode section:not(:last-of-type)::after {
   50% { opacity: 1; transform: scaleX(1); }
   100% { opacity: 0.3; transform: scaleX(0.9); }
 }
+
+section {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+/* hidden state during switching */
+section.is-hidden {
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+}
