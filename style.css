@@ -1,3 +1,7 @@
+/* =========================================================
+   🌌 GLOBAL
+========================================================= */
+
 body {
   background: #0f0f14;
   margin: 0;
@@ -5,7 +9,9 @@ body {
   color: white;
 }
 
-/* ================= SIDEBAR ================= */
+/* =========================================================
+   📂 SIDEBAR
+========================================================= */
 
 .sidebar-toggle {
   position: fixed;
@@ -56,7 +62,9 @@ body {
   background: rgba(255,255,255,0.12);
 }
 
-/* ================= GRID MODE ================= */
+/* =========================================================
+   📊 GRID MODE (DEFAULT - KEEP EVERYTHING NORMAL)
+========================================================= */
 
 .dashboard {
   display: grid;
@@ -67,7 +75,9 @@ body {
   align-items: start;
 }
 
-/* ================= CARDS ================= */
+/* =========================================================
+   🧱 CARD (DO NOT BREAK SIZE EVER)
+========================================================= */
 
 .card {
   height: 260px;
@@ -91,6 +101,7 @@ body {
   display: block;
 }
 
+/* hover */
 .card:hover {
   transform: translateY(-5px);
 
@@ -102,34 +113,42 @@ body {
     0 0 40px rgba(120,200,255,0.14);
 }
 
-/* ================= ALL VIEW (FIXED LIST) ================= */
+/* =========================================================
+   📏 ALL VIEW = VERTICAL LIST (NO CENTERING, NO RESIZE)
+========================================================= */
 
 body.all-view .dashboard {
-  grid-template-columns: 420px;
-  justify-content: center;
+  display: flex;
+  flex-direction: column;
+
+  align-items: flex-start; /* LEFT ALIGN (IMPORTANT) */
+  gap: 0; /* spacing handled by separators */
 }
 
+/* KEEP IDENTICAL SIZE AS GRID */
 body.all-view .card {
-  width: 420px;
+  width: 100%;
+  max-width: 420px; /* matches grid size visually */
   height: 260px;
 }
 
-/* ================= SEPARATORS ================= */
+/* =========================================================
+   ───── ANIMATED SEPARATORS (ALL ONLY)
+========================================================= */
 
 body.all-view .card:not(:last-child)::after {
   content: "──────";
   display: block;
 
-  text-align: center;
-  margin: 12px 0;
+  margin: 12px 0 18px 0;
 
   color: rgba(255,255,255,0.35);
   letter-spacing: 3px;
 
-  animation: sepPulse 2.8s ease-in-out infinite;
+  animation: sepPulse 2.6s ease-in-out infinite;
 }
 
 @keyframes sepPulse {
-  0%, 100% { opacity: 0.3; }
+  0%, 100% { opacity: 0.25; }
   50% { opacity: 1; }
 }
