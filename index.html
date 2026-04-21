@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -13,15 +13,16 @@
 
 <div class="sidebar">
   <h2>Sections</h2>
-  <a href="#zzz">Zenless Zone Zero</a>
-  <a href="#hsr">Honkai Star Rail</a>
-  <a href="#petit">Petit Planet</a>
+  <a href="#" data-target="all">All</a>
+  <a href="#" data-target="czn">Chaos Zero Nightmare</a>
+  <a href="#" data-target="hsr">Honkai Star Rail</a>
+  <a href="#" data-target="petit">Petit Planet</a>
 </div>
 
 <div class="dashboard"> 
 
-<section id="zzz">
-<h2>Zenless Zone Zero</h2>
+<section id="czn">
+<h2>Chaos Zero Nightmare</h2>
 <iframe src="https://count.live/?date=2026-04-29T01%3A00%3A00-07%3A00&title=Heidemarie%20(CZN)&font=display&bgimg=https%3A%2F%2Fblog.prydwen.gg%2Fwp-content%2Fuploads%2F2026%2F04%2Fmaxresdefault-2.webp&units=w,d,h,m,s&showtz=1&progress=1&percent=1&start=2026-04-20T00%3A00%3A00-07%3A00&tz=America%2FTijuana"></iframe> 
 </section>
 
@@ -32,19 +33,46 @@
 
 <section id="petit">
 <h2>Petit Planet</h2>
-<iframe src="https://count.live/?date=2026-04-23T18%3A00%3A00-07%3A00&title=Beta%20Access%20(Petit%20Planet)&font=display&bgimg=https%3A%2F%2Fci3.googleusercontent.com%2Fmeips%2FADKq_NZUlkTcJ5vLHJXhK30FiQ3xZEDNv4cETwxB2xrd07MYv_ZDDTLPOe5ycvyjEOV8XzYnAlBgPfQz9d2fnKh970s0S94K_EbwqHKekxyVBNpU0w8iCCMmf3ZdH0DjFlsPIgqOaR4SuckVphsZV2JtMFcPf20VzQocKn7uFtJuelsZ_GnRW_SAMjMFug%3Ds0-d-e1-ft%23https%3A%2F%2Ffastcdn.hoyoverse.com%2Fstatic-resource-v2%2F2026%2F03%2F25%2Fcf6e120d2032ac9c62cdc31e0d7504df_3968736085113746422.png&units=w,d,h,m,s&showtz=1&progress=1&percent=1&start=2026-04-20T00%3A00%3A00-07%3A00&tz=America%2FTijuana"></iframe> 
+<iframe src="https://count.live/?date=2026-04-23T18%3A00%3A00-07%3A00&title=Beta%20Access%20(Petit%20Planet)&font=display&bgimg=https%3A%2F%2Ffastcdn.hoyoverse.com%2Fstatic-resource-v2%2F2026%2F03%2F25%2Fcf6e120d2032ac9c62cdc31e0d7504df_3968736085113746422.png&units=w,d,h,m,s&showtz=1&progress=1&percent=1&start=2026-04-20T00%3A00%3A00-07%3A00&tz=America%2FTijuana"></iframe> 
 </section>
 
 </div> 
 
 <script>
-document.addEventListener("DOMContentLoaded", function(){
+document.addEventListener("DOMContentLoaded", function () {
+
   const toggle = document.querySelector(".sidebar-toggle");
   const sidebar = document.querySelector(".sidebar");
+  const links = document.querySelectorAll(".sidebar a");
+  const sections = document.querySelectorAll("section");
 
+  // sidebar toggle
   toggle.addEventListener("click", () => {
     sidebar.classList.toggle("open");
   });
+
+  // filter logic
+  links.forEach(link => {
+    link.addEventListener("click", (e) => {
+      e.preventDefault();
+
+      const target = link.dataset.target;
+
+      sections.forEach(section => {
+
+        if (target === "all") {
+          section.style.display = "block";
+        } else {
+          section.style.display =
+            section.id === target ? "block" : "none";
+        }
+
+      });
+
+      sidebar.classList.remove("open");
+    });
+  });
+
 });
 </script>
 
