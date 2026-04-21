@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -39,7 +39,7 @@
 </div> 
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function(){
 
   const toggle = document.querySelector(".sidebar-toggle");
   const sidebar = document.querySelector(".sidebar");
@@ -50,39 +50,45 @@ document.addEventListener("DOMContentLoaded", function () {
     sidebar.classList.toggle("open");
   });
 
-function show(mode) {
+  function show(mode) {
 
-  const sections = document.querySelectorAll("section");
-  const sidebar = document.querySelector(".sidebar");
+    document.body.classList.toggle("all-mode", mode === "all");
 
-  document.body.classList.toggle("all-mode", mode === "all");
+    sections.forEach(sec => {
 
-  sections.forEach(sec => {
+      sec.classList.add("is-hidden");
 
-    // start fade out
-    sec.classList.add("is-hidden");
+      setTimeout(() => {
 
-    setTimeout(() => {
+        if (mode === "all") {
+          sec.style.display = "block";
+        } else {
+          sec.style.display = (sec.id === mode) ? "block" : "none";
+        }
 
-      if (mode === "all") {
-        sec.style.display = "block";
-      } else {
-        sec.style.display = (sec.id === mode) ? "block" : "none";
-      }
+        if (mode === "all" || sec.id === mode) {
+          requestAnimationFrame(() => {
+            sec.classList.remove("is-hidden");
+          });
+        }
 
-      // fade back in ONLY if visible
-      if (mode === "all" || sec.id === mode) {
-        requestAnimationFrame(() => {
-          sec.classList.remove("is-hidden");
-        });
-      }
+      }, 180);
 
-    }, 180);
+    });
 
+    sidebar.classList.remove("open");
+  }
+
+  links.forEach(link => {
+    link.addEventListener("click", (e) => {
+      e.preventDefault();
+      show(link.dataset.target);
+    });
   });
 
-  sidebar.classList.remove("open");
-}
+  show("all");
+
+});
 </script>
 
 </body>
