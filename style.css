@@ -5,16 +5,16 @@ body {
   color: white;
 }
 
-/* toggle button */
+/* toggle */
 .sidebar-toggle {
   position: fixed;
   top: 15px;
   left: 15px;
-  z-index: 1001;
-  background: rgba(255,255,255,0.08);
+  z-index: 2000;
+  background: rgba(255,255,255,0.1);
   border: none;
   color: white;
-  padding: 10px 12px;
+  padding: 10px 14px;
   border-radius: 10px;
   cursor: pointer;
 }
@@ -23,14 +23,14 @@ body {
 .sidebar {
   position: fixed;
   top: 0;
-  left: -220px;
-  width: 220px;
+  left: -240px;
+  width: 240px;
   height: 100vh;
-  background: rgba(20,20,30,0.9);
+  background: rgba(20,20,30,0.95);
   backdrop-filter: blur(20px);
   padding: 20px;
   transition: 0.3s ease;
-  z-index: 1000;
+  z-index: 1500;
 }
 
 .sidebar.open {
@@ -41,7 +41,7 @@ body {
   color: white;
 }
 
-/* remove blue links */
+/* links */
 .sidebar a {
   display: block;
   color: white;
@@ -59,18 +59,18 @@ body {
 
 /* layout */
 .dashboard {
-  padding: 80px 20px 20px 20px;
+  padding: 80px 20px;
 }
 
 /* sections */
 section {
-  margin-bottom: 50px;
+  margin-bottom: 60px;
+  scroll-margin-top: 80px;
 }
 
 section h2 {
   color: white;
   margin-bottom: 15px;
-  font-weight: 500;
 }
 
 /* iframe */
