@@ -1,109 +1,19 @@
-body {
+body { 
   background: #0f0f14;
-  margin: 0;
+  margin: 0; 
   font-family: sans-serif;
-  color: white;
-  overflow-x: hidden;
-}
+} 
 
-/* ---------- SIDEBAR ---------- */
+.dashboard { 
+  display: grid; 
+  grid-template-columns: repeat(auto-fill, minmax(500px, 1fr)); 
+  gap: 20px; 
+  padding: 20px; 
+} 
 
-.sidebar {
-  position: fixed;
-  left: -220px;
-  top: 0;
-  height: 100vh;
-  width: 220px;
-  background: rgba(15,15,20,0.75);
-  backdrop-filter: blur(20px);
-  border-right: 1px solid rgba(255,255,255,0.05);
-  padding: 20px;
-  transition: 0.3s ease;
-  z-index: 1000;
-}
-
-.sidebar.open {
-  left: 0;
-}
-
-.sidebar h2 {
-  margin-top: 40px;
-  font-size: 18px;
-  opacity: 0.8;
-}
-
-/* ---------- TOGGLE BUTTON ---------- */
-
-.sidebar-toggle {
-  position: fixed;
-  left: 15px;
-  top: 15px;
-  z-index: 1100;
-  background: rgba(255,255,255,0.08);
-  backdrop-filter: blur(10px);
-  border: none;
-  color: white;
-  padding: 10px 12px;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.sidebar-toggle:hover {
-  background: rgba(255,255,255,0.15);
-}
-
-/* ---------- FILTER BUTTONS ---------- */
-
-.filter-btn {
-  width: 100%;
-  margin-top: 10px;
-  padding: 12px;
-  border: none;
-  border-radius: 12px;
-  background: rgba(255,255,255,0.04);
-  color: white;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  text-align: left;
-  font-size: 14px;
-}
-
-.filter-btn:hover {
-  background: rgba(255,255,255,0.12);
-  transform: translateX(4px);
-}
-
-/* ---------- DASHBOARD ---------- */
-
-.dashboard {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
-  gap: 20px;
-  padding: 20px;
-  margin-left: 60px;
-}
-
-/* ---------- CARDS ---------- */
-
-.card {
-  backdrop-filter: blur(12px);
-  background: rgba(255,255,255,0.03);
-  border-radius: 16px;
-  padding: 10px;
-  transition: 0.25s ease;
-}
-
-.card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 15px 40px rgba(0,0,0,0.45);
-}
-
-/* ---------- IFRAME ---------- */
-
-iframe {
+iframe { 
   width: 100%;
   height: 250px;
   border-radius: 14px;
-  border: none;
+  overflow: hidden;
 }
