@@ -45,26 +45,13 @@ body {
   background: rgba(255,255,255,0.05);
 }
 
-.sidebar a:hover {
-  background: rgba(255,255,255,0.12);
-}
-
-/* ================= DEFAULT GRID (OTHER SECTIONS) ================= */
+/* ================= DEFAULT (GRID MODE) ================= */
 
 .dashboard {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
   gap: 16px;
   padding: 80px 20px 20px;
-}
-
-/* ================= SECTION TITLES ================= */
-
-section h2 {
-  grid-column: 1 / -1;
-  margin: 20px 0 10px;
-  font-size: 14px;
-  opacity: 0.7;
 }
 
 /* ================= IFRAMES ================= */
@@ -74,70 +61,52 @@ iframe {
   height: 225px;
   border-radius: 14px;
   border: none;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-iframe:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+/* ================= SECTION TITLES ================= */
+
+section h2 {
+  margin: 20px 0 10px;
+  font-size: 14px;
+  opacity: 0.7;
 }
 
 /* =========================================================
-   ⭐ ALL VIEW (VERTICAL LIST)
+   ⭐ ALL VIEW FIX (FOR REAL THIS TIME)
 ========================================================= */
 
 body.all-view .dashboard {
-  display: flex;
-  flex-direction: column;
-  gap: 40px; /* spacing between panels */
+  display: block; /* 🚨 KEY FIX: kills grid completely */
 }
 
-/* make sections full width in ALL */
+/* each section becomes a vertical block */
 body.all-view section {
-  width: 100%;
-}
-
-/* =========================================================
-   🌈 ANIMATED SEPARATOR LINE (BETWEEN PANELS)
-========================================================= */
-
-body.all-view section {
+  display: block;
+  margin-bottom: 35px;
   position: relative;
-  padding-bottom: 30px;
 }
 
-/* line AFTER each section except last */
+/* separator line between sections */
 body.all-view section:not(:last-child)::after {
   content: "";
-  position: absolute;
-  bottom: 0;
-  left: 10%;
-  width: 80%;
+  display: block;
+  margin: 25px auto 0;
+  width: 70%;
   height: 2px;
 
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(120,200,255,0.7),
+    rgba(120,200,255,0.8),
     transparent
   );
 
-  animation: glowLine 2.5s ease-in-out infinite;
-  opacity: 0.8;
+  animation: glowLine 2.2s ease-in-out infinite;
 }
 
-/* smooth glow animation */
+/* smooth animation */
 @keyframes glowLine {
-  0% {
-    transform: scaleX(0.9);
-    opacity: 0.3;
-  }
-  50% {
-    transform: scaleX(1);
-    opacity: 1;
-  }
-  100% {
-    transform: scaleX(0.9);
-    opacity: 0.3;
-  }
+  0%   { opacity: 0.3; transform: scaleX(0.9); }
+  50%  { opacity: 1;   transform: scaleX(1); }
+  100% { opacity: 0.3; transform: scaleX(0.9); }
 }
