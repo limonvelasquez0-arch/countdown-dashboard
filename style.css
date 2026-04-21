@@ -68,25 +68,26 @@ body {
 }
 
 /* =========================================================
-   📊 DASHBOARD (FIXED: TRUE VERTICAL LIST)
-   👉 This fixes ALL alignment + separator issues
+   📊 DASHBOARD (KEEP GRID)
 ========================================================= */
 
 .dashboard {
-  display: flex;
-  flex-direction: column;
-
-  gap: 18px; /* consistent spacing between ALL cards */
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+  gap: 16px;
 
   padding: 80px 20px 20px 20px;
+
+  align-items: start; /* fixes weird vertical shifting */
 }
 
 /* =========================================================
-   🧱 CARD BASE
+   🧱 CARD BASE (UNCHANGED LOOK)
 ========================================================= */
 
 .card {
   position: relative;
+  z-index: 1;
 
   height: 260px;
 
@@ -118,7 +119,7 @@ body {
 }
 
 /* =========================================================
-   ✨ HOVER EFFECT
+   ✨ HOVER EFFECT (UNCHANGED BUT CLEAN)
 ========================================================= */
 
 .card:hover {
@@ -133,21 +134,68 @@ body {
 }
 
 /* =========================================================
-   📦 CATEGORY GROUP SPACING (REAL FIX)
-   👉 Works because layout is now a vertical list
+   📦 GROUP FIX (NO MORE ALIGNMENT BUGS)
+   👉 Keeps grid but forces clean section spacing
 ========================================================= */
 
-/* first group (czn) */
+/* reset default behavior */
+.card {
+  align-self: start;
+}
+
+/* CZN group (top section) */
 .card.czn {
   margin-top: 0;
 }
 
-/* second group */
+/* HSR group (new section start) */
 .card.hsr {
-  margin-top: 30px;
+  margin-top: 35px;
 }
 
-/* third group */
+/* PP group (final section) */
 .card.pp {
-  margin-top: 30px;
+  margin-top: 35px;
+}
+
+/* =========================================================
+   ✨ REAL SEPARATOR LINE (BETWEEN GROUPS ONLY)
+   👉 NOT inside cards, so it won't overlap content
+========================================================= */
+
+.card.hsr::before,
+.card.pp::before {
+  content: "";
+  position: absolute;
+
+  top: -16px;
+  left: 6%;
+  width: 88%;
+  height: 1px;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(120,200,255,0.35),
+    rgba(255,255,255,0.2),
+    rgba(120,200,255,0.35),
+    transparent
+  );
+
+  animation: sepGlow 3s ease-in-out infinite;
+}
+
+/* =========================================================
+   🌌 ANIMATION
+========================================================= */
+
+@keyframes sepGlow {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scaleX(0.98);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scaleX(1);
+  }
 }
