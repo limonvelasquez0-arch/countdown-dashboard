@@ -56,10 +56,10 @@ body {
 section {
   width: 420px;
   position: relative;
-  transition: opacity 0.25s ease, transform 0.25s ease;
+  transition: 0.25s ease;
 }
 
-/* ALL MODE = LEFT COLUMN */
+/* ALL MODE LEFT ALIGN */
 body.all-mode .dashboard {
   display: flex;
   flex-direction: column;
@@ -70,33 +70,41 @@ body.all-mode section {
   margin-left: 20px;
 }
 
-/* 🔥 DIVIDER (FULL WIDTH + FADED EDGES + SOFT GLOW) */
+/* ================= CATEGORY SPACING FIX ================= */
+section h2 {
+  margin-bottom: 18px; /* 🔥 SPACE BEFORE LINE */
+}
+
+/* ================= DIVIDER ================= */
 .divider {
   width: 100vw;
   height: 1px;
-  margin: 20px 0 20px -20px;
+  margin: 0 0 28px -20px; /* 🔥 extra spacing above + below */
 
   background: linear-gradient(
     90deg,
-    transparent,
-    rgba(79, 195, 255, 0.85),
-    rgba(192, 132, 252, 0.85),
-    rgba(79, 195, 255, 0.85),
-    transparent
+    rgba(79,195,255,0),
+    rgba(79,195,255,0.9),
+    rgba(192,132,252,0.9),
+    rgba(79,195,255,0.9),
+    rgba(79,195,255,0)
   );
 
-  background-size: 300% 100%;
-  animation: wave 8s linear infinite;
+  /* STATIC FADE ON BOTH ENDS */
+  background-size: 100% 100%;
+
+  /* ONLY MOVES COLOR — NO DIMMING */
+  animation: wave 10s linear infinite;
 
   box-shadow:
-    0 0 10px rgba(79,195,255,0.2),
+    0 0 10px rgba(79,195,255,0.25),
     0 0 14px rgba(192,132,252,0.15);
 }
 
-/* SLOW SMOOTH WAVE */
+/* CLEAN CONSTANT MOTION (NO FADE/DIM) */
 @keyframes wave {
-  0% { background-position: 0% 50%; }
-  100% { background-position: 300% 50%; }
+  0% { filter: brightness(1); background-position: 0% 50%; }
+  100% { filter: brightness(1); background-position: 300% 50%; }
 }
 
 /* IFRAME */
@@ -113,6 +121,6 @@ iframe:hover {
   transform: translateY(-4px);
   box-shadow:
     0 12px 30px rgba(0,0,0,0.35),
-    0 0 18px rgba(125, 211, 252, 0.18),
-    0 0 28px rgba(167, 139, 250, 0.12);
+    0 0 18px rgba(125,211,252,0.18),
+    0 0 28px rgba(167,139,250,0.12);
 }
