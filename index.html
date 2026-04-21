@@ -56,23 +56,11 @@ document.addEventListener("DOMContentLoaded", function(){
 
     sections.forEach(sec => {
 
-      sec.classList.add("is-hidden");
-
-      setTimeout(() => {
-
-        if (mode === "all") {
-          sec.style.display = "block";
-        } else {
-          sec.style.display = (sec.id === mode) ? "block" : "none";
-        }
-
-        if (mode === "all" || sec.id === mode) {
-          requestAnimationFrame(() => {
-            sec.classList.remove("is-hidden");
-          });
-        }
-
-      }, 160);
+      if (mode === "all") {
+        sec.classList.remove("hidden");
+      } else {
+        sec.classList.toggle("hidden", sec.id !== mode);
+      }
 
     });
 
