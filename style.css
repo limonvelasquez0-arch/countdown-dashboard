@@ -48,7 +48,7 @@ body {
   background: rgba(255,255,255,0.05);
 }
 
-/* ================= DASHBOARD ================= */
+/* ================= DASHBOARD (DEFAULT GRID MODE) ================= */
 
 .dashboard {
   display: grid;
@@ -74,7 +74,7 @@ section.fade-out {
   transform: translateY(8px);
 }
 
-/* ================= ALL MODE LAYOUT ================= */
+/* ================= ALL MODE (FORCES VERTICAL STACK) ================= */
 
 body.all-mode .dashboard {
   display: block !important;
@@ -86,7 +86,7 @@ body.all-mode section {
   margin: 0 0 40px 20px; /* left aligned cards */
 }
 
-/* ================= 🔥 FIXED FULL-WIDTH SEPARATOR ================= */
+/* ================= 🔥 FULL-WIDTH SEPARATOR (REAL FIX) ================= */
 
 body.all-mode section:not(:last-of-type)::after {
   content: "";
