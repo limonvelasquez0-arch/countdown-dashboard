@@ -92,10 +92,30 @@ body.all-mode section {
    ✨ SEPARATOR LINE (FIXED - BETWEEN SECTIONS PROPERLY)
 ========================================================= */
 
+body.all-mode .dashboard {
+  display: block;
+  padding: 80px 20px 20px;
+}
+
+/* 🔥 THIS is the key fix: force alignment left */
+body.all-mode section {
+  width: 420px;              /* same base width as grid cards */
+  margin: 0 0 35px 0;        /* NO centering */
+  text-align: left;          /* prevents weird centering behavior */
+}
+
+/* keep iframe identical sizing */
+body.all-mode iframe {
+  width: 100%;
+  height: 225px;
+  border-radius: 14px;
+}
+
+/* separator (unchanged but stable now) */
 body.all-mode section:not(:last-of-type)::after {
   content: "";
   display: block;
-  margin: 25px auto 0;
+  margin: 25px 0 0 0;  /* LEFT aligned (important) */
   width: 70%;
   height: 2px;
 
