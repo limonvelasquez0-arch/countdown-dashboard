@@ -56,9 +56,11 @@ body {
   padding: 80px 20px 20px;
 }
 
+/* keep consistent card size */
 section {
   width: 420px;
   margin-bottom: 40px;
+  position: relative;
 }
 
 section h2 {
@@ -95,30 +97,23 @@ body.all-mode .dashboard {
   display: block;
 }
 
-/* ================= 🌈 TRUE EDGE-TO-EDGE FIX ================= */
+/* ================= 🌈 FINAL SEPARATOR (FIXED) ================= */
 
-body.all-mode section {
-  position: relative;
-}
-
-/* 🔥 REAL FIX: viewport anchored separator */
 body.all-mode section:not(:last-of-type)::after {
   content: "";
 
-  position: fixed;
+  position: absolute;
 
-  left: 0;
-  right: 0;
+  /* 📌 correctly placed BETWEEN sections */
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
 
+  /* 🔥 full screen width */
   width: 100vw;
   height: 1px;
 
-  /* you can tweak this vertical spacing if needed */
-  margin-top: 10px;
-
-  /* place it visually after each section */
-  transform: translateY(0);
-
+  /* 🌈 glow gradient */
   background: linear-gradient(
     90deg,
     rgba(79, 195, 255, 0.9),
@@ -127,16 +122,16 @@ body.all-mode section:not(:last-of-type)::after {
   );
 
   background-size: 250% 100%;
-  animation: strongWave 3.2s linear infinite;
+  animation: strongWave 3s linear infinite;
 
   box-shadow:
     0 0 6px rgba(79, 195, 255, 0.25),
-    0 0 8px rgba(192, 132, 252, 0.20);
+    0 0 10px rgba(192, 132, 252, 0.18);
 
   pointer-events: none;
 }
 
-/* 🌊 wave motion */
+/* 🌊 wave animation */
 @keyframes strongWave {
   0% { background-position: 0% 50%; }
   100% { background-position: 250% 50%; }
