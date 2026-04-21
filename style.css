@@ -80,6 +80,7 @@ iframe {
 
 iframe:hover {
   transform: translateY(-4px);
+
   box-shadow:
     0 12px 30px rgba(0,0,0,0.35),
     0 0 18px rgba(125, 211, 252, 0.18),
@@ -92,18 +93,19 @@ body.all-mode .dashboard {
   display: block;
 }
 
-/* ================= 🌈 FIXED FULL EDGE SEPARATOR ================= */
+/* ================= 🌈 FINAL EDGE-TO-EDGE SEPARATOR (STABLE) ================= */
 
 body.all-mode section:not(:last-of-type)::after {
   content: "";
   position: absolute;
-
   bottom: -20px;
 
-  /* 🔥 true viewport edge-to-edge */
-  left: 50%;
-  transform: translateX(-50%);
+  /* 🔥 TRUE EDGE FIX THAT WORKS IN GRIDS */
+  left: 0;
   width: 100vw;
+
+  /* cancel layout offset properly */
+  transform: translateX(calc(-1 * (100vw - 100%) / 2));
 
   height: 1px;
 
