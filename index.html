@@ -13,8 +13,8 @@
 
 <div class="sidebar">
   <h2>Sections</h2>
-  <a href="#zzz">ZZZ</a>
-  <a href="#hsr">HSR</a>
+  <a href="#zzz">Zenless Zone Zero</a>
+  <a href="#hsr">Honkai Star Rail</a>
   <a href="#petit">Petit Planet</a>
 </div>
 
@@ -38,8 +38,13 @@
 </div> 
 
 <script>
-document.querySelector(".sidebar-toggle").addEventListener("click", function() {
-  document.querySelector(".sidebar").classList.toggle("open");
+document.addEventListener("DOMContentLoaded", function(){
+  const toggle = document.querySelector(".sidebar-toggle");
+  const sidebar = document.querySelector(".sidebar");
+
+  toggle.addEventListener("click", () => {
+    sidebar.classList.toggle("open");
+  });
 });
 </script>
 
