@@ -5,9 +5,7 @@ body {
   color: white;
 }
 
-/* =========================================================
-   SIDEBAR
-========================================================= */
+/* ================= SIDEBAR ================= */
 
 .sidebar-toggle {
   position: fixed;
@@ -58,9 +56,7 @@ body {
   background: rgba(255,255,255,0.12);
 }
 
-/* =========================================================
-   DASHBOARD (DEFAULT = GRID)
-========================================================= */
+/* ================= GRID MODE ================= */
 
 .dashboard {
   display: grid;
@@ -71,9 +67,7 @@ body {
   align-items: start;
 }
 
-/* =========================================================
-   CARD STYLE (CONSISTENT EVERYWHERE)
-========================================================= */
+/* ================= CARDS ================= */
 
 .card {
   height: 260px;
@@ -97,7 +91,6 @@ body {
   display: block;
 }
 
-/* hover */
 .card:hover {
   transform: translateY(-5px);
 
@@ -109,30 +102,26 @@ body {
     0 0 40px rgba(120,200,255,0.14);
 }
 
-/* =========================================================
-   ALL VIEW = VERTICAL LIST (NO FLEX BUGS)
-========================================================= */
+/* ================= ALL VIEW (FIXED LIST) ================= */
 
 body.all-view .dashboard {
-  grid-template-columns: 1fr;
+  grid-template-columns: 420px;
+  justify-content: center;
 }
 
-/* keep identical sizing */
 body.all-view .card {
-  width: 100%;
+  width: 420px;
   height: 260px;
 }
 
-/* =========================================================
-   SEPARATORS (ONLY ALL VIEW)
-========================================================= */
+/* ================= SEPARATORS ================= */
 
 body.all-view .card:not(:last-child)::after {
   content: "──────";
   display: block;
 
   text-align: center;
-  margin: 14px 0;
+  margin: 12px 0;
 
   color: rgba(255,255,255,0.35);
   letter-spacing: 3px;
