@@ -66,11 +66,6 @@ section {
   transition: opacity 0.25s ease, transform 0.25s ease;
 }
 
-section.fade-out {
-  opacity: 0;
-  transform: translateY(8px);
-}
-
 /* IFRAME */
 
 iframe {
@@ -90,4 +85,38 @@ iframe:hover {
     0 12px 30px rgba(0,0,0,0.35),
     0 0 18px rgba(125, 211, 252, 0.18),
     0 0 28px rgba(167, 139, 250, 0.12);
+}
+
+/* SEPARATOR (UNCHANGED BUT STABLE) */
+
+body.all-mode section:not(:last-of-type)::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -20px;
+  height: 1px;
+
+  background: linear-gradient(
+    90deg,
+    rgba(79, 195, 255, 0),
+    rgba(79, 195, 255, 0.95),
+    rgba(192, 132, 252, 0.95),
+    rgba(79, 195, 255, 0.95),
+    rgba(79, 195, 255, 0)
+  );
+
+  background-size: 200% 100%;
+  animation: wave 3s linear infinite;
+
+  box-shadow:
+    0 0 8px rgba(79, 195, 255, 0.25),
+    0 0 12px rgba(192, 132, 252, 0.2);
+
+  pointer-events: none;
+}
+
+@keyframes wave {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
 }
