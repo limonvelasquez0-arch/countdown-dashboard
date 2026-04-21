@@ -41,6 +41,7 @@
 </div>
 
 <script>
+
 function toggleSidebar() {
   document.getElementById("sidebar").classList.toggle("open");
 }
@@ -48,19 +49,20 @@ function toggleSidebar() {
 function showSection(category) {
   const items = document.querySelectorAll(".card");
 
-  if (category === "all") {
-    document.body.classList.add("all-view");
-  } else {
-    document.body.classList.remove("all-view");
-  }
+  // toggle ALL MODE safely
+  document.body.classList.toggle("all-view", category === "all");
 
   items.forEach(el => {
-    el.style.display =
-      category === "all"
-        ? "block"
-        : el.classList.contains(category)
-          ? "block"
-          : "none";
+
+    // IMPORTANT: remove inline display overrides completely
+    el.style.removeProperty("display");
+
+    if (category === "all") {
+      el.classList.remove("hidden");
+    } else {
+      el.classList.toggle("hidden", !el.classList.contains(category));
+    }
+
   });
 
   toggleSidebar();
@@ -70,6 +72,7 @@ function showSection(category) {
 window.addEventListener("DOMContentLoaded", () => {
   document.body.classList.add("all-view");
 });
+
 </script>
 
 </body>
