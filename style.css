@@ -34,9 +34,7 @@ body {
   z-index: 1500;
 }
 
-.sidebar.open {
-  left: 0;
-}
+.sidebar.open { left: 0; }
 
 .sidebar a {
   display: block;
@@ -65,7 +63,7 @@ section {
   transition: opacity 0.25s ease, transform 0.25s ease;
 }
 
-/* ALL MODE STACK */
+/* ALL MODE */
 body.all-mode .dashboard {
   display: flex;
   flex-direction: column;
@@ -81,7 +79,7 @@ section h2 {
   margin-bottom: 22px;
 }
 
-/* ================= DIVIDER SYSTEM (CORRECT VERSION) ================= */
+/* ================= 🔥 FINAL WORKING DIVIDER ================= */
 
 .divider {
   width: 100vw;
@@ -92,7 +90,7 @@ section h2 {
   pointer-events: none;
 }
 
-/* STATIC FADED LINE (NEVER ANIMATED) */
+/* STATIC FADED LINE (NEVER MOVES) */
 .divider::before {
   content: "";
   position: absolute;
@@ -101,40 +99,37 @@ section h2 {
   background: linear-gradient(
     90deg,
     transparent 0%,
-    transparent 15%,
-    rgba(79,195,255,0.9) 15%,
+    transparent 18%,
+    rgba(79,195,255,0.9) 18%,
     rgba(192,132,252,0.9) 50%,
-    rgba(79,195,255,0.9) 85%,
-    transparent 85%,
+    rgba(79,195,255,0.9) 82%,
+    transparent 82%,
     transparent 100%
   );
 }
 
-/* MOVING BRIGHT CORE ONLY */
+/* ONLY A MOVING LIGHT BAR (NO GRADIENT ANIMATION) */
 .divider::after {
   content: "";
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: -30%;
+  width: 30%;
+  height: 100%;
 
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255,255,255,0.25),
-    rgba(192,132,252,0.9),
-    rgba(79,195,255,0.9),
-    rgba(255,255,255,0.25),
-    transparent
-  );
+  background: rgba(255,255,255,0.25);
 
-  width: 40%;
-  left: -40%;
-  animation: sweep 9s linear infinite;
+  box-shadow:
+    0 0 12px rgba(79,195,255,0.4),
+    0 0 18px rgba(192,132,252,0.3);
+
+  animation: sweep 8s linear infinite;
 }
 
-/* ONLY POSITION MOVES */
+/* PURE POSITION ANIMATION ONLY */
 @keyframes sweep {
   0% { transform: translateX(0); }
-  100% { transform: translateX(320%); }
+  100% { transform: translateX(400%); }
 }
 
 /* ================= IFRAME ================= */
@@ -150,8 +145,4 @@ iframe {
 
 iframe:hover {
   transform: translateY(-4px);
-  box-shadow:
-    0 12px 30px rgba(0,0,0,0.35),
-    0 0 18px rgba(125,211,252,0.18),
-    0 0 28px rgba(167,139,250,0.12);
 }
