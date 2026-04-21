@@ -81,55 +81,56 @@ section h2 {
 
 /* ================= 🔥 FINAL WORKING DIVIDER ================= */
 
+/* ================= DIVIDER (FINAL STABLE FIX) ================= */
+
 .divider {
-  width: 100vw;
-  height: 1px;
-  margin: 0 0 34px -20px;
+  width: 100%;
+  height: 40px;
   position: relative;
-  overflow: hidden;
-  pointer-events: none;
+  display: flex;
+  align-items: center;
 }
 
-/* STATIC FADED LINE (NEVER MOVES) */
+/* the actual line */
 .divider::before {
   content: "";
   position: absolute;
-  inset: 0;
 
+  left: -50vw;
+  right: -50vw;
+
+  height: 1px;
+
+  /* permanent faded edges */
   background: linear-gradient(
     90deg,
     transparent 0%,
-    transparent 18%,
-    rgba(79,195,255,0.9) 18%,
+    rgba(79,195,255,0.0) 10%,
+    rgba(79,195,255,0.9) 25%,
     rgba(192,132,252,0.9) 50%,
-    rgba(79,195,255,0.9) 82%,
-    transparent 82%,
+    rgba(79,195,255,0.9) 75%,
+    rgba(79,195,255,0.0) 90%,
     transparent 100%
   );
 }
 
-/* ONLY A MOVING LIGHT BAR (NO GRADIENT ANIMATION) */
+/* moving highlight ONLY (no fading animation) */
 .divider::after {
   content: "";
   position: absolute;
-  top: 0;
-  left: -30%;
-  width: 30%;
-  height: 100%;
 
-  background: rgba(255,255,255,0.25);
+  width: 25%;
+  height: 1px;
 
-  box-shadow:
-    0 0 12px rgba(79,195,255,0.4),
-    0 0 18px rgba(192,132,252,0.3);
+  background: rgba(255,255,255,0.35);
+  box-shadow: 0 0 12px rgba(79,195,255,0.5);
 
-  animation: sweep 8s linear infinite;
+  animation: sweep 7s linear infinite;
 }
 
-/* PURE POSITION ANIMATION ONLY */
 @keyframes sweep {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(400%); }
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(500%); }
 }
 
 /* ================= IFRAME ================= */
