@@ -56,22 +56,11 @@ body {
   padding: 80px 20px 20px;
 }
 
-/* keep cards normal size ALWAYS */
 section {
   width: 420px;
-  margin-bottom: 35px;
-  position: relative;
-
-  transition: opacity 0.35s ease, transform 0.35s ease;
+  margin-bottom: 40px;
 }
 
-section.is-hidden {
-  opacity: 0;
-  transform: translateY(14px);
-  pointer-events: none;
-}
-
-/* titles */
 section h2 {
   margin: 20px 0 10px;
   font-size: 14px;
@@ -106,22 +95,29 @@ body.all-mode .dashboard {
   display: block;
 }
 
-/* ================= 🌈 THIN FULL-WIDTH SEPARATOR ================= */
+/* ================= 🌈 TRUE EDGE-TO-EDGE FIX ================= */
 
+body.all-mode section {
+  position: relative;
+}
+
+/* 🔥 REAL FIX: viewport anchored separator */
 body.all-mode section:not(:last-of-type)::after {
   content: "";
 
-  position: absolute;
+  position: fixed;
 
-  left: 50%;
-  transform: translateX(-50%);
+  left: 0;
+  right: 0;
 
   width: 100vw;
-
-  /* 🔥 thinner line */
   height: 1px;
 
-  margin-top: 22px;
+  /* you can tweak this vertical spacing if needed */
+  margin-top: 10px;
+
+  /* place it visually after each section */
+  transform: translateY(0);
 
   background: linear-gradient(
     90deg,
@@ -131,20 +127,16 @@ body.all-mode section:not(:last-of-type)::after {
   );
 
   background-size: 250% 100%;
-
   animation: strongWave 3.2s linear infinite;
 
-  /* subtle glow only */
   box-shadow:
     0 0 6px rgba(79, 195, 255, 0.25),
     0 0 8px rgba(192, 132, 252, 0.20);
 
-  opacity: 1;
-
   pointer-events: none;
 }
 
-/* 🌊 wave animation */
+/* 🌊 wave motion */
 @keyframes strongWave {
   0% { background-position: 0% 50%; }
   100% { background-position: 250% 50%; }
