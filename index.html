@@ -49,6 +49,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const sections = document.querySelectorAll("section");
   const dividers = document.querySelectorAll(".divider");
 
+  const toggle = document.querySelector(".sidebar-toggle");
+  const sidebar = document.querySelector(".sidebar");
+
+  toggle.addEventListener("click", () => {
+    sidebar.classList.toggle("open");
+  });
+
   function show(mode) {
 
     document.body.classList.toggle("all-mode", mode === "all");
@@ -73,6 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
       d.style.display = (mode === "all") ? "block" : "none";
     });
 
+    sidebar.classList.remove("open");
   }
 
   links.forEach(link => {
