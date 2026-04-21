@@ -63,7 +63,7 @@ body {
 }
 
 /* =========================================================
-   📊 GRID MODE (DEFAULT - KEEP EVERYTHING NORMAL)
+   📊 DASHBOARD (BASE GRID - ALWAYS SAFE FOR EMBEDS)
 ========================================================= */
 
 .dashboard {
@@ -76,7 +76,7 @@ body {
 }
 
 /* =========================================================
-   🧱 CARD (DO NOT BREAK SIZE EVER)
+   🧱 CARD (FIXED SIZE — NEVER CHANGE THIS)
 ========================================================= */
 
 .card {
@@ -114,41 +114,39 @@ body {
 }
 
 /* =========================================================
-   📏 ALL VIEW = VERTICAL LIST (NO CENTERING, NO RESIZE)
+   📏 ALL VIEW = SINGLE COLUMN GRID (NO FLEX, NO BREAKING EMBEDS)
 ========================================================= */
 
 body.all-view .dashboard {
-  display: flex;
-  flex-direction: column;
-
-  align-items: flex-start; /* LEFT ALIGN (IMPORTANT) */
-  gap: 0; /* spacing handled by separators */
+  grid-template-columns: 420px; /* EXACT SAME WIDTH AS GRID MIN */
+  justify-content: start;       /* LEFT ALIGN */
+  gap: 26px;                    /* FIX: MORE SPACE BETWEEN ITEMS */
 }
 
-/* KEEP IDENTICAL SIZE AS GRID */
+/* keep identical size */
 body.all-view .card {
-  width: 100%;
-  max-width: 420px; /* matches grid size visually */
+  width: 420px;
   height: 260px;
 }
 
 /* =========================================================
-   ───── ANIMATED SEPARATORS (ALL ONLY)
+   ───── ANIMATED SEPARATORS (ONLY ALL VIEW)
 ========================================================= */
 
 body.all-view .card:not(:last-child)::after {
   content: "──────";
   display: block;
 
-  margin: 12px 0 18px 0;
+  text-align: center;
+  margin: 14px 0 20px 0;
 
   color: rgba(255,255,255,0.35);
   letter-spacing: 3px;
 
-  animation: sepPulse 2.6s ease-in-out infinite;
+  animation: sepPulse 2.5s ease-in-out infinite;
 }
 
 @keyframes sepPulse {
-  0%, 100% { opacity: 0.25; }
-  50% { opacity: 1; }
+  0%, 100% { opacity: 0.25; transform: scaleX(0.98); }
+  50% { opacity: 1; transform: scaleX(1); }
 }
