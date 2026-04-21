@@ -45,7 +45,7 @@ body {
   background: rgba(255,255,255,0.05);
 }
 
-/* ================= DASHBOARD ================= */
+/* ================= LAYOUT ================= */
 
 .dashboard {
   display: grid;
@@ -53,8 +53,6 @@ body {
   gap: 16px;
   padding: 80px 20px 20px;
 }
-
-/* ================= SECTIONS ================= */
 
 section {
   width: 420px;
@@ -86,13 +84,9 @@ iframe {
 
   box-shadow: 0 10px 30px rgba(0,0,0,0.25);
 
-  transition:
-    transform 0.25s ease,
-    box-shadow 0.25s ease,
-    filter 0.25s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-/* ✨ soft glow hover */
 iframe:hover {
   transform: translateY(-4px);
 
@@ -100,15 +94,15 @@ iframe:hover {
     0 12px 30px rgba(0,0,0,0.35),
     0 0 18px rgba(125, 211, 252, 0.18),
     0 0 28px rgba(167, 139, 250, 0.12);
-
-  filter: brightness(1.03);
 }
 
-/* ================= ALL MODE SEPARATOR ================= */
+/* ================= ALL MODE ================= */
 
 body.all-mode .dashboard {
   display: block;
 }
+
+/* ================= SEPARATOR (FULL WIDTH + CONSTANT LIGHT WAVE) ================= */
 
 body.all-mode section:not(:last-of-type)::after {
   content: "";
@@ -125,20 +119,24 @@ body.all-mode section:not(:last-of-type)::after {
 
   background: linear-gradient(
     90deg,
-    rgba(125, 211, 252, 0.2),
-    rgba(167, 139, 250, 0.9),
-    rgba(125, 211, 252, 0.2)
+    #a5d8ff,
+    #d0bfff,
+    #a5d8ff
   );
 
   background-size: 200% 100%;
-  animation: softWave 4s ease-in-out infinite;
 
-  filter: drop-shadow(0 0 6px rgba(167, 139, 250, 0.25));
-  opacity: 0.9;
+  animation: colorWave 3.5s linear infinite;
+
+  box-shadow:
+    0 0 8px rgba(165, 216, 255, 0.35),
+    0 0 10px rgba(208, 191, 255, 0.25);
+
+  opacity: 1;
 }
 
-@keyframes softWave {
+/* smooth traveling wave */
+@keyframes colorWave {
   0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
 }
