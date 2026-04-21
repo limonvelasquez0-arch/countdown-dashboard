@@ -274,3 +274,13 @@ body {
     transform: scaleX(1);
   }
 }
+
+/* =========================================================
+   🌌 FIX: GROUP DIVIDER VISIBILITY
+   👉 Allows separator line to show outside card bounds
+========================================================= */
+
+.card.hsr,
+.card.pp {
+  overflow: visible; /* allows ::before line to be visible */
+}
