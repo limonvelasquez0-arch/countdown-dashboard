@@ -84,32 +84,37 @@ section h2 {
 /* ================= DIVIDER (FINAL STABLE FIX) ================= */
 
 .divider {
-  width: 100%;
+  width: 100vw;              /* full page width */
   height: 1px;
   margin: 24px 0;
   position: relative;
+  left: 50%;
+  transform: translateX(-50%);
   overflow: hidden;
 }
 
-/* base line: solid center + faded edges (STATIC) */
+/* ================= STATIC FADED LINE ================= */
 .divider::before {
   content: "";
   position: absolute;
   inset: 0;
 
+  /* 🔥 LONGER FADE ON BOTH SIDES */
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(79,195,255,0.0) 10%,
-    rgba(79,195,255,0.9) 25%,
-    rgba(192,132,252,0.9) 50%,
-    rgba(79,195,255,0.9) 75%,
-    rgba(79,195,255,0.0) 90%,
+    transparent 5%,
+    rgba(79,195,255,0.0) 15%,
+    rgba(79,195,255,0.85) 35%,
+    rgba(192,132,252,0.95) 50%,
+    rgba(79,195,255,0.85) 65%,
+    rgba(79,195,255,0.0) 85%,
+    transparent 95%,
     transparent 100%
   );
 }
 
-/* optional subtle moving highlight (does NOT touch fades) */
+/* ================= MOVING HIGHLIGHT ONLY ================= */
 .divider::after {
   content: "";
   position: absolute;
@@ -119,11 +124,12 @@ section h2 {
   height: 100%;
 
   background: rgba(255,255,255,0.25);
-  box-shadow: 0 0 10px rgba(79,195,255,0.35);
+  box-shadow: 0 0 12px rgba(79,195,255,0.4);
 
-  animation: sweep 8s linear infinite;
+  animation: sweep 9s linear infinite;
 }
 
+/* ONLY MOVES POSITION — NOTHING ELSE */
 @keyframes sweep {
   0% { transform: translateX(0); }
   100% { transform: translateX(400%); }
