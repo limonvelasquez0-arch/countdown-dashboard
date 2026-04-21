@@ -54,15 +54,21 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
   gap: 16px;
-  padding: 80px 20px 20px;
+  padding: 80px 20px;
 }
 
 /* ================= SECTIONS ================= */
 
 section {
-  width: 420px;
-  margin-bottom: 40px;
+  width: 100%;
   position: relative;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+section.hidden {
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
 }
 
 /* ================= IFRAME ================= */
@@ -90,23 +96,17 @@ iframe:hover {
 /* ================= ALL MODE ================= */
 
 body.all-mode .dashboard {
-  display: block;
+  display: grid;
 }
 
-/* ================= 🌈 FINAL EDGE-TO-EDGE SEPARATOR (STABLE) ================= */
+/* ================= SEPARATOR ================= */
 
 body.all-mode section:not(:last-of-type)::after {
   content: "";
   position: absolute;
-  bottom: -20px;
-
-  /* 🔥 TRUE EDGE FIX THAT WORKS IN GRIDS */
   left: 0;
-  width: 100vw;
-
-  /* cancel layout offset properly */
-  transform: translateX(calc(-1 * (100vw - 100%) / 2));
-
+  right: 0;
+  bottom: -20px;
   height: 1px;
 
   background: linear-gradient(
@@ -128,12 +128,7 @@ body.all-mode section:not(:last-of-type)::after {
   pointer-events: none;
 }
 
-/* 🌊 animation */
 @keyframes wave {
   0% { background-position: 0% 50%; }
   100% { background-position: 200% 50%; }
-}
-
-section.hidden {
-  display: none;
 }
