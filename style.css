@@ -1,7 +1,3 @@
-/* =========================================================
-   🌌 GLOBAL STYLES
-========================================================= */
-
 body {
   background: #0f0f14;
   margin: 0;
@@ -10,7 +6,7 @@ body {
 }
 
 /* =========================================================
-   📌 SIDEBAR BUTTON
+   SIDEBAR
 ========================================================= */
 
 .sidebar-toggle {
@@ -27,10 +23,6 @@ body {
   cursor: pointer;
 }
 
-/* =========================================================
-   📂 SIDEBAR
-========================================================= */
-
 .sidebar {
   position: fixed;
   top: 0;
@@ -41,9 +33,8 @@ body {
   background: rgba(20,20,30,0.95);
   backdrop-filter: blur(20px);
 
-  padding: 70px 20px 20px;
+  padding: 70px 20px;
   transition: left 0.3s ease;
-
   z-index: 2500;
 }
 
@@ -68,7 +59,7 @@ body {
 }
 
 /* =========================================================
-   📊 DASHBOARD GRID (UNCHANGED STRUCTURE)
+   DASHBOARD (DEFAULT = GRID)
 ========================================================= */
 
 .dashboard {
@@ -77,39 +68,15 @@ body {
   gap: 16px;
 
   padding: 80px 20px 20px;
-
   align-items: start;
 }
 
 /* =========================================================
-   📏 ALL VIEW = VERTICAL LIST (FIXED SIZING)
-========================================================= */
-
-body.all-view .dashboard {
-  display: flex;
-  flex-direction: column;
-}
-
-/* IMPORTANT: keep same width/height as grid cards */
-body.all-view .card {
-  width: 100%;
-  max-width: 420px; /* matches grid min size */
-  height: 260px;    /* forces same shape everywhere */
-}
-
-/* center list nicely */
-body.all-view .dashboard {
-  align-items: center;
-}
-⚙️ 2. FIX JS (IMPORTANT)
-
-/* =========================================================
-   🧱 CARD STYLE
+   CARD STYLE (CONSISTENT EVERYWHERE)
 ========================================================= */
 
 .card {
   height: 260px;
-
   border-radius: 18px;
 
   background: rgba(255,255,255,0.01);
@@ -117,15 +84,12 @@ body.all-view .dashboard {
 
   overflow: hidden;
 
-  transform: translateZ(0);
-
   transition:
     transform 0.35s cubic-bezier(.22,.61,.36,1),
     box-shadow 0.35s cubic-bezier(.22,.61,.36,1),
     border-color 0.35s ease;
 }
 
-/* iframe */
 .card iframe {
   width: 100%;
   height: 100%;
@@ -133,7 +97,7 @@ body.all-view .dashboard {
   display: block;
 }
 
-/* hover glow */
+/* hover */
 .card:hover {
   transform: translateY(-5px);
 
@@ -146,75 +110,21 @@ body.all-view .dashboard {
 }
 
 /* =========================================================
-   📏 SEPARATORS ONLY IN "ALL" VIEW
-========================================================= */
-
-/* default: no separators */
-.card::after {
-  content: none;
-}
-
-/* active only in ALL view */
-body.all-view .card:not(:last-child)::after {
-  content: "";
-  display: block;
-
-  width: 88%;
-  height: 1px;
-
-  margin: 18px auto 0;
-
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255,255,255,0.25),
-    rgba(120,200,255,0.35),
-    rgba(255,255,255,0.25),
-    transparent
-  );
-
-  opacity: 0.9;
-
-  animation: lineGlow 3s ease-in-out infinite;
-}
-
-/* animation */
-@keyframes lineGlow {
-  0%, 100% {
-    opacity: 0.3;
-    transform: scaleX(0.98);
-  }
-  50% {
-    opacity: 1;
-    transform: scaleX(1);
-  }
-}
-
-/* =========================================================
-   📊 DEFAULT LAYOUT (ALL OTHER SECTIONS)
-   👉 Keep normal horizontal grid
-========================================================= */
-
-.dashboard {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
-  gap: 16px;
-  padding: 80px 20px 20px;
-  align-items: start;
-}
-
-/* =========================================================
-   📏 ALL MODE = VERTICAL LIST
-   👉 ONLY active in "all"
+   ALL VIEW = VERTICAL LIST (NO FLEX BUGS)
 ========================================================= */
 
 body.all-view .dashboard {
-  display: flex;
-  flex-direction: column;
+  grid-template-columns: 1fr;
+}
+
+/* keep identical sizing */
+body.all-view .card {
+  width: 100%;
+  height: 260px;
 }
 
 /* =========================================================
-   ───── SEPARATORS (ONLY IN ALL VIEW)
+   SEPARATORS (ONLY ALL VIEW)
 ========================================================= */
 
 body.all-view .card:not(:last-child)::after {
@@ -222,7 +132,7 @@ body.all-view .card:not(:last-child)::after {
   display: block;
 
   text-align: center;
-  margin: 10px 0;
+  margin: 14px 0;
 
   color: rgba(255,255,255,0.35);
   letter-spacing: 3px;
@@ -230,7 +140,6 @@ body.all-view .card:not(:last-child)::after {
   animation: sepPulse 2.8s ease-in-out infinite;
 }
 
-/* animation */
 @keyframes sepPulse {
   0%, 100% { opacity: 0.3; }
   50% { opacity: 1; }
