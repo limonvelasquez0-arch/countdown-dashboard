@@ -68,7 +68,7 @@ body {
 }
 
 /* =========================================================
-   📊 DASHBOARD (KEEP GRID)
+   📊 DASHBOARD GRID (KEEP THIS)
 ========================================================= */
 
 .dashboard {
@@ -78,16 +78,15 @@ body {
 
   padding: 80px 20px 20px 20px;
 
-  align-items: start; /* fixes weird vertical shifting */
+  align-items: start;
 }
 
 /* =========================================================
-   🧱 CARD BASE (UNCHANGED LOOK)
+   🧱 CARD STYLE (UNCHANGED)
 ========================================================= */
 
 .card {
   position: relative;
-  z-index: 1;
 
   height: 260px;
 
@@ -107,10 +106,7 @@ body {
     border-color 0.35s ease;
 }
 
-/* =========================================================
-   🖼️ IFRAME
-========================================================= */
-
+/* iframe */
 .card iframe {
   width: 100%;
   height: 100%;
@@ -118,10 +114,7 @@ body {
   display: block;
 }
 
-/* =========================================================
-   ✨ HOVER EFFECT (UNCHANGED BUT CLEAN)
-========================================================= */
-
+/* hover */
 .card:hover {
   transform: translateY(-5px);
 
@@ -134,43 +127,43 @@ body {
 }
 
 /* =========================================================
-   📦 GROUP FIX (NO MORE ALIGNMENT BUGS)
-   👉 Keeps grid but forces clean section spacing
+   📦 CATEGORY ALIGNMENT FIX
 ========================================================= */
 
-/* reset default behavior */
 .card {
   align-self: start;
 }
 
-/* CZN group (top section) */
+/* ONLY spacing (no fake separators anymore) */
 .card.czn {
   margin-top: 0;
 }
 
-/* HSR group (new section start) */
 .card.hsr {
-  margin-top: 35px;
+  margin-top: 0;
 }
 
-/* PP group (final section) */
 .card.pp {
-  margin-top: 35px;
+  margin-top: 0;
 }
 
 /* =========================================================
-   ✨ REAL SEPARATOR LINE (BETWEEN GROUPS ONLY)
-   👉 NOT inside cards, so it won't overlap content
+   ✨ REAL SEPARATOR SYSTEM (THIS FIXES EVERYTHING)
 ========================================================= */
 
-.card.hsr::before,
-.card.pp::before {
+.sep {
+  grid-column: 1 / -1;
+  height: 22px;
+  position: relative;
+}
+
+.sep::before {
   content: "";
   position: absolute;
 
-  top: -16px;
-  left: 6%;
-  width: 88%;
+  top: 50%;
+  left: 5%;
+  width: 90%;
   height: 1px;
 
   background: linear-gradient(
@@ -182,20 +175,18 @@ body {
     transparent
   );
 
+  transform: translateY(-50%);
   animation: sepGlow 3s ease-in-out infinite;
 }
 
-/* =========================================================
-   🌌 ANIMATION
-========================================================= */
-
+/* animation */
 @keyframes sepGlow {
   0%, 100% {
     opacity: 0.3;
-    transform: scaleX(0.98);
+    transform: translateY(-50%) scaleX(0.98);
   }
   50% {
     opacity: 0.9;
-    transform: scaleX(1);
+    transform: translateY(-50%) scaleX(1);
   }
 }
