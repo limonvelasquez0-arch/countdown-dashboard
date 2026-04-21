@@ -2,18 +2,10 @@
 <html lang="en">
 <head>
 
-<!-- =========================================================
-   🌐 BASIC PAGE SETUP
-   👉 Defines encoding + mobile scaling + page title
-========================================================= -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Countdown Dashboard</title>
 
-<!-- =========================================================
-   🎨 EXTERNAL STYLESHEET
-   👉 ALL visuals come from style.css
-========================================================= -->
 <link rel="stylesheet" href="style.css">
 <link rel="icon" type="image/x-icon" href="resources/favicon.ico">
 
@@ -21,91 +13,41 @@
 
 <body>
 
-<!-- =========================================================
-   ☰ SIDEBAR TOGGLE BUTTON
-   👉 Opens/closes the side menu
-   (function: toggleSidebar())
-========================================================= -->
 <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
 
-<!-- =========================================================
-   📂 SIDEBAR MENU
-   👉 Navigation/filter system for your cards
-========================================================= -->
 <div class="sidebar" id="sidebar">
 
-  <!-- Show ALL cards -->
   <a href="#" onclick="showSection('all')">All</a>
-
-  <!-- Show only "zenless" cards -->
   <a href="#" onclick="showSection('czn')">Chaos Zero Nightmare</a>
-
-  <!-- Show only "hsr" cards -->
   <a href="#" onclick="showSection('hsr')">Honkai Star Rail</a>
-
-  <!-- Show only "other" cards -->
   <a href="#" onclick="showSection('pp')">Petit Planet</a>
 
 </div>
 
-<!-- =========================================================
-   📊 MAIN DASHBOARD GRID
-   👉 All countdown panels live inside here
-========================================================= -->
 <div class="dashboard">
 
-  <!-- =====================================================
-     🟣 CARD 1 (ZENLESS CATEGORY)
-     👉 Each card = one iframe countdown
-     👉 Class "zenless" is used for filtering
-  ===================================================== -->
   <div class="card czn">
-    <iframe src="https://count.live/?date=2026-04-29T01%3A00%3A00-07%3A00&title=Heidemarie%20(CZN)&font=display&bgimg=https%3A%2F%2Fblog.prydwen.gg%2Fwp-content%2Fuploads%2F2026%2F04%2Fmaxresdefault-2.webp&units=w,d,h,m,s&showtz=1&progress=1&percent=1&start=2026-04-20T00%3A00%3A00-07%3A00&tz=America%2FTijuana"></iframe>
+    <iframe src="https://count.live/?date=2026-04-29T01%3A00%3A00-07%3A00&title=Heidemarie%20(CZN)"></iframe>
   </div>
 
-  <!-- =====================================================
-     🔵 CARD 2 (HSR CATEGORY)
-  ===================================================== -->
   <div class="card hsr">
-    <iframe src="https://count.live/?date=2026-05-13T15%3A00%3A00-07%3A00&title=Evanescia%20(HSR)&font=display&bgimg=https%3A%2F%2Fi.redd.it%2Fwith-the-design-reveal-of-evanescia-and-sparxie-it-feels-v0-1cu4wje40ndg1.jpg%3Fwidth%3D1920%26format%3Dpjpg%26auto%3Dwebp%26s%3De41a3002a5357463537e9624314a0cd803a63a84&units=w,d,h,m,s&showtz=1&progress=1&percent=1&start=2026-04-20T00%3A00%3A00-07%3A00&tz=America%2FTijuana"></iframe>
+    <iframe src="https://count.live/?date=2026-05-13T15%3A00%3A00-07%3A00&title=Evanescia%20(HSR)"></iframe>
   </div>
 
-  <!-- =====================================================
-     🟢 CARD 3 (OTHER CATEGORY)
-  ===================================================== -->
   <div class="card pp">
-    <iframe src="https://count.live/?date=2026-04-23T18%3A00%3A00-07%3A00&title=Beta%20Access%20(Petit%20Planet)&font=display&bgimg=https%3A%2F%2Ffastcdn.hoyoverse.com%2Fstatic-resource-v2%2F2026%2F03%2F25%2Fcf6e120d2032ac9c62cdc31e0d7504df_3968736085113746422.png&units=w,d,h,m,s&showtz=1&progress=1&percent=1&start=2026-04-20T00%3A00%3A00-07%3A00&tz=America%2FTijuana"></iframe>
+    <iframe src="https://count.live/?date=2026-04-23T18%3A00%3A00-07%3A00&title=Beta%20Access%20(PP)"></iframe>
   </div>
 
 </div>
 
-<!-- =========================================================
-   ⚙️ JAVASCRIPT CONTROLS
-   👉 Sidebar + filtering system
-========================================================= -->
 <script>
-
-   window.addEventListener("DOMContentLoaded", () => {
-  document.body.classList.add("all-view");
-});
-
-/* =========================================================
-   📌 TOGGLE SIDEBAR
-   👉 Opens/closes menu by adding/removing "open" class
-========================================================= */
 function toggleSidebar() {
   document.getElementById("sidebar").classList.toggle("open");
 }
 
-/* =========================================================
-   🔍 FILTER SYSTEM
-   👉 Shows/hides cards based on category
-   👉 Uses class names: zenless / hsr / other
-========================================================= */
 function showSection(category) {
   const items = document.querySelectorAll(".card");
 
-  // ⭐ ADD THIS (controls ALL vs grid mode)
   if (category === "all") {
     document.body.classList.add("all-view");
   } else {
@@ -113,19 +55,20 @@ function showSection(category) {
   }
 
   items.forEach(el => {
-
-    if (category === "all") {
-      el.style.display = "block";
-    } else {
-      el.style.display = el.classList.contains(category)
+    el.style.display =
+      category === "all"
         ? "block"
-        : "none";
-    }
+        : el.classList.contains(category)
+          ? "block"
+          : "none";
   });
 
   toggleSidebar();
 }
 
+window.addEventListener("DOMContentLoaded", () => {
+  document.body.classList.add("all-view");
+});
 </script>
 
 </body>
