@@ -48,7 +48,7 @@ body {
   background: rgba(255,255,255,0.05);
 }
 
-/* ================= DASHBOARD ================= */
+/* ================= DASHBOARD DEFAULT (GRID MODE) ================= */
 
 .dashboard {
   display: grid;
@@ -57,32 +57,63 @@ body {
   padding: 80px 20px;
 }
 
-/* ================= SECTION BASE ================= */
+/* ================= SECTION ================= */
 
 section {
   width: 100%;
+  position: relative;
   opacity: 1;
   transform: translateY(0);
   transition: opacity 0.25s ease, transform 0.25s ease;
-  position: relative;
 }
 
+/* fade animation */
 section.fade-out {
   opacity: 0;
   transform: translateY(8px);
 }
 
-/* ================= ALL MODE = VERTICAL STACK ================= */
+/* ================= ALL MODE = FORCE VERTICAL LIST ================= */
 
 body.all-mode .dashboard {
-  display: flex;
-  flex-direction: column;
-  gap: 0; /* important so separators define spacing */
+  display: block; /* 👈 THIS is the key fix */
 }
 
-/* make sections full width in all mode */
+/* stack panels vertically */
 body.all-mode section {
+  display: block;
   width: 100%;
+  margin-bottom: 40px;
+}
+
+/* ================= SEPARATOR LINE (BETWEEN PANELS ONLY) ================= */
+
+body.all-mode section:not(:last-of-type)::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 1px;
+  margin: 20px 0;
+
+  background: linear-gradient(
+    90deg,
+    rgba(79, 195, 255, 0),
+    rgba(79, 195, 255, 0.9),
+    rgba(192, 132, 252, 0.9),
+    rgba(79, 195, 255, 0.9),
+    rgba(79, 195, 255, 0)
+  );
+
+  background-size: 200% 100%;
+  animation: wave 3s linear infinite;
+
+  opacity: 0.9;
+}
+
+/* wave animation */
+@keyframes wave {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
 }
 
 /* ================= IFRAME ================= */
@@ -102,40 +133,4 @@ iframe:hover {
     0 12px 30px rgba(0,0,0,0.35),
     0 0 18px rgba(125, 211, 252, 0.18),
     0 0 28px rgba(167, 139, 250, 0.12);
-}
-
-/* ================= SEPARATORS (FIXED + CENTERED FULL WIDTH) ================= */
-
-body.all-mode section:not(:last-of-type)::after {
-  content: "";
-  position: absolute;
-
-  left: 0;
-  right: 0;
-
-  bottom: -10px;
-
-  height: 1px;
-
-  background: linear-gradient(
-    90deg,
-    rgba(79, 195, 255, 0),
-    rgba(79, 195, 255, 0.9),
-    rgba(192, 132, 252, 0.9),
-    rgba(79, 195, 255, 0.9),
-    rgba(79, 195, 255, 0)
-  );
-
-  background-size: 200% 100%;
-  animation: wave 3s linear infinite;
-
-  opacity: 0.9;
-
-  pointer-events: none;
-}
-
-/* wave animation */
-@keyframes wave {
-  0% { background-position: 0% 50%; }
-  100% { background-position: 200% 50%; }
 }
