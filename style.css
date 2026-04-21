@@ -6,18 +6,20 @@ body {
   overflow-x: hidden;
 }
 
-/* SIDEBAR */
+/* ================= SIDEBAR ================= */
+
 .sidebar-toggle {
   position: fixed;
   top: 15px;
   left: 15px;
-  z-index: 9999; /* FIX CLICK ISSUE */
+  z-index: 99999; /* 🔥 GUARANTEES CLICKABILITY */
   background: rgba(255,255,255,0.1);
   border: none;
   color: white;
   padding: 10px 14px;
   border-radius: 10px;
   cursor: pointer;
+  pointer-events: auto;
 }
 
 .sidebar {
@@ -45,7 +47,8 @@ body {
   background: rgba(255,255,255,0.05);
 }
 
-/* DASHBOARD */
+/* ================= DASHBOARD ================= */
+
 .dashboard {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
@@ -53,14 +56,16 @@ body {
   padding: 80px 20px;
 }
 
-/* SECTION */
+/* ================= SECTIONS ================= */
+
 section {
   width: 420px;
   position: relative;
   transition: opacity 0.25s ease, transform 0.25s ease;
 }
 
-/* ALL MODE = LEFT STACK */
+/* ================= ALL MODE ================= */
+
 body.all-mode .dashboard {
   display: flex;
   flex-direction: column;
@@ -71,45 +76,50 @@ body.all-mode section {
   margin-left: 20px;
 }
 
-/* CATEGORY SPACING */
+/* spacing between title and line */
 section h2 {
-  margin-bottom: 18px;
+  margin-bottom: 22px;
 }
 
-/* DIVIDER (FIXED REAL FADE EDGES) */
+/* ================= DIVIDER (FIXED PROPERLY NOW) ================= */
+
 .divider {
   width: 100vw;
   height: 1px;
-  margin: 0 0 28px -20px;
+  margin: 0 0 34px -20px;
 
   pointer-events: none;
 
+  /* 🔥 MUCH LONGER FADE OUT EDGES */
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(79,195,255,0.15) 10%,
-    rgba(79,195,255,0.85) 35%,
+    rgba(79,195,255,0.05) 8%,
+    rgba(79,195,255,0.35) 20%,
+    rgba(79,195,255,0.85) 40%,
     rgba(192,132,252,0.85) 50%,
-    rgba(79,195,255,0.85) 65%,
-    rgba(79,195,255,0.15) 90%,
+    rgba(79,195,255,0.85) 60%,
+    rgba(79,195,255,0.35) 80%,
+    rgba(79,195,255,0.05) 92%,
     transparent 100%
   );
 
-  background-size: 200% 100%;
-  animation: wave 10s linear infinite;
+  background-size: 300% 100%;
+  animation: wave 14s linear infinite;
 
   box-shadow:
-    0 0 10px rgba(79,195,255,0.2),
-    0 0 14px rgba(192,132,252,0.15);
+    0 0 12px rgba(79,195,255,0.25),
+    0 0 18px rgba(192,132,252,0.18);
 }
 
-/* NO DIMMING — ONLY MOVEMENT */
+/* 🔥 FIX: ANIMATION WAS TOO SUBTLE BEFORE — NOW CLEARLY MOVES */
 @keyframes wave {
   0% { background-position: 0% 50%; }
-  100% { background-position: 200% 50%; }
+  100% { background-position: 300% 50%; }
 }
 
-/* IFRAME */
+/* ================= IFRAME ================= */
+
 iframe {
   width: 100%;
   height: 225px;
