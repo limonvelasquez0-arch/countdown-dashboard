@@ -39,7 +39,7 @@
 </div> 
 
 <script>
-document.addEventListener("DOMContentLoaded", function(){
+document.addEventListener("DOMContentLoaded", function () {
 
   const toggle = document.querySelector(".sidebar-toggle");
   const sidebar = document.querySelector(".sidebar");
@@ -50,14 +50,17 @@ document.addEventListener("DOMContentLoaded", function(){
     sidebar.classList.toggle("open");
   });
 
-  function show(target) {
+  function show(mode) {
+
+    // toggle ALL mode properly
+    document.body.classList.toggle("all-mode", mode === "all");
 
     sections.forEach(sec => {
 
-      if (target === "all") {
+      if (mode === "all") {
         sec.style.display = "block";
       } else {
-        sec.style.display = sec.id === target ? "block" : "none";
+        sec.style.display = sec.id === mode ? "block" : "none";
       }
 
     });
@@ -72,7 +75,7 @@ document.addEventListener("DOMContentLoaded", function(){
     });
   });
 
-  // default state
+  // default
   show("all");
 
 });
