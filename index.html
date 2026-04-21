@@ -1,52 +1,61 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-<title>Countdown Dashboard</title> 
-<link rel="stylesheet" href="./style.css">
-</head> 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Countdown Dashboard</title>
+<link rel="stylesheet" href="style.css">
+</head>
 
 <body>
 
-<button class="sidebar-toggle">☰</button>
+<button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
 
-<div class="sidebar">
-  <h2>Sections</h2>
-  <a href="#zzz">Zenless Zone Zero</a>
-  <a href="#hsr">Honkai Star Rail</a>
-  <a href="#petit">Petit Planet</a>
+<div class="sidebar" id="sidebar">
+  <a href="#" onclick="showSection('all')">All</a>
+  <a href="#" onclick="showSection('zenless')">Zenless</a>
+  <a href="#" onclick="showSection('hsr')">HSR</a>
+  <a href="#" onclick="showSection('other')">Other</a>
 </div>
 
-<div class="dashboard"> 
+<div class="dashboard">
 
-<section id="zzz">
-<h2>Zenless Zone Zero</h2>
-<iframe src="https://count.live/?date=2026-04-29T01%3A00%3A00-07%3A00&title=Heidemarie%20(CZN)&font=display&bgimg=https%3A%2F%2Fblog.prydwen.gg%2Fwp-content%2Fuploads%2F2026%2F04%2Fmaxresdefault-2.webp&units=w,d,h,m,s&showtz=1&progress=1&percent=1&start=2026-04-20T00%3A00%3A00-07%3A00&tz=America%2FTijuana"></iframe> 
-</section>
+  <!-- ALL (default view) -->
+  <section class="view all">
 
-<section id="hsr">
-<h2>Honkai Star Rail</h2>
-<iframe src="https://count.live/?date=2026-05-13T15%3A00%3A00-07%3A00&title=Evanescia%20(HSR)&font=display&bgimg=https%3A%2F%2Fi.redd.it%2Fwith-the-design-reveal-of-evanescia-and-sparxie-it-feels-v0-1cu4wje40ndg1.jpg%3Fwidth%3D1920%26format%3Dpjpg%26auto%3Dwebp%26s%3De41a3002a5357463537e9624314a0cd803a63a84&units=w,d,h,m,s&showtz=1&progress=1&percent=1&start=2026-04-20T00%3A00%3A00-07%3A00&tz=America%2FTijuana"></iframe>
-</section>
+    <iframe class="zenless" src="https://count.live/?date=2026-04-29T01%3A00%3A00-07%3A00&title=Heidemarie%20(CZN)&font=display&bgimg=https%3A%2F%2Fblog.prydwen.gg%2Fwp-content%2Fuploads%2F2026%2F04%2Fmaxresdefault-2.webp&units=w,d,h,m,s&showtz=1&progress=1&percent=1&start=2026-04-20T00%3A00%3A00-07%3A00&tz=America%2FTijuana"></iframe>
 
-<section id="petit">
-<h2>Petit Planet</h2>
-<iframe src="https://count.live/?date=2026-04-23T18%3A00%3A00-07%3A00&title=Beta%20Access%20(Petit%20Planet)&font=display&bgimg=https%3A%2F%2Fci3.googleusercontent.com%2Fmeips%2FADKq_NZUlkTcJ5vLHJXhK30FiQ3xZEDNv4cETwxB2xrd07MYv_ZDDTLPOe5ycvyjEOV8XzYnAlBgPfQz9d2fnKh970s0S94K_EbwqHKekxyVBNpU0w8iCCMmf3ZdH0DjFlsPIgqOaR4SuckVphsZV2JtMFcPf20VzQocKn7uFtJuelsZ_GnRW_SAMjMFug%3Ds0-d-e1-ft%23https%3A%2F%2Ffastcdn.hoyoverse.com%2Fstatic-resource-v2%2F2026%2F03%2F25%2Fcf6e120d2032ac9c62cdc31e0d7504df_3968736085113746422.png&units=w,d,h,m,s&showtz=1&progress=1&percent=1&start=2026-04-20T00%3A00%3A00-07%3A00&tz=America%2FTijuana"></iframe> 
-</section>
+    <iframe class="hsr" src="https://count.live/?date=2026-05-13T15%3A00%3A00-07%3A00&title=Evanescia%20(HSR)&font=display&bgimg=https%3A%2F%2Fi.redd.it%2Fwith-the-design-reveal-of-evanescia-and-sparxie-it-feels-v0-1cu4wje40ndg1.jpg%3Fwidth%3D1920%26format%3Dpjpg%26auto%3Dwebp%26s%3De41a3002a5357463537e9624314a0cd803a63a84&units=w,d,h,m,s&showtz=1&progress=1&percent=1&start=2026-04-20T00%3A00%3A00-07%3A00&tz=America%2FTijuana"></iframe>
 
-</div> 
+    <iframe class="other" src="https://count.live/?date=2026-04-23T18%3A00%3A00-07%3A00&title=Beta%20Access%20(Petit%20Planet)&font=display&bgimg=https%3A%2F%2Ffastcdn.hoyoverse.com%2Fstatic-resource-v2%2F2026%2F03%2F25%2Fcf6e120d2032ac9c62cdc31e0d7504df_3968736085113746422.png&units=w,d,h,m,s&showtz=1&progress=1&percent=1&start=2026-04-20T00%3A00%3A00-07%3A00&tz=America%2FTijuana"></iframe>
+
+  </section>
+
+</div>
 
 <script>
-document.addEventListener("DOMContentLoaded", function(){
-  const toggle = document.querySelector(".sidebar-toggle");
-  const sidebar = document.querySelector(".sidebar");
+function toggleSidebar() {
+  document.getElementById("sidebar").classList.toggle("open");
+}
 
-  toggle.addEventListener("click", () => {
-    sidebar.classList.toggle("open");
+function showSection(category) {
+  const items = document.querySelectorAll(".dashboard iframe");
+
+  items.forEach(el => {
+    if (category === "all") {
+      el.style.display = "block";
+    } else {
+      if (el.classList.contains(category)) {
+        el.style.display = "block";
+      } else {
+        el.style.display = "none";
+      }
+    }
   });
-});
+
+  toggleSidebar();
+}
 </script>
 
-</body> 
+</body>
 </html>
