@@ -58,12 +58,13 @@ body {
 .card {
   border-radius: 18px;
   overflow: hidden;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: box-shadow 0.25s ease, border 0.25s ease;
+  border: 1px solid rgba(255,255,255,0.05);
 }
 
 .card:hover {
-  transform: scale(1.01);
-  box-shadow: 0 8px 18px rgba(0,0,0,0.35);
+  box-shadow: 0 12px 26px rgba(0,0,0,0.45);
+  border: 1px solid rgba(255,255,255,0.12);
 }
 
 .card iframe {
