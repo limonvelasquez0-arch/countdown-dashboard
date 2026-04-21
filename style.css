@@ -92,43 +92,39 @@ body.all-mode .dashboard {
   display: block;
 }
 
-/* ================= 🌈 FINAL FULL-WIDTH SEPARATOR (FIXED EDGE ISSUE) ================= */
+/* ================= 🌈 FINAL STABLE SEPARATOR ================= */
 
 body.all-mode section:not(:last-of-type)::after {
   content: "";
+  display: block;
 
-  position: absolute;
-  bottom: -20px;
-
-  /* 🔥 TRUE EDGE-TO-EDGE FIX */
-  left: 0;
-  right: 0;
-  width: 100vw;
-
+  width: 100%;
   height: 1px;
 
-  /* NO transform = prevents right-edge clipping */
-  transform: none;
+  margin: 22px 0;
 
+  /* smooth full-width illusion */
   background: linear-gradient(
     90deg,
-    rgba(79, 195, 255, 0.95),
-    rgba(192, 132, 252, 0.95),
-    rgba(79, 195, 255, 0.95)
+    rgba(79, 195, 255, 0),
+    rgba(79, 195, 255, 0.9),
+    rgba(192, 132, 252, 0.9),
+    rgba(79, 195, 255, 0.9),
+    rgba(79, 195, 255, 0)
   );
 
-  background-size: 250% 100%;
+  background-size: 200% 100%;
   animation: wave 3s linear infinite;
 
   box-shadow:
     0 0 8px rgba(79, 195, 255, 0.25),
-    0 0 12px rgba(192, 132, 252, 0.2);
+    0 0 10px rgba(192, 132, 252, 0.18);
 
-  pointer-events: none;
+  opacity: 1;
 }
 
-/* 🌊 smooth wave animation */
+/* 🌊 animation */
 @keyframes wave {
   0% { background-position: 0% 50%; }
-  100% { background-position: 250% 50%; }
+  100% { background-position: 200% 50%; }
 }
