@@ -48,7 +48,7 @@ body {
   background: rgba(255,255,255,0.05);
 }
 
-/* ================= DASHBOARD ================= */
+/* ================= DASHBOARD DEFAULT (GRID MODE) ================= */
 
 .dashboard {
   display: grid;
@@ -60,8 +60,8 @@ body {
 /* ================= SECTION ================= */
 
 section {
-  width: 420px; /* 🔥 KEEP ORIGINAL CARD SIZE */
-  margin: 0 auto; /* 🔥 CENTER THEM IN ALL MODE */
+  width: 420px;
+  margin: 0;
   position: relative;
 
   opacity: 1;
@@ -69,22 +69,24 @@ section {
   transition: opacity 0.25s ease, transform 0.25s ease;
 }
 
-/* fade animation */
 section.fade-out {
   opacity: 0;
   transform: translateY(8px);
 }
 
-/* ================= ALL MODE LAYOUT FIX ================= */
+/* ================= ALL MODE (IMPORTANT FIX) ================= */
 
 body.all-mode .dashboard {
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* 🔥 keeps cards same width centered */
-  gap: 40px; /* space between panels */
+  display: block !important;   /* 🔥 KILLS GRID COMPLETELY */
 }
 
-/* ================= SEPARATOR (FULL SCREEN WIDTH ONLY) ================= */
+body.all-mode section {
+  display: block;
+  width: 420px;
+  margin: 0 auto 40px auto; /* centered + spacing */
+}
+
+/* ================= SEPARATORS (FULL WIDTH ONLY) ================= */
 
 body.all-mode section:not(:last-of-type)::after {
   content: "";
@@ -95,7 +97,7 @@ body.all-mode section:not(:last-of-type)::after {
 
   bottom: -20px;
 
-  width: 100vw; /* 🔥 FULL SCREEN LINE */
+  width: 100vw;
   height: 1px;
 
   background: linear-gradient(
