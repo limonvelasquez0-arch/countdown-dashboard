@@ -3,6 +3,7 @@ body {
   margin: 0;
   font-family: sans-serif;
   color: white;
+  overflow-x: hidden; /* fixes scrollbar issue */
 }
 
 /* ================= SIDEBAR ================= */
@@ -92,7 +93,7 @@ body.all-mode .dashboard {
   display: block;
 }
 
-/* ================= 🌈 FINAL STABLE SEPARATOR ================= */
+/* ================= 🌈 SEPARATOR (STABLE + NO SCROLL ISSUES) ================= */
 
 body.all-mode section:not(:last-of-type)::after {
   content: "";
@@ -103,7 +104,6 @@ body.all-mode section:not(:last-of-type)::after {
 
   margin: 22px 0;
 
-  /* smooth full-width illusion */
   background: linear-gradient(
     90deg,
     rgba(79, 195, 255, 0),
@@ -117,8 +117,8 @@ body.all-mode section:not(:last-of-type)::after {
   animation: wave 3s linear infinite;
 
   box-shadow:
-    0 0 8px rgba(79, 195, 255, 0.25),
-    0 0 10px rgba(192, 132, 252, 0.18);
+    0 0 8px rgba(79, 195, 255, 0.2),
+    0 0 10px rgba(192, 132, 252, 0.15);
 
   opacity: 1;
 }
