@@ -11,12 +11,13 @@ body {
   position: fixed;
   top: 15px;
   left: 15px;
-  z-index: 2000;
+  z-index: 9999; /* FIX CLICK ISSUE */
   background: rgba(255,255,255,0.1);
   border: none;
   color: white;
   padding: 10px 14px;
   border-radius: 10px;
+  cursor: pointer;
 }
 
 .sidebar {
@@ -52,14 +53,14 @@ body {
   padding: 80px 20px;
 }
 
-/* SECTIONS */
+/* SECTION */
 section {
   width: 420px;
   position: relative;
-  transition: 0.25s ease;
+  transition: opacity 0.25s ease, transform 0.25s ease;
 }
 
-/* ALL MODE LEFT ALIGN */
+/* ALL MODE = LEFT STACK */
 body.all-mode .dashboard {
   display: flex;
   flex-direction: column;
@@ -70,41 +71,42 @@ body.all-mode section {
   margin-left: 20px;
 }
 
-/* ================= CATEGORY SPACING FIX ================= */
+/* CATEGORY SPACING */
 section h2 {
-  margin-bottom: 18px; /* 🔥 SPACE BEFORE LINE */
+  margin-bottom: 18px;
 }
 
-/* ================= DIVIDER ================= */
+/* DIVIDER (FIXED REAL FADE EDGES) */
 .divider {
   width: 100vw;
   height: 1px;
-  margin: 0 0 28px -20px; /* 🔥 extra spacing above + below */
+  margin: 0 0 28px -20px;
+
+  pointer-events: none;
 
   background: linear-gradient(
     90deg,
-    rgba(79,195,255,0),
-    rgba(79,195,255,0.9),
-    rgba(192,132,252,0.9),
-    rgba(79,195,255,0.9),
-    rgba(79,195,255,0)
+    transparent 0%,
+    rgba(79,195,255,0.15) 10%,
+    rgba(79,195,255,0.85) 35%,
+    rgba(192,132,252,0.85) 50%,
+    rgba(79,195,255,0.85) 65%,
+    rgba(79,195,255,0.15) 90%,
+    transparent 100%
   );
 
-  /* STATIC FADE ON BOTH ENDS */
-  background-size: 100% 100%;
-
-  /* ONLY MOVES COLOR — NO DIMMING */
+  background-size: 200% 100%;
   animation: wave 10s linear infinite;
 
   box-shadow:
-    0 0 10px rgba(79,195,255,0.25),
+    0 0 10px rgba(79,195,255,0.2),
     0 0 14px rgba(192,132,252,0.15);
 }
 
-/* CLEAN CONSTANT MOTION (NO FADE/DIM) */
+/* NO DIMMING — ONLY MOVEMENT */
 @keyframes wave {
-  0% { filter: brightness(1); background-position: 0% 50%; }
-  100% { filter: brightness(1); background-position: 300% 50%; }
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
 }
 
 /* IFRAME */
