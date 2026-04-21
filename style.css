@@ -116,26 +116,38 @@ body.all-mode section:not(:last-of-type)::after {
   content: "";
   display: block;
 
-  margin: 25px 0 0 0;
-
-  width: 100vw;            /* full screen width */
-  height: 2px;
-
   position: relative;
   left: 50%;
   transform: translateX(-50%);
 
+  width: 100vw;   /* full screen */
+  height: 2px;
+
+  margin: 30px 0;
+
   background: linear-gradient(
     90deg,
-    #7fd6ff,
-    #c084fc,
-    #7fd6ff
+    transparent,
+    #7dd3fc,
+    #a78bfa,
+    transparent
   );
 
   background-size: 200% 100%;
 
-  animation: lineShift 3s ease-in-out infinite;
-  opacity: 0.9;
+  animation: waveFlow 3s linear infinite;
+
+  filter: drop-shadow(0 0 8px rgba(125, 211, 252, 0.35));
+}
+
+/* 🌊 moving wave illusion */
+@keyframes waveFlow {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
 }
 
 /* smooth color shifting animation */
