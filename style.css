@@ -1,63 +1,56 @@
 /* =========================================================
-   🌌 GLOBAL STYLES (whole page background + font)
-   👉 Change background color here if you want a different vibe
+   🌌 GLOBAL STYLES
 ========================================================= */
 
 body {
-  background: #0f0f14; /* main background color */
-  margin: 0; /* removes default spacing */
-  font-family: sans-serif; /* global font */
-  color: white; /* default text color */
+  background: #0f0f14;
+  margin: 0;
+  font-family: sans-serif;
+  color: white;
 }
 
 /* =========================================================
-   📌 SIDEBAR BUTTON (☰ button)
-   👉 Position + size of the toggle menu button
+   📌 SIDEBAR BUTTON
 ========================================================= */
 
 .sidebar-toggle {
-  position: fixed; /* stays always visible */
-  top: 15px; /* distance from top */
-  left: 15px; /* distance from left */
-  z-index: 3000; /* makes sure it's above everything */
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  z-index: 3000;
 
-  background: rgba(255,255,255,0.1); /* button glass look */
+  background: rgba(255,255,255,0.1);
   border: none;
   color: white;
-  padding: 10px 14px; /* button size */
+  padding: 10px 14px;
   border-radius: 12px;
   cursor: pointer;
 }
 
 /* =========================================================
-   📂 SIDEBAR MENU PANEL
-   👉 Controls slide-in menu appearance
+   📂 SIDEBAR
 ========================================================= */
 
 .sidebar {
   position: fixed;
   top: 0;
-  left: -280px; /* hidden off-screen by default */
+  left: -280px;
+  width: 240px;
+  height: 100vh;
 
-  width: 240px; /* sidebar width */
-  height: 100vh; /* full screen height */
-
-  background: rgba(20,20,30,0.95); /* dark glass effect */
-  backdrop-filter: blur(20px); /* blur background behind */
+  background: rgba(20,20,30,0.95);
+  backdrop-filter: blur(20px);
 
   padding: 70px 20px 20px 20px;
+  transition: left 0.3s ease;
 
-  transition: left 0.3s ease; /* smooth slide animation */
-
-  z-index: 2500; /* above dashboard but below toggle */
+  z-index: 2500;
 }
 
-/* when menu is open */
 .sidebar.open {
-  left: 0; /* slides into view */
+  left: 0;
 }
 
-/* sidebar links */
 .sidebar a {
   display: block;
   color: white;
@@ -70,54 +63,47 @@ body {
   background: rgba(255,255,255,0.05);
 }
 
-/* hover effect for menu items */
 .sidebar a:hover {
   background: rgba(255,255,255,0.12);
 }
 
 /* =========================================================
-   📊 DASHBOARD GRID (MAIN LAYOUT)
-   👉 Controls size and layout of all panels
+   📊 DASHBOARD GRID
 ========================================================= */
 
 .dashboard {
   display: grid;
 
-  /* 🔥 IMPORTANT: controls card width */
   grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
 
-  gap: 16px; /* space between cards */
+  gap: 16px;
+  row-gap: 22px;
 
-  padding: 80px 20px 20px 20px; /* spacing from edges */
+  padding: 80px 20px 20px 20px;
 
   position: relative;
   z-index: 1;
 
-  align-items: start; /* prevents stretching weird behavior */
+  align-items: start;
 }
 
 /* =========================================================
-   🧱 CARD (each countdown panel)
-   👉 This is your MAIN design block
+   🧱 CARD BASE STYLE
 ========================================================= */
 
 .card {
   position: relative;
   z-index: 1;
 
-  /* 🔥 CARD HEIGHT (controls shape)
-     lower = more rectangular
-     higher = more square */
   height: 260px;
 
-  border-radius: 18px; /* rounded corners */
+  border-radius: 18px;
 
-  background: rgba(255,255,255,0.01); /* subtle glass */
-  border: 1px solid rgba(255,255,255,0.04); /* thin outline */
+  background: rgba(255,255,255,0.01);
+  border: 1px solid rgba(255,255,255,0.04);
 
-  overflow: hidden; /* keeps iframe inside clean */
+  overflow: hidden;
 
-  /* performance + smooth animations */
   transform: translateZ(0);
   will-change: transform, box-shadow;
 
@@ -128,8 +114,7 @@ body {
 }
 
 /* =========================================================
-   🖼️ IFRAME (embedded countdown content)
-   👉 Makes iframe fill the whole card
+   🖼️ IFRAME
 ========================================================= */
 
 .card iframe {
@@ -140,147 +125,36 @@ body {
 }
 
 /* =========================================================
-   ✨ HOVER EFFECT (glow + lift animation)
-   👉 Controls visual interaction when hovering cards
+   ✨ HOVER EFFECT (GLOW + LIFT)
 ========================================================= */
 
 .card:hover {
-  transform: translateY(-5px); /* lifts card up */
+  transform: translateY(-5px);
 
-  border-color: rgba(255,255,255,0.20); /* brighter edge */
+  border-color: rgba(255,255,255,0.20);
 
   box-shadow:
-    0 10px 30px rgba(0,0,0,0.55),  /* soft depth shadow */
-    0 30px 80px rgba(0,0,0,0.45), /* stronger depth */
-    0 0 40px rgba(120,200,255,0.14); /* glow effect */
+    0 10px 30px rgba(0,0,0,0.55),
+    0 30px 80px rgba(0,0,0,0.45),
+    0 0 40px rgba(120,200,255,0.14);
 }
 
 /* =========================================================
-   📦 CATEGORY VISUAL GROUPING (SAFE VERSION)
-   👉 Works with grid layouts (no broken selectors)
+   📦 CATEGORY GROUP SPACING (IMPORTANT FIX)
+   👉 This creates clean visual separation in "All"
 ========================================================= */
 
-/* 🔹 CZNs (first group) - no change needed */
+/* CZN = top group (no extra spacing) */
 .card.czn {
   margin-top: 0;
 }
 
-/* 🔹 HSR group starts visually separated */
+/* HSR group */
 .card.hsr {
-  margin-top: 25px;
-  position: relative;
+  margin-top: 35px;
 }
 
-/* 🔹 PP group starts even more separated */
+/* PP group */
 .card.pp {
-  margin-top: 25px;
-  position: relative;
-}
-
-/* =========================================================
-   🌌 SOFT DIVIDER LINE BETWEEN GROUPS
-   👉 Uses real elements (not :first-of-type)
-========================================================= */
-
-.card.hsr::before,
-.card.pp::before {
-  content: "";
-  position: absolute;
-
-  top: -14px;
-  left: 10%;
-  width: 80%;
-  height: 1px;
-
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(120,200,255,0.25),
-    rgba(255,255,255,0.15),
-    rgba(120,200,255,0.25),
-    transparent
-  );
-
-  opacity: 0.7;
-  filter: blur(0.4px);
-
-  animation: groupLineGlow 3s ease-in-out infinite;
-}
-
-/* =========================================================
-   ✨ ANIMATION (soft breathing divider)
-========================================================= */
-
-@keyframes groupLineGlow {
-  0%, 100% {
-    opacity: 0.3;
-    transform: scaleX(0.98);
-  }
-  50% {
-    opacity: 0.9;
-    transform: scaleX(1);
-  }
-}
-
-/* =========================================================
-   🌌 VISUAL GROUP SEPARATION (SAFE ADD-ON)
-========================================================= */
-
-/* spacing before HSR group */
-.card.hsr {
-  margin-top: 28px;
-  position: relative;
-}
-
-/* spacing before PP group */
-.card.pp {
-  margin-top: 28px;
-  position: relative;
-}
-
-/* glowing divider line */
-.card.hsr::before,
-.card.pp::before {
-  content: "";
-  position: absolute;
-
-  top: -14px;
-  left: 8%;
-  width: 84%;
-  height: 1px;
-
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(120,200,255,0.35),
-    rgba(255,255,255,0.18),
-    rgba(120,200,255,0.35),
-    transparent
-  );
-
-  opacity: 0.8;
-
-  animation: sepGlow 2.8s ease-in-out infinite;
-}
-
-/* animation */
-@keyframes sepGlow {
-  0%, 100% {
-    opacity: 0.35;
-    transform: scaleX(0.98);
-  }
-  50% {
-    opacity: 0.9;
-    transform: scaleX(1);
-  }
-}
-
-/* =========================================================
-   🌌 FIX: GROUP DIVIDER VISIBILITY
-   👉 Allows separator line to show outside card bounds
-========================================================= */
-
-.card.hsr,
-.card.pp {
-  overflow: visible; /* allows ::before line to be visible */
+  margin-top: 35px;
 }
