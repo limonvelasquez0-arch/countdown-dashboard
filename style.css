@@ -91,13 +91,16 @@ body.all-mode section:not(:last-of-type)::after {
   content: "";
   position: absolute;
 
-  left: 50%;
-  transform: translateX(-50%);
+  left: 0;          /* 🔥 anchor to real screen edge */
+  right: 0;         /* 🔥 forces full stretch */
 
   bottom: -20px;
 
-  width: 100vw;
   height: 1px;
+
+  width: 100vw;     /* keeps true viewport width */
+
+  margin-left: calc(-1 * (100vw - 100%) / 2); /* 🔥 fixes scroll/offset bug */
 
   background: linear-gradient(
     90deg,
