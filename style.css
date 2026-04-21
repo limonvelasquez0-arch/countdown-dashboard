@@ -34,7 +34,9 @@ body {
   z-index: 1500;
 }
 
-.sidebar.open { left: 0; }
+.sidebar.open {
+  left: 0;
+}
 
 .sidebar a {
   display: block;
@@ -63,7 +65,7 @@ section {
   transition: opacity 0.25s ease, transform 0.25s ease;
 }
 
-/* LEFT MODE */
+/* ALL MODE STACK */
 body.all-mode .dashboard {
   display: flex;
   flex-direction: column;
@@ -79,7 +81,7 @@ section h2 {
   margin-bottom: 22px;
 }
 
-/* ================= 🔥 PERFECT LINE SYSTEM ================= */
+/* ================= DIVIDER SYSTEM (CORRECT VERSION) ================= */
 
 .divider {
   width: 100vw;
@@ -90,7 +92,7 @@ section h2 {
   pointer-events: none;
 }
 
-/* 1. STATIC FADED EDGES (NEVER MOVE, NEVER CHANGE) */
+/* STATIC FADED LINE (NEVER ANIMATED) */
 .divider::before {
   content: "";
   position: absolute;
@@ -99,15 +101,16 @@ section h2 {
   background: linear-gradient(
     90deg,
     transparent 0%,
-    transparent 12%,
-    rgba(79,195,255,0.9) 12%,
-    rgba(79,195,255,0.9) 88%,
-    transparent 88%,
+    transparent 15%,
+    rgba(79,195,255,0.9) 15%,
+    rgba(192,132,252,0.9) 50%,
+    rgba(79,195,255,0.9) 85%,
+    transparent 85%,
     transparent 100%
   );
 }
 
-/* 2. MOVING CENTER HIGHLIGHT ONLY (NO COLOR CHANGE) */
+/* MOVING BRIGHT CORE ONLY */
 .divider::after {
   content: "";
   position: absolute;
@@ -116,22 +119,22 @@ section h2 {
   background: linear-gradient(
     90deg,
     transparent,
+    rgba(255,255,255,0.25),
     rgba(192,132,252,0.9),
     rgba(79,195,255,0.9),
-    rgba(192,132,252,0.9),
+    rgba(255,255,255,0.25),
     transparent
   );
 
-  background-size: 200% 100%;
-  animation: slide 10s linear infinite;
-
-  mix-blend-mode: screen;
+  width: 40%;
+  left: -40%;
+  animation: sweep 9s linear infinite;
 }
 
-/* ONLY MOVES POSITION — NOTHING ELSE */
-@keyframes slide {
-  0% { background-position: 0% 50%; }
-  100% { background-position: 200% 50%; }
+/* ONLY POSITION MOVES */
+@keyframes sweep {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(320%); }
 }
 
 /* ================= IFRAME ================= */
