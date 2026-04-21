@@ -41,7 +41,7 @@ body {
   background: rgba(20,20,30,0.95);
   backdrop-filter: blur(20px);
 
-  padding: 70px 20px 20px 20px;
+  padding: 70px 20px 20px;
   transition: left 0.3s ease;
 
   z-index: 2500;
@@ -68,7 +68,7 @@ body {
 }
 
 /* =========================================================
-   📊 DASHBOARD GRID (KEEP THIS)
+   📊 DASHBOARD GRID (UNCHANGED STRUCTURE)
 ========================================================= */
 
 .dashboard {
@@ -76,18 +76,16 @@ body {
   grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
   gap: 16px;
 
-  padding: 80px 20px 20px 20px;
+  padding: 80px 20px 20px;
 
-  align-items: start;
+  align-items: start; /* FIXES vertical misalignment */
 }
 
 /* =========================================================
-   🧱 CARD STYLE (UNCHANGED)
+   🧱 CARD STYLE
 ========================================================= */
 
 .card {
-  position: relative;
-
   height: 260px;
 
   border-radius: 18px;
@@ -98,7 +96,6 @@ body {
   overflow: hidden;
 
   transform: translateZ(0);
-  will-change: transform, box-shadow;
 
   transition:
     transform 0.35s cubic-bezier(.22,.61,.36,1),
@@ -114,7 +111,7 @@ body {
   display: block;
 }
 
-/* hover */
+/* hover glow */
 .card:hover {
   transform: translateY(-5px);
 
@@ -127,66 +124,46 @@ body {
 }
 
 /* =========================================================
-   📦 CATEGORY ALIGNMENT FIX
+   📏 SEPARATORS ONLY IN "ALL" VIEW
 ========================================================= */
 
-.card {
-  align-self: start;
+/* default: no separators */
+.card::after {
+  content: none;
 }
 
-/* ONLY spacing (no fake separators anymore) */
-.card.czn {
-  margin-top: 0;
-}
-
-.card.hsr {
-  margin-top: 0;
-}
-
-.card.pp {
-  margin-top: 0;
-}
-
-/* =========================================================
-   ✨ REAL SEPARATOR SYSTEM (THIS FIXES EVERYTHING)
-========================================================= */
-
-.sep {
-  grid-column: 1 / -1;
-  height: 22px;
-  position: relative;
-}
-
-.sep::before {
+/* active only in ALL view */
+body.all-view .card:not(:last-child)::after {
   content: "";
-  position: absolute;
+  display: block;
 
-  top: 50%;
-  left: 5%;
-  width: 90%;
+  width: 88%;
   height: 1px;
+
+  margin: 18px auto 0;
 
   background: linear-gradient(
     90deg,
     transparent,
+    rgba(255,255,255,0.25),
     rgba(120,200,255,0.35),
-    rgba(255,255,255,0.2),
-    rgba(120,200,255,0.35),
+    rgba(255,255,255,0.25),
     transparent
   );
 
-  transform: translateY(-50%);
-  animation: sepGlow 3s ease-in-out infinite;
+  opacity: 0.9;
+
+  animation: lineGlow 3s ease-in-out infinite;
 }
 
 /* animation */
-@keyframes sepGlow {
+@keyframes lineGlow {
   0%, 100% {
     opacity: 0.3;
-    transform: translateY(-50%) scaleX(0.98);
+    transform: scaleX(0.98);
   }
   50% {
-    opacity: 0.9;
-    transform: translateY(-50%) scaleX(1);
+    opacity: 1;
+    transform: scaleX(1);
   }
 }
