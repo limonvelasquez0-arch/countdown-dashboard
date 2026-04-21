@@ -155,3 +155,69 @@ body {
     0 0 40px rgba(120,200,255,0.14); /* glow effect */
 }
 
+/* =========================================================
+   📦 CATEGORY VISUAL GROUPING (SAFE VERSION)
+   👉 Works with grid layouts (no broken selectors)
+========================================================= */
+
+/* 🔹 CZNs (first group) - no change needed */
+.card.czn {
+  margin-top: 0;
+}
+
+/* 🔹 HSR group starts visually separated */
+.card.hsr {
+  margin-top: 25px;
+  position: relative;
+}
+
+/* 🔹 PP group starts even more separated */
+.card.pp {
+  margin-top: 25px;
+  position: relative;
+}
+
+/* =========================================================
+   🌌 SOFT DIVIDER LINE BETWEEN GROUPS
+   👉 Uses real elements (not :first-of-type)
+========================================================= */
+
+.card.hsr::before,
+.card.pp::before {
+  content: "";
+  position: absolute;
+
+  top: -14px;
+  left: 10%;
+  width: 80%;
+  height: 1px;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(120,200,255,0.25),
+    rgba(255,255,255,0.15),
+    rgba(120,200,255,0.25),
+    transparent
+  );
+
+  opacity: 0.7;
+  filter: blur(0.4px);
+
+  animation: groupLineGlow 3s ease-in-out infinite;
+}
+
+/* =========================================================
+   ✨ ANIMATION (soft breathing divider)
+========================================================= */
+
+@keyframes groupLineGlow {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scaleX(0.98);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scaleX(1);
+  }
+}
