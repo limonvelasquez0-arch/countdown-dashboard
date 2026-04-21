@@ -84,14 +84,15 @@ section h2 {
 /* ================= DIVIDER (FINAL STABLE FIX) ================= */
 
 .divider {
-  width: 420px;              /* EXACT match to your cards */
-  height: 40px;
-  margin: 0 0 34px 20px;     /* aligns with section margin */
+  width: 420px;              /* match your cards exactly */
+  height: 1px;
+  margin: 0 0 34px 20px;     /* aligns with your section offset */
   position: relative;
   overflow: hidden;
+  pointer-events: none;
 }
 
-/* ================= STATIC FADE ================= */
+/* static fade (does NOT animate) */
 .divider::before {
   content: "";
   position: absolute;
@@ -100,14 +101,14 @@ section h2 {
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(79,195,255,0.85) 20%,
-    rgba(192,132,252,0.95) 50%,
-    rgba(79,195,255,0.85) 80%,
+    rgba(79,195,255,0.8) 20%,
+    rgba(192,132,252,0.9) 50%,
+    rgba(79,195,255,0.8) 80%,
     transparent 100%
   );
 }
 
-/* ================= MOVING CORE ONLY ================= */
+/* moving highlight ONLY (solid light, no fade animation) */
 .divider::after {
   content: "";
   position: absolute;
@@ -117,12 +118,11 @@ section h2 {
   height: 100%;
 
   background: rgba(255,255,255,0.25);
-  box-shadow: 0 0 14px rgba(79,195,255,0.5);
+  box-shadow: 0 0 12px rgba(79,195,255,0.4);
 
-  animation: sweep 7s linear infinite;
+  animation: sweep 8s linear infinite;
 }
 
-/* ONLY POSITION ANIMATED */
 @keyframes sweep {
   0% { transform: translateX(0); }
   100% { transform: translateX(400%); }
