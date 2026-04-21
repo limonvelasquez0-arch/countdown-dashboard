@@ -147,10 +147,10 @@ body {
 .card:hover {
   transform: translateY(-5px); /* lifts card up */
 
-  border-color: rgba(255,255,255,0.18); /* brighter edge */
+  border-color: rgba(255,255,255,0.20); /* brighter edge */
 
   box-shadow:
     0 10px 30px rgba(0,0,0,0.55),  /* soft depth shadow */
     0 30px 80px rgba(0,0,0,0.45), /* stronger depth */
-    0 0 80px rgba(120,200,255,0.12); /* glow effect */
+    0 0 40px rgba(120,200,255,0.14); /* glow effect */
 }
