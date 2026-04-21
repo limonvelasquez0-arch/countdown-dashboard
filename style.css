@@ -5,8 +5,7 @@ body {
   color: white;
 }
 
-/* ================= SIDEBAR ================= */
-
+/* sidebar */
 .sidebar-toggle {
   position: fixed;
   top: 15px;
@@ -28,7 +27,7 @@ body {
   height: 100vh;
   background: rgba(20,20,30,0.95);
   backdrop-filter: blur(20px);
-  padding: 70px 20px 20px;
+  padding: 70px 20px;
   transition: left 0.3s ease;
   z-index: 1500;
 }
@@ -45,8 +44,7 @@ body {
   background: rgba(255,255,255,0.05);
 }
 
-/* ================= DEFAULT (GRID MODE) ================= */
-
+/* dashboard */
 .dashboard {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
@@ -54,40 +52,30 @@ body {
   padding: 80px 20px 20px;
 }
 
-/* ================= IFRAMES ================= */
-
-iframe {
-  width: 100%;
-  height: 225px;
-  border-radius: 14px;
-  border: none;
+/* sections */
+section {
+  position: relative;
 }
 
-/* ================= SECTION TITLES ================= */
-
+/* title */
 section h2 {
   margin: 20px 0 10px;
   font-size: 14px;
   opacity: 0.7;
 }
 
-/* =========================================================
-   ⭐ ALL VIEW FIX (FOR REAL THIS TIME)
-========================================================= */
-
-body.all-view .dashboard {
-  display: block; /* 🚨 KEY FIX: kills grid completely */
+/* iframe */
+iframe {
+  width: 100%;
+  height: 225px;
+  border-radius: 14px;
+  border: none;
+  overflow: hidden;
 }
 
-/* each section becomes a vertical block */
-body.all-view section {
-  display: block;
-  margin-bottom: 35px;
-  position: relative;
-}
+/* ================= SEPARATOR (ONLY IN ALL) ================= */
 
-/* separator line between sections */
-body.all-view section:not(:last-child)::after {
+section:not(:last-child)::after {
   content: "";
   display: block;
   margin: 25px auto 0;
@@ -104,9 +92,8 @@ body.all-view section:not(:last-child)::after {
   animation: glowLine 2.2s ease-in-out infinite;
 }
 
-/* smooth animation */
 @keyframes glowLine {
-  0%   { opacity: 0.3; transform: scaleX(0.9); }
-  50%  { opacity: 1;   transform: scaleX(1); }
+  0% { opacity: 0.3; transform: scaleX(0.9); }
+  50% { opacity: 1; transform: scaleX(1); }
   100% { opacity: 0.3; transform: scaleX(0.9); }
 }
