@@ -3,7 +3,7 @@ body {
   margin: 0;
   font-family: sans-serif;
   color: white;
-  overflow-x: hidden; /* fixes scrollbar issue */
+  overflow-x: hidden;
 }
 
 /* ================= SIDEBAR ================= */
@@ -93,23 +93,28 @@ body.all-mode .dashboard {
   display: block;
 }
 
-/* ================= 🌈 SEPARATOR (STABLE + NO SCROLL ISSUES) ================= */
+/* ================= 🌈 EDGE-TO-EDGE SEPARATOR (FIXED) ================= */
 
 body.all-mode section:not(:last-of-type)::after {
   content: "";
   display: block;
 
-  width: 100%;
   height: 1px;
-
   margin: 22px 0;
+
+  /* 🔥 TRUE EDGE ALIGNMENT FIX */
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+
+  width: 100vw;
 
   background: linear-gradient(
     90deg,
     rgba(79, 195, 255, 0),
-    rgba(79, 195, 255, 0.9),
-    rgba(192, 132, 252, 0.9),
-    rgba(79, 195, 255, 0.9),
+    rgba(79, 195, 255, 0.95),
+    rgba(192, 132, 252, 0.95),
+    rgba(79, 195, 255, 0.95),
     rgba(79, 195, 255, 0)
   );
 
@@ -120,7 +125,7 @@ body.all-mode section:not(:last-of-type)::after {
     0 0 8px rgba(79, 195, 255, 0.2),
     0 0 10px rgba(192, 132, 252, 0.15);
 
-  opacity: 1;
+  pointer-events: none;
 }
 
 /* 🌊 animation */
