@@ -56,14 +56,13 @@ body {
   padding: 80px 20px 20px;
 }
 
+/* keep cards normal size ALWAYS */
 section {
   width: 420px;
   margin-bottom: 35px;
+  position: relative;
 
   transition: opacity 0.35s ease, transform 0.35s ease;
-
-  /* IMPORTANT for separator positioning */
-  position: relative;
 }
 
 section.is-hidden {
@@ -72,6 +71,7 @@ section.is-hidden {
   pointer-events: none;
 }
 
+/* titles */
 section h2 {
   margin: 20px 0 10px;
   font-size: 14px;
@@ -106,45 +106,45 @@ body.all-mode .dashboard {
   display: block;
 }
 
-/* ================= 🔥 FIXED FULL-WIDTH SEPARATOR ================= */
+/* ================= 🌈 THIN FULL-WIDTH SEPARATOR ================= */
 
 body.all-mode section:not(:last-of-type)::after {
   content: "";
 
   position: absolute;
 
-  /* 🚨 KEY FIX: escape 420px constraint */
   left: 50%;
   transform: translateX(-50%);
 
   width: 100vw;
-  height: 3px;
 
-  margin-top: 25px;
+  /* 🔥 thinner line */
+  height: 1px;
 
-  /* 🌈 visible wave colors */
+  margin-top: 22px;
+
   background: linear-gradient(
     90deg,
-    rgba(79, 195, 255, 0.85),
-    rgba(192, 132, 252, 0.85),
-    rgba(79, 195, 255, 0.85)
+    rgba(79, 195, 255, 0.9),
+    rgba(192, 132, 252, 0.9),
+    rgba(79, 195, 255, 0.9)
   );
 
   background-size: 250% 100%;
 
-  animation: strongWave 3s linear infinite;
+  animation: strongWave 3.2s linear infinite;
 
+  /* subtle glow only */
   box-shadow:
-    0 0 10px rgba(79, 195, 255, 0.3),
-    0 0 14px rgba(192, 132, 252, 0.25);
+    0 0 6px rgba(79, 195, 255, 0.25),
+    0 0 8px rgba(192, 132, 252, 0.20);
 
   opacity: 1;
 
-  /* keeps it from overlapping content weirdly */
   pointer-events: none;
 }
 
-/* 🌊 wave motion */
+/* 🌊 wave animation */
 @keyframes strongWave {
   0% { background-position: 0% 50%; }
   100% { background-position: 250% 50%; }
