@@ -59,7 +59,7 @@ function show(mode) {
 
   sections.forEach(sec => {
 
-    // add transition OUT first
+    // start fade out
     sec.classList.add("is-hidden");
 
     setTimeout(() => {
@@ -67,32 +67,22 @@ function show(mode) {
       if (mode === "all") {
         sec.style.display = "block";
       } else {
-        sec.style.display = sec.id === mode ? "block" : "none";
+        sec.style.display = (sec.id === mode) ? "block" : "none";
       }
 
-      // fade back in
+      // fade back in ONLY if visible
       if (mode === "all" || sec.id === mode) {
-        sec.classList.remove("is-hidden");
+        requestAnimationFrame(() => {
+          sec.classList.remove("is-hidden");
+        });
       }
 
-    }, 120);
+    }, 180);
 
   });
 
   sidebar.classList.remove("open");
 }
-
-  links.forEach(link => {
-    link.addEventListener("click", (e) => {
-      e.preventDefault();
-      show(link.dataset.target);
-    });
-  });
-
-  // default
-  show("all");
-
-});
 </script>
 
 </body>
