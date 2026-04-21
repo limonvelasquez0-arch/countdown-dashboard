@@ -1,32 +1,21 @@
-:root {
-  --bg: #0f0f14;
-  --card: rgba(255,255,255,0.035);
-  --stroke: rgba(255,255,255,0.08);
-  --text: rgba(255,255,255,0.9);
-  --muted: rgba(255,255,255,0.55);
-  --radius: 18px;
-}
-
 body {
+  background: #0f0f14;
   margin: 0;
-  background: var(--bg);
   font-family: sans-serif;
-  color: var(--text);
+  color: white;
 }
 
-/* ================= SIDEBAR ================= */
-
+/* sidebar */
 .sidebar-toggle {
   position: fixed;
-  top: 18px;
-  left: 18px;
-  z-index: 3000;
-
-  background: rgba(255,255,255,0.08);
+  top: 15px;
+  left: 15px;
+  z-index: 2000;
+  background: rgba(255,255,255,0.1);
   border: none;
   color: white;
   padding: 10px 14px;
-  border-radius: 12px;
+  border-radius: 10px;
   cursor: pointer;
 }
 
@@ -34,102 +23,89 @@ body {
   position: fixed;
   top: 0;
   left: -280px;
-  width: 260px;
+  width: 240px;
   height: 100vh;
-  background: rgba(18,18,26,0.92);
-  backdrop-filter: blur(22px);
-  padding: 80px 20px;
-  transition: 0.3s ease;
-  z-index: 2000;
+  background: rgba(20,20,30,0.95);
+  backdrop-filter: blur(20px);
+  padding: 70px 20px;
+  transition: left 0.3s ease;
+  z-index: 1500;
 }
 
 .sidebar.open { left: 0; }
 
 .sidebar a {
   display: block;
-  color: var(--text);
+  color: white;
   text-decoration: none;
   padding: 12px;
   margin-top: 10px;
-  border-radius: 12px;
+  border-radius: 10px;
   background: rgba(255,255,255,0.05);
-  transition: 0.2s;
 }
 
-.sidebar a:hover {
-  transform: translateX(5px);
-  background: rgba(255,255,255,0.1);
-}
-
-/* ================= DESKTOP LAYOUT ================= */
-
+/* layout */
 .dashboard {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
-  gap: 22px;
-  padding: 100px 40px 60px;
+  grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+  gap: 16px;
+  padding: 80px 20px 20px;
 }
 
-/* ================= PANELS ================= */
-
-.panel {
-  background: var(--card);
-  border: 1px solid var(--stroke);
-  border-radius: var(--radius);
-  overflow: hidden;
-
-  transition: transform 0.35s ease, opacity 0.35s ease;
+/* sections */
+section {
+  width: 420px;
+  margin-bottom: 35px;
+  transition: opacity 0.35s ease, transform 0.35s ease;
 }
 
-.panel.show {
-  animation: cardIn 0.5s ease forwards;
-}
-
-.panel.hide {
+section.is-hidden {
   opacity: 0;
   transform: translateY(14px);
+  pointer-events: none;
 }
 
-/* smoother PC entrance feel */
-@keyframes cardIn {
-  from {
-    opacity: 0;
-    transform: translateY(18px) scale(0.98);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+/* titles */
+section h2 {
+  margin: 20px 0 10px;
+  font-size: 14px;
+  opacity: 0.7;
 }
 
-/* ================= CONTENT ================= */
-
-.panel h2 {
-  margin: 14px 16px 10px;
-  font-size: 13px;
-  color: var(--muted);
-  letter-spacing: 0.4px;
-}
-
+/* iframe */
 iframe {
   width: 100%;
-  height: 260px;
+  height: 225px;
+  border-radius: 14px;
   border: none;
-  display: block;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+iframe:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 50px rgba(0,0,0,0.4);
 }
 
 /* ================= ALL MODE ================= */
 
 body.all-mode .dashboard {
-  display: grid;
+  display: block;
 }
 
-/* FULL WIDTH MODERN SEPARATOR */
-body.all-mode .panel:not(:last-child)::after {
+/* separator */
+body.all-mode section:not(:last-of-type)::after {
   content: "";
   display: block;
+
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+
+  width: 100vw;
   height: 2px;
-  margin: 26px 0;
+
+  margin: 30px 0;
 
   background: linear-gradient(
     90deg,
@@ -139,14 +115,13 @@ body.all-mode .panel:not(:last-child)::after {
     transparent
   );
 
-  background-size: 300% 100%;
-  animation: wave 3.2s linear infinite;
+  background-size: 200% 100%;
+  animation: waveFlow 3s linear infinite;
 
-  filter: drop-shadow(0 0 12px rgba(125,211,252,0.35));
+  filter: drop-shadow(0 0 10px rgba(125, 211, 252, 0.35));
 }
 
-/* smoother wave movement */
-@keyframes wave {
+@keyframes waveFlow {
   0% { background-position: 200% 0; }
   100% { background-position: -200% 0; }
 }
