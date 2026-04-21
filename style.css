@@ -1,19 +1,76 @@
-body { 
+body {
   background: #0f0f14;
-  margin: 0; 
+  margin: 0;
   font-family: sans-serif;
-} 
+  color: white;
+}
 
-.dashboard { 
-  display: grid; 
-  grid-template-columns: repeat(auto-fill, minmax(500px, 1fr)); 
-  gap: 20px; 
-  padding: 20px; 
-} 
+/* toggle button */
+.sidebar-toggle {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  z-index: 1001;
+  background: rgba(255,255,255,0.08);
+  border: none;
+  color: white;
+  padding: 10px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+}
 
-iframe { 
+/* sidebar */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -220px;
+  width: 220px;
+  height: 100vh;
+  background: rgba(15,15,20,0.8);
+  backdrop-filter: blur(20px);
+  padding: 20px;
+  transition: 0.3s ease;
+  z-index: 1000;
+}
+
+.sidebar.open {
+  left: 0;
+}
+
+.sidebar a {
+  display: block;
+  color: white;
+  text-decoration: none;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.05);
+  transition: 0.2s;
+}
+
+.sidebar a:hover {
+  background: rgba(255,255,255,0.15);
+}
+
+/* layout */
+.dashboard {
+  padding: 80px 20px 20px 20px;
+}
+
+/* sections */
+section {
+  margin-bottom: 50px;
+}
+
+section h2 {
+  margin-bottom: 15px;
+  opacity: 0.8;
+}
+
+/* iframe */
+iframe {
   width: 100%;
   height: 250px;
   border-radius: 14px;
-  overflow: hidden;
+  border: none;
 }
