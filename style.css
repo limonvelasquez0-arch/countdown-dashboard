@@ -104,41 +104,48 @@ body.all-mode .dashboard {
   display: block;
 }
 
-/* ================= 🌈 SEPARATOR (FULL WIDTH + STRONG WAVE) ================= */
+/* ================= 🌈 FULL WIDTH SEPARATOR FIX ================= */
+
+body.all-mode section {
+  position: relative;
+}
 
 body.all-mode section:not(:last-of-type)::after {
   content: "";
+  position: relative;
+
   display: block;
 
-  position: relative;
-  left: 0;
-  width: 100vw; /* FULL SCREEN EDGE TO EDGE */
+  /* 🔥 TRUE FULL SCREEN EDGE-TO-EDGE */
+  width: 100vw;
+  left: 50%;
+  transform: translateX(-50%);
+
   height: 3px;
 
   margin: 35px 0;
 
-  /* stronger visible gradient */
+  /* 🌈 semi-transparent but visible */
   background: linear-gradient(
     90deg,
-    #4fc3ff,
-    #c084fc,
-    #4fc3ff
+    rgba(79, 195, 255, 0.75),
+    rgba(192, 132, 252, 0.75),
+    rgba(79, 195, 255, 0.75)
   );
 
   background-size: 250% 100%;
 
-  /* more noticeable movement */
   animation: strongWave 3s linear infinite;
 
-  /* brighter glow */
+  /* ✨ soft glow */
   box-shadow:
-    0 0 10px rgba(79, 195, 255, 0.55),
-    0 0 14px rgba(192, 132, 252, 0.45);
+    0 0 10px rgba(79, 195, 255, 0.25),
+    0 0 12px rgba(192, 132, 252, 0.20);
 
   opacity: 1;
 }
 
-/* smooth traveling wave effect */
+/* 🌊 smooth wave motion */
 @keyframes strongWave {
   0% {
     background-position: 0% 50%;
