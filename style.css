@@ -221,3 +221,56 @@ body {
     transform: scaleX(1);
   }
 }
+
+/* =========================================================
+   🌌 VISUAL GROUP SEPARATION (SAFE ADD-ON)
+========================================================= */
+
+/* spacing before HSR group */
+.card.hsr {
+  margin-top: 28px;
+  position: relative;
+}
+
+/* spacing before PP group */
+.card.pp {
+  margin-top: 28px;
+  position: relative;
+}
+
+/* glowing divider line */
+.card.hsr::before,
+.card.pp::before {
+  content: "";
+  position: absolute;
+
+  top: -14px;
+  left: 8%;
+  width: 84%;
+  height: 1px;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(120,200,255,0.35),
+    rgba(255,255,255,0.18),
+    rgba(120,200,255,0.35),
+    transparent
+  );
+
+  opacity: 0.8;
+
+  animation: sepGlow 2.8s ease-in-out infinite;
+}
+
+/* animation */
+@keyframes sepGlow {
+  0%, 100% {
+    opacity: 0.35;
+    transform: scaleX(0.98);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scaleX(1);
+  }
+}
