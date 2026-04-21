@@ -69,7 +69,6 @@ section.is-hidden {
   pointer-events: none;
 }
 
-/* titles */
 section h2 {
   margin: 20px 0 10px;
   font-size: 14px;
@@ -104,28 +103,30 @@ body.all-mode .dashboard {
   display: block;
 }
 
-/* ================= 🌈 FULL WIDTH SEPARATOR FIX ================= */
+/* ================= 🔥 FIXED FULL-WIDTH SEPARATOR ================= */
 
 body.all-mode section {
   position: relative;
+
+  /* IMPORTANT: removes layout offset issues */
+  width: 100%;
 }
 
 body.all-mode section:not(:last-of-type)::after {
   content: "";
-  position: relative;
 
   display: block;
 
-  /* 🔥 TRUE FULL SCREEN EDGE-TO-EDGE */
-  width: 100vw;
-  left: 50%;
-  transform: translateX(-50%);
+  /* 🔥 REAL EDGE-TO-EDGE FIX */
+  position: relative;
+  left: 0;
+  width: 100%;
 
   height: 3px;
 
   margin: 35px 0;
 
-  /* 🌈 semi-transparent but visible */
+  /* 🌈 brighter + semi transparent */
   background: linear-gradient(
     90deg,
     rgba(79, 195, 255, 0.75),
@@ -134,10 +135,8 @@ body.all-mode section:not(:last-of-type)::after {
   );
 
   background-size: 250% 100%;
-
   animation: strongWave 3s linear infinite;
 
-  /* ✨ soft glow */
   box-shadow:
     0 0 10px rgba(79, 195, 255, 0.25),
     0 0 12px rgba(192, 132, 252, 0.20);
@@ -145,7 +144,7 @@ body.all-mode section:not(:last-of-type)::after {
   opacity: 1;
 }
 
-/* 🌊 smooth wave motion */
+/* 🌊 wave animation */
 @keyframes strongWave {
   0% {
     background-position: 0% 50%;
