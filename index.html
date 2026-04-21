@@ -101,21 +101,24 @@ function toggleSidebar() {
 function showSection(category) {
   const items = document.querySelectorAll(".card");
 
+  // ⭐ ADD THIS (controls ALL vs grid mode)
+  if (category === "all") {
+    document.body.classList.add("all-view");
+  } else {
+    document.body.classList.remove("all-view");
+  }
+
   items.forEach(el => {
 
-    // If "all", show everything
     if (category === "all") {
       el.style.display = "block";
-
     } else {
-      // Otherwise only show matching category
       el.style.display = el.classList.contains(category)
         ? "block"
         : "none";
     }
   });
 
-  // Close sidebar after selection
   toggleSidebar();
 }
 
