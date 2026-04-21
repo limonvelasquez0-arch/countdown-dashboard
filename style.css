@@ -78,13 +78,14 @@ section.fade-out {
 body.all-mode .dashboard {
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* 🔥 LEFT ALIGN EVERYTHING */
+  align-items: center; /* key fix */
   gap: 40px;
 }
 
-/* make spacing consistent */
 body.all-mode section {
-  margin-left: 20px;
+  width: 420px;
+  margin: 0;
+  position: relative;
 }
 
 /* ================= 🔥 FIXED FULL-WIDTH SEPARATOR (FINAL REAL FIX) ================= */
@@ -92,15 +93,13 @@ body.all-mode section {
 body.all-mode section:not(:last-of-type)::after {
   content: "";
   position: absolute;
-
-  left: 0;
-  right: 0;
-
   bottom: -20px;
 
+  width: 100vw;
   height: 1px;
 
-  width: 100vw;
+  left: 50%;
+  transform: translateX(-50%);
 
   background: linear-gradient(
     90deg,
@@ -116,7 +115,6 @@ body.all-mode section:not(:last-of-type)::after {
 
   pointer-events: none;
 }
-
 /* wave animation */
 @keyframes wave {
   0% { background-position: 0% 50%; }
