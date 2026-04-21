@@ -167,3 +167,49 @@ body.all-view .card:not(:last-child)::after {
     transform: scaleX(1);
   }
 }
+
+/* =========================================================
+   📊 DEFAULT LAYOUT (ALL OTHER SECTIONS)
+   👉 Keep normal horizontal grid
+========================================================= */
+
+.dashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+  gap: 16px;
+  padding: 80px 20px 20px;
+  align-items: start;
+}
+
+/* =========================================================
+   📏 ALL MODE = VERTICAL LIST
+   👉 ONLY active in "all"
+========================================================= */
+
+body.all-view .dashboard {
+  display: flex;
+  flex-direction: column;
+}
+
+/* =========================================================
+   ───── SEPARATORS (ONLY IN ALL VIEW)
+========================================================= */
+
+body.all-view .card:not(:last-child)::after {
+  content: "──────";
+  display: block;
+
+  text-align: center;
+  margin: 10px 0;
+
+  color: rgba(255,255,255,0.35);
+  letter-spacing: 3px;
+
+  animation: sepPulse 2.8s ease-in-out infinite;
+}
+
+/* animation */
+@keyframes sepPulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
