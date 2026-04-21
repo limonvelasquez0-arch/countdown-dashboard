@@ -1,5 +1,9 @@
 body {
-  outline: 5px solid red !important;
+  background: #0f0f14;
+  margin: 0;
+  font-family: sans-serif;
+  color: white;
+  overflow-x: hidden;
 }
 
 /* ================= SIDEBAR ================= */
