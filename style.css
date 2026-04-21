@@ -68,32 +68,25 @@ body {
 }
 
 /* =========================================================
-   📊 DASHBOARD GRID
+   📊 DASHBOARD (FIXED: TRUE VERTICAL LIST)
+   👉 This fixes ALL alignment + separator issues
 ========================================================= */
 
 .dashboard {
-  display: grid;
+  display: flex;
+  flex-direction: column;
 
-  grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
-
-  gap: 16px;
-  row-gap: 22px;
+  gap: 18px; /* consistent spacing between ALL cards */
 
   padding: 80px 20px 20px 20px;
-
-  position: relative;
-  z-index: 1;
-
-  align-items: start;
 }
 
 /* =========================================================
-   🧱 CARD BASE STYLE
+   🧱 CARD BASE
 ========================================================= */
 
 .card {
   position: relative;
-  z-index: 1;
 
   height: 260px;
 
@@ -125,7 +118,7 @@ body {
 }
 
 /* =========================================================
-   ✨ HOVER EFFECT (GLOW + LIFT)
+   ✨ HOVER EFFECT
 ========================================================= */
 
 .card:hover {
@@ -140,21 +133,21 @@ body {
 }
 
 /* =========================================================
-   📦 CATEGORY GROUP SPACING (IMPORTANT FIX)
-   👉 This creates clean visual separation in "All"
+   📦 CATEGORY GROUP SPACING (REAL FIX)
+   👉 Works because layout is now a vertical list
 ========================================================= */
 
-/* CZN = top group (no extra spacing) */
+/* first group (czn) */
 .card.czn {
   margin-top: 0;
 }
 
-/* HSR group */
+/* second group */
 .card.hsr {
-  margin-top: 35px;
+  margin-top: 30px;
 }
 
-/* PP group */
+/* third group */
 .card.pp {
-  margin-top: 35px;
+  margin-top: 30px;
 }
