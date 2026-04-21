@@ -83,17 +83,16 @@ section h2::after {
 
 /* card wrapper (NEW) */
 .card {
-  border-radius: 14px;
+  border-radius: 18px;
   overflow: hidden;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
+  will-change: transform;
 }
 
-/* smooth subtle hover (no pixelation) */
 .card:hover {
   transform: scale(1.01);
-  box-shadow: 0 8px 18px rgba(0,0,0,0.30);
+  box-shadow: 0 10px 22px rgba(0,0,0,0.35);
 }
-
 /* iframe stays crisp */
 iframe {
   width: 100%;
