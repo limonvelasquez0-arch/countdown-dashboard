@@ -84,55 +84,49 @@ section h2 {
 /* ================= DIVIDER (FINAL STABLE FIX) ================= */
 
 .divider {
-  width: 100%;
+  width: 420px;              /* EXACT match to your cards */
   height: 40px;
+  margin: 0 0 34px 20px;     /* aligns with section margin */
   position: relative;
-  display: flex;
-  align-items: center;
+  overflow: hidden;
 }
 
-/* the actual line */
+/* ================= STATIC FADE ================= */
 .divider::before {
   content: "";
   position: absolute;
+  inset: 0;
 
-  left: -50vw;
-  right: -50vw;
-
-  height: 1px;
-
-  /* permanent faded edges */
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(79,195,255,0.0) 10%,
-    rgba(79,195,255,0.9) 25%,
-    rgba(192,132,252,0.9) 50%,
-    rgba(79,195,255,0.9) 75%,
-    rgba(79,195,255,0.0) 90%,
+    rgba(79,195,255,0.85) 20%,
+    rgba(192,132,252,0.95) 50%,
+    rgba(79,195,255,0.85) 80%,
     transparent 100%
   );
 }
 
-/* moving highlight ONLY (no fading animation) */
+/* ================= MOVING CORE ONLY ================= */
 .divider::after {
   content: "";
   position: absolute;
+  top: 0;
+  left: -30%;
+  width: 30%;
+  height: 100%;
 
-  width: 25%;
-  height: 1px;
-
-  background: rgba(255,255,255,0.35);
-  box-shadow: 0 0 12px rgba(79,195,255,0.5);
+  background: rgba(255,255,255,0.25);
+  box-shadow: 0 0 14px rgba(79,195,255,0.5);
 
   animation: sweep 7s linear infinite;
 }
 
+/* ONLY POSITION ANIMATED */
 @keyframes sweep {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(500%); }
+  0% { transform: translateX(0); }
+  100% { transform: translateX(400%); }
 }
-
 /* ================= IFRAME ================= */
 
 iframe {
