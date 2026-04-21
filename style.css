@@ -56,7 +56,7 @@ body {
   background: rgba(255,255,255,0.12);
 }
 
-/* ================= BASE GRID ================= */
+/* ================= DEFAULT GRID ================= */
 
 .dashboard {
   display: grid;
@@ -64,10 +64,9 @@ body {
   gap: 16px;
 
   padding: 80px 20px 20px;
-  align-items: start;
 }
 
-/* ================= CARD (UNCHANGED SIZE = IMPORTANT) ================= */
+/* ================= CARDS ================= */
 
 .card {
   height: 260px;
@@ -79,8 +78,8 @@ body {
   overflow: hidden;
 
   transition:
-    transform 0.35s cubic-bezier(.22,.61,.36,1),
-    box-shadow 0.35s cubic-bezier(.22,.61,.36,1),
+    transform 0.35s ease,
+    box-shadow 0.35s ease,
     border-color 0.35s ease;
 }
 
@@ -91,10 +90,9 @@ body {
   display: block;
 }
 
-/* hover */
 .card:hover {
   transform: translateY(-5px);
-  border-color: rgba(255,255,255,0.20);
+  border-color: rgba(255,255,255,0.2);
 
   box-shadow:
     0 10px 30px rgba(0,0,0,0.55),
@@ -102,32 +100,28 @@ body {
     0 0 40px rgba(120,200,255,0.14);
 }
 
-/* ================= ALL VIEW FIX ================= */
+/* ================= ALL VIEW (SIMPLE + STABLE) ================= */
 
 body.all-view .dashboard {
   grid-template-columns: 420px;
   justify-content: start;
-  gap: 22px;
+  gap: 30px;
 }
 
-/* IMPORTANT: DO NOT resize cards */
+/* IMPORTANT: DO NOT TOUCH WIDTH OR HEIGHT */
 body.all-view .card {
   width: 420px;
   height: 260px;
-
-  border-bottom: 2px solid rgba(255,255,255,0.12);
   position: relative;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
 }
 
-/* animated separator line effect */
-body.all-view .card:not(:last-child) {
-  margin-bottom: 10px;
-}
+/* ================= SEPARATOR LINE (REAL DOM RELIABLE METHOD) ================= */
 
-body.all-view .card:not(:last-child)::before {
+body.all-view .card:not(:last-child)::after {
   content: "";
   position: absolute;
-  bottom: -12px;
+  bottom: -16px;
   left: 10%;
   width: 80%;
   height: 2px;
@@ -135,14 +129,14 @@ body.all-view .card:not(:last-child)::before {
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(120,200,255,0.6),
+    rgba(120,200,255,0.7),
     transparent
   );
 
-  animation: glowLine 2.5s ease-in-out infinite;
+  animation: glowLine 2.2s ease-in-out infinite;
 }
 
 @keyframes glowLine {
-  0%,100% { opacity: 0.3; transform: scaleX(0.95); }
+  0%, 100% { opacity: 0.2; transform: scaleX(0.95); }
   50% { opacity: 1; transform: scaleX(1); }
 }
