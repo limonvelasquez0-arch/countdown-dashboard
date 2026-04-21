@@ -48,7 +48,7 @@ body {
   background: rgba(255,255,255,0.05);
 }
 
-/* ================= DASHBOARD DEFAULT (GRID MODE) ================= */
+/* ================= DASHBOARD ================= */
 
 .dashboard {
   display: grid;
@@ -74,33 +74,32 @@ section.fade-out {
   transform: translateY(8px);
 }
 
-/* ================= ALL MODE (IMPORTANT FIX) ================= */
+/* ================= ALL MODE LAYOUT ================= */
 
 body.all-mode .dashboard {
-  display: block !important;   /* 🔥 KILLS GRID COMPLETELY */
+  display: block !important;
 }
 
 body.all-mode section {
   display: block;
   width: 420px;
-  margin: 0 0 40px 20px; /* 👈 left aligned */
+  margin: 0 0 40px 20px; /* left aligned cards */
 }
-/* ================= SEPARATORS (FULL WIDTH ONLY) ================= */
+
+/* ================= 🔥 FIXED FULL-WIDTH SEPARATOR ================= */
 
 body.all-mode section:not(:last-of-type)::after {
   content: "";
   position: absolute;
 
-  left: 0;          /* 🔥 anchor to real screen edge */
-  right: 0;         /* 🔥 forces full stretch */
-
   bottom: -20px;
 
   height: 1px;
 
-  width: 100vw;     /* keeps true viewport width */
+  width: 100vw;
 
-  margin-left: calc(-1 * (100vw - 100%) / 2); /* 🔥 fixes scroll/offset bug */
+  left: 50%;
+  transform: translateX(-50vw);
 
   background: linear-gradient(
     90deg,
