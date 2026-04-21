@@ -12,14 +12,13 @@ body {
   position: fixed;
   top: 15px;
   left: 15px;
-  z-index: 99999; /* 🔥 GUARANTEES CLICKABILITY */
+  z-index: 99999;
   background: rgba(255,255,255,0.1);
   border: none;
   color: white;
   padding: 10px 14px;
   border-radius: 10px;
   cursor: pointer;
-  pointer-events: auto;
 }
 
 .sidebar {
@@ -56,7 +55,7 @@ body {
   padding: 80px 20px;
 }
 
-/* ================= SECTIONS ================= */
+/* ================= SECTION ================= */
 
 section {
   width: 420px;
@@ -64,8 +63,7 @@ section {
   transition: opacity 0.25s ease, transform 0.25s ease;
 }
 
-/* ================= ALL MODE ================= */
-
+/* LEFT MODE */
 body.all-mode .dashboard {
   display: flex;
   flex-direction: column;
@@ -76,46 +74,67 @@ body.all-mode section {
   margin-left: 20px;
 }
 
-/* spacing between title and line */
+/* spacing */
 section h2 {
   margin-bottom: 22px;
 }
 
-/* ================= DIVIDER (FIXED PROPERLY NOW) ================= */
+/* ================= 🔥 CLEAN DIVIDER (FIXED PROPERLY) ================= */
 
 .divider {
   width: 100vw;
   height: 1px;
   margin: 0 0 34px -20px;
-
+  position: relative;
   pointer-events: none;
+  overflow: hidden;
+}
 
-  /* 🔥 MUCH LONGER FADE OUT EDGES */
+/* 🌫️ STATIC EDGE FADE (NEVER ANIMATED) */
+.divider::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(79,195,255,0.05) 8%,
-    rgba(79,195,255,0.35) 20%,
-    rgba(79,195,255,0.85) 40%,
-    rgba(192,132,252,0.85) 50%,
-    rgba(79,195,255,0.85) 60%,
-    rgba(79,195,255,0.35) 80%,
-    rgba(79,195,255,0.05) 92%,
+    rgba(79,195,255,0.05) 10%,
+    rgba(79,195,255,0.9) 50%,
+    rgba(79,195,255,0.05) 90%,
     transparent 100%
   );
-
-  background-size: 300% 100%;
-  animation: wave 14s linear infinite;
-
-  box-shadow:
-    0 0 12px rgba(79,195,255,0.25),
-    0 0 18px rgba(192,132,252,0.18);
 }
 
-/* 🔥 FIX: ANIMATION WAS TOO SUBTLE BEFORE — NOW CLEARLY MOVES */
+/* ✨ MOVING GLOW (ONLY CENTER PART ANIMATES) */
+.divider::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(192,132,252,0.8),
+    rgba(79,195,255,0.8),
+    transparent
+  );
+
+  background-size: 200% 100%;
+  animation: wave 12s linear infinite;
+
+  mix-blend-mode: screen;
+  opacity: 0.9;
+
+  box-shadow:
+    0 0 10px rgba(79,195,255,0.25),
+    0 0 14px rgba(192,132,252,0.15);
+}
+
+/* 🔥 PURE POSITION ANIMATION ONLY (NO COLOR SHIFT, NO DIMMING) */
 @keyframes wave {
   0% { background-position: 0% 50%; }
-  100% { background-position: 300% 50%; }
+  100% { background-position: 200% 50%; }
 }
 
 /* ================= IFRAME ================= */
