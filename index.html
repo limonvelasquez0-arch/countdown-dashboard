@@ -6,192 +6,43 @@
 <title>Countdown Dashboard</title>
 <link rel="stylesheet" href="style.css">
 </head>
-  
-<script>
-document.addEventListener("DOMContentLoaded", () => {
 
-  const menu = document.getElementById("bg-menu");
-  const btn = document.getElementById("bg-btn");
-  const input = document.getElementById("bg-input");
-  const preview = document.getElementById("bg-preview");
-
-  const apply = document.getElementById("apply-bg");
-  const reset = document.getElementById("reset-bg");
-
-  const circles = document.querySelectorAll(".theme-circle");
-
-  /* ===== OPEN MENU ===== */
-  btn.addEventListener("click", (e) => {
-    e.preventDefault();
-    menu.classList.add("open");
-  });
-
-  /* ===== CLOSE ON OUTSIDE CLICK ===== */
-  menu.addEventListener("click", (e) => {
-    if (e.target === menu) {
-      menu.classList.remove("open");
-    }
-  });
-
-  /* ===== PREVIEW IMAGE ===== */
-  input.addEventListener("input", () => {
-    preview.style.backgroundImage = `url(${input.value})`;
-  });
-
-  /* ===== APPLY IMAGE ===== */
-  apply.addEventListener("click", () => {
-    const url = input.value;
-    if (!url) return;
-
-    document.body.style.background = `url(${url}) center/cover no-repeat fixed`;
-    localStorage.setItem("customBg", url);
-
-    menu.classList.remove("open");
-  });
-
-  /* ===== RESET ===== */
-  reset.addEventListener("click", () => {
-    document.body.style.background = "#0f0f14";
-    localStorage.removeItem("customBg");
-    localStorage.removeItem("themeColor");
-
-    menu.classList.remove("open");
-  });
-
-  /* ===== THEMES ===== */
-  circles.forEach(c => {
-    c.style.background = c.dataset.color;
-
-    c.addEventListener("click", () => {
-      const color = c.dataset.color;
-
-      document.body.style.background = color;
-
-      localStorage.setItem("themeColor", color);
-      localStorage.removeItem("customBg");
-    });
-  });
-
-  /* ===== LOAD SAVED ===== */
-  const savedBg = localStorage.getItem("customBg");
-  const savedColor = localStorage.getItem("themeColor");
-
-  if (savedBg) {
-    document.body.style.background = `url(${savedBg}) center/cover no-repeat fixed`;
-  } else if (savedColor) {
-    document.body.style.background = savedColor;
-
-    /* CLOSE BUTTON */
-document.getElementById("close-menu").addEventListener("click", () => {
-  document.getElementById("bg-menu").classList.remove("open");
-});
-
-/* THEMES WITH GRADIENT + ACCENT CHANGE */
-/* THEMES (ANIMATED GRADIENTS) */
-const themes = {
-  default: {
-    bg: "#0f0f14",
-    accent: "#6366f1",
-    animated: false
-  },
-  midnight: {
-    bg: "linear-gradient(135deg, #020617, #0f172a, #020617)",
-    accent: "#38bdf8",
-    animated: true
-  },
-  violet: {
-    bg: "linear-gradient(135deg, #1e1b4b, #312e81, #1e1b4b)",
-    accent: "#a78bfa",
-    animated: true
-  },
-  deepblue: {
-    bg: "linear-gradient(135deg, #0c4a6e, #1e3a8a, #0c4a6e)",
-    accent: "#60a5fa",
-    animated: true
-  }
-};
-
-function applyTheme(theme) {
-  document.body.style.background = theme.bg;
-
-  document.documentElement.style.setProperty("--accent", theme.accent);
-  document.documentElement.style.setProperty("--accent-soft", theme.accent + "33");
-
-
-  /* 🔥 ANIMATION CONTROL */
-  if (theme.animated) {
-    document.body.classList.add("animated-bg");
-    document.querySelector(".bg-panel").classList.add("animated-bg");
-  } else {
-    document.body.classList.remove("animated-bg");
-    document.querySelector(".bg-panel").classList.remove("animated-bg");
-  }
-
-  localStorage.setItem("themeData", JSON.stringify(theme));
-  localStorage.removeItem("customBg");
-}
-
-document.querySelectorAll(".theme-circle").forEach(c => {
-  c.addEventListener("click", () => {
-    applyTheme(themes[c.dataset.theme]);
-  });
-});
-
-/* LOAD SAVED */
-const saved = localStorage.getItem("themeData");
-if (saved) {
-  applyTheme(JSON.parse(saved));
-}
-  }
-
-});
-</script>
-  
 <body>
 
 <div class="top-buttons">
-  <a href="https://github.com/limonvelasquez0-arch/countdown-dashboard" target="_blank" class="top-btn">
-    GitHub
-  </a>
-
-  <a href="#" class="top-btn" id="bg-btn">
-    Background
-  </a>
+  <a href="https://github.com/limonvelasquez0-arch/countdown-dashboard" target="_blank" class="top-btn">GitHub</a>
+  <a href="#" class="top-btn" id="bg-btn">Background</a>
 </div>
+
+<!-- 🔥 BACKGROUND LAYER (FIXES MOSAIC) -->
+<div id="bg-layer"></div>
 
 <div class="dashboard">
 
   <iframe src="https://count.live/?date=2026-04-29T01%3A00%3A00-07%3A00&title=Heidemarie%20(CZN)&font=display&bgimg=https%3A%2F%2Fblog.prydwen.gg%2Fwp-content%2Fuploads%2F2026%2F04%2Fmaxresdefault-2.webp&units=w,d,h,m,s&showtz=1&progress=1&percent=1&start=2026-04-20T00%3A00%3A00-07%3A00&tz=America%2FTijuana"></iframe>
 
-  <iframe src="https://count.live/?date=2026-05-13T15%3A00%3A00-07%3A00&title=Evanescia%20(HSR)&font=display&bgimg=https%3A%2F%2Fi.redd.it%2Fwith-the-design-reveal-of-evanescia-and-sparxie-it-feels-v0-1cu4wje40ndg1.jpg%3Fwidth%3D1920%26format%3Dpjpg%26auto%3Dwebp%26s%3De41a3002a5357463537e9624314a0cd803a63a84&units=w,d,h,m,s&showtz=1&progress=1&percent=1&start=2026-04-20T00%3A00%3A00-07%3A00&tz=America%2FTijuana"></iframe>
+  <iframe src="https://count.live/?date=2026-05-13T15%3A00%3A00-07%3A00&title=Evanescia%20(HSR)&font=display&bgimg=https%3A%2F%2Fi.redd.it%2Fwith-the-design-reveal-of-evanescia-and-sparxie-it-feels-v0-1cu4wje40ndg1.jpg"></iframe>
 
-  <iframe src="https://count.live/?date=2026-04-23T18%3A00%3A00-07%3A00&title=Beta%20Access%20(Petit%20Planet)&font=display&bgimg=https%3A%2F%2Ffastcdn.hoyoverse.com%2Fstatic-resource-v2%2F2026%2F03%2F25%2Fcf6e120d2032ac9c62cdc31e0d7504df_3968736085113746422.png&units=w,d,h,m,s&showtz=1&progress=1&percent=1&start=2026-04-20T00%3A00%3A00-07%3A00&tz=America%2FTijuana"></iframe>
+  <iframe src="https://count.live/?date=2026-04-23T18%3A00%3A00-07%3A00&title=Beta%20Access%20(Petit%20Planet)&font=display&bgimg=https%3A%2F%2Ffastcdn.hoyoverse.com%2Fstatic-resource-v2%2F2026%2F03%2F25%2Fcf6e120d2032ac9c62cdc31e0d7504df_3968736085113746422.png"></iframe>
 
 </div>
-  
-<!-- ===== SETTINGS MODAL ===== -->
-<div class="bg-menu" id="bg-menu">
 
+<!-- ===== MENU ===== -->
+<div class="bg-menu" id="bg-menu">
   <div class="bg-panel">
 
-    <!-- CLOSE BUTTON -->
     <button class="close-btn" id="close-menu">✕</button>
 
     <h3>Background Settings</h3>
 
-    <!-- INPUT -->
     <input type="text" id="bg-input" placeholder="Paste image URL...">
-
-    <!-- PREVIEW -->
     <div class="bg-preview" id="bg-preview"></div>
 
-    <!-- ACTIONS -->
     <div class="bg-actions">
       <button id="apply-bg">Apply</button>
       <button id="reset-bg">Reset</button>
     </div>
 
-    <!-- THEMES -->
     <div class="theme-options">
       <div class="theme-circle" data-theme="default"></div>
       <div class="theme-circle" data-theme="midnight"></div>
@@ -200,8 +51,93 @@ if (saved) {
     </div>
 
   </div>
-
 </div>
-  
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  const menu = document.getElementById("bg-menu");
+  const btn = document.getElementById("bg-btn");
+  const input = document.getElementById("bg-input");
+  const preview = document.getElementById("bg-preview");
+  const apply = document.getElementById("apply-bg");
+  const reset = document.getElementById("reset-bg");
+  const closeBtn = document.getElementById("close-menu");
+  const bgLayer = document.getElementById("bg-layer");
+
+  /* ===== THEMES ===== */
+  const themes = {
+    default: { bg: "#0f0f14", accent: "#6366f1", animated: false },
+    midnight: { bg: "linear-gradient(135deg,#020617,#0f172a,#020617)", accent: "#38bdf8", animated: true },
+    violet: { bg: "linear-gradient(135deg,#1e1b4b,#312e81,#1e1b4b)", accent: "#a78bfa", animated: true },
+    deepblue: { bg: "linear-gradient(135deg,#0c4a6e,#1e3a8a,#0c4a6e)", accent: "#60a5fa", animated: true }
+  };
+
+  function applyTheme(t) {
+    bgLayer.style.background = t.bg;
+
+    document.documentElement.style.setProperty("--accent", t.accent);
+    document.documentElement.style.setProperty("--accent-soft", t.accent + "33");
+
+    /* subtle menu tint */
+    document.querySelector(".bg-panel").style.background =
+      "linear-gradient(180deg, rgba(20,20,30,0.75), rgba(20,20,30,0.85))";
+
+    if (t.animated) {
+      bgLayer.classList.add("animated-bg");
+    } else {
+      bgLayer.classList.remove("animated-bg");
+    }
+
+    localStorage.setItem("theme", JSON.stringify(t));
+    localStorage.removeItem("customBg");
+  }
+
+  /* ===== MENU ===== */
+  btn.onclick = e => { e.preventDefault(); menu.classList.add("open"); };
+  closeBtn.onclick = () => menu.classList.remove("open");
+  menu.onclick = e => { if (e.target === menu) menu.classList.remove("open"); };
+
+  /* ===== IMAGE ===== */
+  input.oninput = () => preview.style.backgroundImage = `url(${input.value})`;
+
+  apply.onclick = () => {
+    if (!input.value) return;
+
+    bgLayer.style.background = `url(${input.value}) center/cover no-repeat`;
+    bgLayer.classList.remove("animated-bg");
+
+    localStorage.setItem("customBg", input.value);
+    localStorage.removeItem("theme");
+
+    menu.classList.remove("open"); /* 🔥 FIX */
+  };
+
+  reset.onclick = () => {
+    applyTheme(themes.default);
+    localStorage.clear();
+    menu.classList.remove("open");
+  };
+
+  /* ===== THEME CLICK ===== */
+  document.querySelectorAll(".theme-circle").forEach(c => {
+    c.onclick = () => applyTheme(themes[c.dataset.theme]);
+  });
+
+  /* ===== LOAD ===== */
+  const savedTheme = localStorage.getItem("theme");
+  const savedBg = localStorage.getItem("customBg");
+
+  if (savedBg) {
+    bgLayer.style.background = `url(${savedBg}) center/cover no-repeat`;
+  } else if (savedTheme) {
+    applyTheme(JSON.parse(savedTheme));
+  } else {
+    applyTheme(themes.default);
+  }
+
+});
+</script>
+
 </body>
 </html>
