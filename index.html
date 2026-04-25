@@ -319,7 +319,12 @@ const savedBg = localStorage.getItem("customBg");
 if (savedBg) {
   document.body.style.background = `url(${savedBg}) center/cover no-repeat fixed`;
 }
-
+  
+const savedTheme = localStorage.getItem("theme");
+if (savedTheme) {
+  applyTheme(JSON.parse(savedTheme));
+}
+  
 render();
 
 });
