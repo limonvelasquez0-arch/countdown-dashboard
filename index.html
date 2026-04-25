@@ -325,14 +325,11 @@ addCount.onclick = () => {
   });
 
   save();
-  function renderWithAnimation() {
-  render();
-}
 
-  countInput.value = "";
-  countMenu.classList.remove("open");
+countInput.value = "";
+countMenu.classList.remove("open");
 
-  renderWithAnimation();
+renderWithAnimation();
 };
 
 /* BG */
@@ -377,7 +374,7 @@ if (savedTheme) {
 /* ================= CLEAN INITIAL LOAD ================= */
 
 
-}
+
 
 /* INITIAL RENDER */
 render();
