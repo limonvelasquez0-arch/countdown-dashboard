@@ -192,12 +192,13 @@ addCount.onclick = () => {
 
   items.push(url);
   save();
-  render();
 
   countInput.value = "";
   countMenu.classList.remove("open");
-};
 
+  // 👇 instead of full reset feel, we animate just the new render
+  render();
+};
 /* BG */
 bgBtn.onclick = (e) => {
   e.preventDefault();
