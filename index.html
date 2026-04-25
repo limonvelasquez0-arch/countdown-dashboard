@@ -96,13 +96,32 @@ document.addEventListener("DOMContentLoaded", () => {
     menu.classList.remove("open");
   });
 
-  const themes = {
-    default: { bg: "#0f0f14", accent: "#6366f1", animated: false },
-    midnight: { bg: "linear-gradient(135deg,#020617,#0f172a,#020617)", accent: "#38bdf8", animated: true },
-    violet: { bg: "linear-gradient(135deg,#1e1b4b,#312e81,#1e1b4b)", accent: "#a78bfa", animated: true },
-    deepblue: { bg: "linear-gradient(135deg,#0c4a6e,#1e3a8a,#0c4a6e)", accent: "#60a5fa", animated: true }
-  };
-
+ const themes = {
+  default: {
+    bg: "#0f0f14",
+    accent: "#6366f1",
+    animated: false,
+    preview: "linear-gradient(135deg, #0f0f14, #1f2937)"
+  },
+  midnight: {
+    bg: "linear-gradient(135deg, #020617, #0f172a, #020617)",
+    accent: "#38bdf8",
+    animated: true,
+    preview: "linear-gradient(135deg, #020617, #0f172a)"
+  },
+  violet: {
+    bg: "linear-gradient(135deg, #1e1b4b, #312e81, #1e1b4b)",
+    accent: "#a78bfa",
+    animated: true,
+    preview: "linear-gradient(135deg, #1e1b4b, #312e81)"
+  },
+  deepblue: {
+    bg: "linear-gradient(135deg, #0c4a6e, #1e3a8a, #0c4a6e)",
+    accent: "#60a5fa",
+    animated: true,
+    preview: "linear-gradient(135deg, #0c4a6e, #1e3a8a)"
+  }
+};
   function applyTheme(theme) {
   document.body.style.background = theme.bg;
 
