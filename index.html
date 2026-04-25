@@ -231,6 +231,67 @@ let startY = 0;
 
 let bgPosX = 50;
 let bgPosY = 50;
+
+  const savedPos = localStorage.getItem("bgPosition");
+
+if (savedPos) {
+  const pos = JSON.parse(savedPos);
+  bgPosX = pos.x;
+  bgPosY = pos.y;
+
+  document.body.style.backgroundPosition = `${bgPosX}% ${bgPosY}%`;
+}
+
+  /* ================= ADJUST BACKGROUND ================= */
+
+adjustBtn.addEventListener("click", () => {
+  adjusting = !adjusting;
+
+  document.body.classList.toggle("adjusting", adjusting);
+});
+
+/* START DRAG */
+document.addEventListener("mousedown", (e) => {
+  if (!adjusting) return;
+
+  isDragging = true;
+
+  startX = e.clientX;
+  startY = e.clientY;
+});
+
+/* DRAGGING */
+document.addEventListener("mousemove", (e) => {
+  if (!adjusting || !isDragging) return;
+
+  const dx = e.clientX - startX;
+  const dy = e.clientY - startY;
+
+  startX = e.clientX;
+  startY = e.clientY;
+
+  bgPosX += dx * 0.1;
+  bgPosY += dy * 0.1;
+
+  /* clamp so it doesn't go crazy */
+  bgPosX = Math.max(0, Math.min(100, bgPosX));
+  bgPosY = Math.max(0, Math.min(100, bgPosY));
+
+  document.body.style.backgroundPosition = `${bgPosX}% ${bgPosY}%`;
+});
+
+/* STOP DRAG */
+document.addEventListener("mouseup", () => {
+  if (!adjusting) return;
+
+  isDragging = false;
+
+  /* save position */
+  localStorage.setItem("bgPosition", JSON.stringify({
+    x: bgPosX,
+    y: bgPosY
+  }));
+});
   
 </script>
 
