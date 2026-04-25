@@ -371,9 +371,7 @@ const savedTheme = localStorage.getItem("theme");
 if (savedTheme) {
   applyTheme(JSON.parse(savedTheme));
 }
-  
-/* ================= FLIP ANIMATION FIX ================= */
-/* ================= FLIP ANIMATION FIX ================= */
+/* ================= CLEAN ANIMATION SYSTEM ================= */
 
 function getPositions() {
   const map = new Map();
@@ -386,9 +384,9 @@ function getPositions() {
 }
 
 function renderWithAnimation() {
-  const first = getPositions(); // capture BEFORE update
+  const first = getPositions(); // BEFORE DOM update
 
-  render(); // update DOM
+  render(); // update UI first
 
   requestAnimationFrame(() => {
     document.querySelectorAll(".count-card").forEach(el => {
@@ -415,7 +413,6 @@ function renderWithAnimation() {
 
 /* INITIAL LOAD */
 render();
-
 </script>
 
 </body>
