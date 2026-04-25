@@ -40,6 +40,7 @@ body.adjusting::after {
   <a href="https://github.com/limonvelasquez0-arch/countdown-dashboard" target="_blank" class="top-btn">
     GitHub
   </a>
+
   <a href="#" class="top-btn" id="bg-btn">
     Background
   </a>
@@ -77,6 +78,15 @@ body.adjusting::after {
         <button id="exit-adjust" class="top-btn">Exit Adjust</button>
       </div>
     </div>
+
+    <div class="theme-options">
+      <div class="theme-circle" data-theme="default"></div>
+      <div class="theme-circle" data-theme="midnight"></div>
+      <div class="theme-circle" data-theme="violet"></div>
+      <div class="theme-circle" data-theme="deepblue"></div>
+      <div class="theme-circle" data-theme="dusk"></div>
+      <div class="theme-circle" data-theme="emerald"></div>
+    </div>
   </div>
 </div>
 
@@ -95,21 +105,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let adjusting = false;
   let isDragging = false;
+
   let startX = 0;
   let startY = 0;
 
   let bgPosX = 50;
   let bgPosY = 50;
   let bgZoom = 100;
-  let bgRotate = 0;
 
   const zoomSlider = document.getElementById("zoom-slider");
-  const rotateSlider = document.getElementById("rotate-slider");
 
   function updateBackground() {
     document.body.style.backgroundPosition = `${bgPosX}% ${bgPosY}%`;
     document.body.style.backgroundSize = `${bgZoom}%`;
-    document.body.style.transform = `rotate(${bgRotate}deg)`;
   }
 
   adjustBtn.addEventListener("click", () => {
@@ -166,11 +174,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   zoomSlider.addEventListener("input", () => {
     bgZoom = zoomSlider.value;
-    updateBackground();
-  });
-
-  rotateSlider.addEventListener("input", () => {
-    bgRotate = rotateSlider.value;
     updateBackground();
   });
 
