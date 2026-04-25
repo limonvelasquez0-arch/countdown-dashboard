@@ -134,14 +134,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
 apply.addEventListener("click", () => {
   const url = input.value;
-  if (!url) return;
 
-  document.body.style.background = `url(${url}) center/cover no-repeat fixed`;
+  if (url) {
+    document.body.style.background = `url(${url}) center/cover no-repeat fixed`;
 
-  localStorage.setItem("customBg", url);
-  localStorage.removeItem("themeData");
+    localStorage.setItem("customBg", url);
+    localStorage.removeItem("themeData");
+  }
 
-  /* 🔥 EXACT SAME CLOSE LOGIC AS RESET */
+  // 🔥 ALWAYS CLOSE — even if empty
   menu.classList.remove("open");
 });
 
