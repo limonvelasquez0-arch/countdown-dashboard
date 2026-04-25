@@ -328,3 +328,34 @@ body.animated-bg {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
 }
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+
+  background: inherit; /* uses your theme bg */
+
+  pointer-events: none;
+
+  transition: opacity 0.3s ease;
+}
+
+/* 🔥 breathing animation ONLY on this layer */
+body.animated-bg::before {
+  animation: breathe 14s ease-in-out infinite;
+}
+
+/* slightly faster + stronger but still smooth */
+@keyframes breathe {
+  0% {
+    filter: brightness(0.92) contrast(1);
+  }
+  50% {
+    filter: brightness(1.12) contrast(1.08);
+  }
+  100% {
+    filter: brightness(0.92) contrast(1);
+  }
+}
