@@ -319,7 +319,11 @@ addCount.onclick = () => {
   const url = countInput.value.trim();
   if (!url) return;
 
-  items.push(url);
+  items.push({
+    id: crypto.randomUUID(),
+    url: url
+  });
+
   save();
 
   countInput.value = "";
