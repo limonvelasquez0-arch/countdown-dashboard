@@ -143,10 +143,15 @@ document.addEventListener("DOMContentLoaded", () => {
   localStorage.removeItem("customBg");
 }
 
-  document.querySelectorAll(".theme-circle").forEach(c => {
-    c.addEventListener("click", () => applyTheme(themes[c.dataset.theme]));
-  });
+ document.querySelectorAll(".theme-circle").forEach(c => {
+  const theme = themes[c.dataset.theme];
 
+  /* 🔥 SHOW PREVIEW */
+  c.style.background = theme.preview;
+
+  c.addEventListener("click", () => {
+    applyTheme(theme);
+  });
 });
 </script>
 
