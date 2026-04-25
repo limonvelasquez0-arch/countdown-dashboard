@@ -372,6 +372,7 @@ body.animated-bg {
   height: 28px;
 
   border-radius: 10px;
+
   border: 1px solid rgba(255,255,255,0.08);
 
   background: rgba(0,0,0,0.25);
@@ -390,6 +391,8 @@ body.animated-bg {
   transition: all 0.25s ease;
 
   backdrop-filter: blur(8px);
+
+  cursor: pointer;
 }
 
 /* show only in edit mode */
@@ -398,9 +401,20 @@ body.animated-bg {
   transform: translateY(0) scale(1);
 }
 
-/* makes it “ride” the hover motion */
+/* 👇 THIS FIXES THE "STATIC BUTTON" ISSUE */
+.count-card {
+  position: relative;
+}
+
 .count-card:hover .delete-btn {
   transform: translateY(-6px) scale(1.05);
-  box-shadow: 0 0 12px var(--accent-soft);
+  box-shadow: 0 0 14px var(--accent-soft);
   border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* 👇 THEME AWARE GLOW IMPROVEMENT */
+.bg-panel,
+.delete-btn {
+  box-shadow: 0 0 10px var(--accent-soft);
 }
