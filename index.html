@@ -67,76 +67,111 @@ document.addEventListener("DOMContentLoaded", () => {
 
 /* ================= THEME SYSTEM ================= */
 
+/* ================= THEMES ================= */
 const themes = {
   default: {
-    bg: "#0b0c10",
-    accent: "#7c7dff",
-    glowA: "#7c7dff",
-    glowB: "#5eead4",
-    glowC: "#a78bfa",
+    bg: "#0f0f14",
+    accent: "#6366f1",
     animated: false
   },
 
   midnight: {
-    bg: "#05070d",
+    bg: `
+      radial-gradient(circle at 20% 30%, #1b2a4a 0%, transparent 55%),
+      radial-gradient(circle at 80% 70%, #0b1020 0%, transparent 60%),
+      linear-gradient(180deg, #070a12, #0b0f1d)
+    `,
     accent: "#7aa2ff",
-    glowA: "#7aa2ff",
-    glowB: "#4f6fff",
-    glowC: "#2dd4bf",
     animated: true
   },
 
   violet: {
-    bg: "#07050c",
-    accent: "#c2a8ff",
-    glowA: "#c2a8ff",
-    glowB: "#ff6bd6",
-    glowC: "#7c3aed",
+    bg: `
+      radial-gradient(circle at 30% 20%, #3b2a5a 0%, transparent 60%),
+      radial-gradient(circle at 70% 80%, #1a1428 0%, transparent 65%),
+      linear-gradient(180deg, #080611, #120a1f)
+    `,
+    accent: "#b39df3",
     animated: true
   },
 
   deepblue: {
-    bg: "#04060a",
-    accent: "#6fc2ff",
-    glowA: "#6fc2ff",
-    glowB: "#3b82f6",
-    glowC: "#22c55e",
+    bg: `
+      radial-gradient(circle at 25% 25%, #1a3a6b 0%, transparent 60%),
+      radial-gradient(circle at 75% 75%, #0a1626 0%, transparent 65%),
+      linear-gradient(180deg, #050a12, #0b1a2c)
+    `,
+    accent: "#6fb6ff",
     animated: true
   },
 
   dusk: {
-    bg: "#05040a",
-    accent: "#ff9bd1",
-    glowA: "#ff9bd1",
-    glowB: "#fb7185",
-    glowC: "#a78bfa",
+    bg: `
+      radial-gradient(circle at 30% 30%, #4a2a5e 0%, transparent 60%),
+      radial-gradient(circle at 70% 70%, #1b1024 0%, transparent 65%),
+      linear-gradient(180deg, #07050c, #120a18)
+    `,
+    accent: "#c49bff",
     animated: true
   },
 
   emerald: {
-    bg: "#040807",
-    accent: "#6fffd1",
-    glowA: "#6fffd1",
-    glowB: "#34d399",
-    glowC: "#60a5fa",
+    bg: `
+      radial-gradient(circle at 20% 30%, #1f4a3a 0%, transparent 60%),
+      radial-gradient(circle at 80% 70%, #0a1f18 0%, transparent 65%),
+      linear-gradient(180deg, #050b09, #071612)
+    `,
+    accent: "#5fd6a6",
     animated: true
   }
 };
 
+/* ================= APPLY THEME (FIXED) ================= */
 function applyTheme(name) {
-  const t = themes[name];
-  if (!t) return;
 
-  document.body.style.setProperty("--base", t.bg);
-  document.body.style.setProperty("--accent", t.accent);
-  document.body.style.setProperty("--g1", t.glowA);
-  document.body.style.setProperty("--g2", t.glowB);
-  document.body.style.setProperty("--g3", t.glowC);
+  const theme = themes[name];
+  if (!theme) return;
+
+  document.body.classList.remove("animated-bg");
+
+  document.body.style.backgroundImage = theme.bg;
+  document.body.style.backgroundSize = "300% 300%";
+  document.body.style.backgroundAttachment = "fixed";
+
+  document.documentElement.style.setProperty("--accent", theme.accent);
+
+  if (theme.animated) {
+    setTimeout(() => {
+      document.body.classList.add("animated-bg");
+    }, 50);
+  }
 
   localStorage.setItem("theme", name);
+}
 
-  if (t.animated) document.body.classList.add("animated-bg");
-  else document.body.classList.remove("animated-bg");
+/* ================= THEME BUTTONS (FIXED) ================= */
+document.querySelectorAll(".theme-circle").forEach(circle => {
+
+  const name = circle.dataset.theme;
+
+  const preview = {
+    default: "#6366f1",
+    midnight: "#7aa2ff",
+    violet: "#b39df3",
+    deepblue: "#6fb6ff",
+    dusk: "#c49bfc",
+    emerald: "#5fd6a6"
+  };
+
+  circle.style.background = preview[name];
+
+  circle.onclick = () => applyTheme(name);
+});
+
+/* ================= LOAD THEME (FIXED) ================= */
+const savedTheme = localStorage.getItem("theme");
+if (savedTheme && themes[savedTheme]) {
+  applyTheme(savedTheme);
 }
 
 /* ================= DOM ================= */
