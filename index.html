@@ -117,8 +117,6 @@ function applyTheme(theme) {
   document.documentElement.style.setProperty("--accent", theme.accent);
   document.documentElement.style.setProperty("--accent-soft", theme.accent + "33");
 
-  /* 🔥 APPLY TO MENU TOO */
-  document.querySelector(".bg-panel").style.background = theme.bg;
 
   /* 🔥 ANIMATION CONTROL */
   if (theme.animated) {
