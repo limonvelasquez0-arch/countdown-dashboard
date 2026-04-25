@@ -326,11 +326,15 @@ addCount.onclick = () => {
 
   save();
 
-countInput.value = "";
-countMenu.classList.remove("open");
+  countInput.value = "";
+  countMenu.classList.remove("open");
 
-renderWithAnimation();
+  renderWithAnimation();
 };
+
+function renderWithAnimation() {
+  render();
+}
 
 /* BG */
 bgBtn.onclick = (e) => {
@@ -352,7 +356,6 @@ applyBg.onclick = () => {
     localStorage.setItem("customBg", url);
   }
 
-  // 🔥 ALWAYS close menu (even if empty)
   bgMenu.classList.remove("open");
 };
 
@@ -366,7 +369,7 @@ const savedBg = localStorage.getItem("customBg");
 if (savedBg) {
   document.body.style.background = `url(${savedBg}) center/cover no-repeat fixed`;
 }
-  
+
 const savedTheme = localStorage.getItem("theme");
 if (savedTheme) {
   applyTheme(JSON.parse(savedTheme));
