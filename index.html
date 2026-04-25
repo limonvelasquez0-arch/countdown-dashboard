@@ -87,48 +87,62 @@ document.getElementById("close-menu").addEventListener("click", () => {
 });
 
 /* THEMES WITH GRADIENT + ACCENT CHANGE */
+/* THEMES (ANIMATED GRADIENTS) */
 const themes = {
   default: {
     bg: "#0f0f14",
-    accent: "#6366f1"
+    accent: "#6366f1",
+    animated: false
   },
   midnight: {
-    bg: "linear-gradient(135deg, #020617, #0f172a)",
-    accent: "#38bdf8"
+    bg: "linear-gradient(135deg, #020617, #0f172a, #020617)",
+    accent: "#38bdf8",
+    animated: true
   },
   violet: {
-    bg: "linear-gradient(135deg, #1e1b4b, #312e81)",
-    accent: "#a78bfa"
+    bg: "linear-gradient(135deg, #1e1b4b, #312e81, #1e1b4b)",
+    accent: "#a78bfa",
+    animated: true
   },
   deepblue: {
-    bg: "linear-gradient(135deg, #0c4a6e, #1e3a8a)",
-    accent: "#60a5fa"
+    bg: "linear-gradient(135deg, #0c4a6e, #1e3a8a, #0c4a6e)",
+    accent: "#60a5fa",
+    animated: true
   }
 };
 
+function applyTheme(theme) {
+  document.body.style.background = theme.bg;
+
+  document.documentElement.style.setProperty("--accent", theme.accent);
+  document.documentElement.style.setProperty("--accent-soft", theme.accent + "33");
+
+  /* 🔥 APPLY TO MENU TOO */
+  document.querySelector(".bg-panel").style.background = theme.bg;
+
+  /* 🔥 ANIMATION CONTROL */
+  if (theme.animated) {
+    document.body.classList.add("animated-bg");
+    document.querySelector(".bg-panel").classList.add("animated-bg");
+  } else {
+    document.body.classList.remove("animated-bg");
+    document.querySelector(".bg-panel").classList.remove("animated-bg");
+  }
+
+  localStorage.setItem("themeData", JSON.stringify(theme));
+  localStorage.removeItem("customBg");
+}
+
 document.querySelectorAll(".theme-circle").forEach(c => {
   c.addEventListener("click", () => {
-    const t = themes[c.dataset.theme];
-
-    document.body.style.background = t.bg;
-
-    document.documentElement.style.setProperty("--accent", t.accent);
-    document.documentElement.style.setProperty("--accent-soft", t.accent + "33");
-
-    localStorage.setItem("themeBg", t.bg);
-    localStorage.setItem("themeAccent", t.accent);
-    localStorage.removeItem("customBg");
+    applyTheme(themes[c.dataset.theme]);
   });
 });
 
-/* LOAD THEME */
-const savedBg = localStorage.getItem("themeBg");
-const savedAccent = localStorage.getItem("themeAccent");
-
-if (savedBg) document.body.style.background = savedBg;
-if (savedAccent) {
-  document.documentElement.style.setProperty("--accent", savedAccent);
-  document.documentElement.style.setProperty("--accent-soft", savedAccent + "33");
+/* LOAD SAVED */
+const saved = localStorage.getItem("themeData");
+if (saved) {
+  applyTheme(JSON.parse(saved));
 }
   }
 
