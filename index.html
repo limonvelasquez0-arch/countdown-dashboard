@@ -46,6 +46,8 @@
       <div class="theme-circle" data-theme="midnight" data-name="Midnight"></div>
       <div class="theme-circle" data-theme="violet" data-name="Violet Drift"></div>
       <div class="theme-circle" data-theme="deepblue" data-name="Deep Ocean"></div>
+      <div class="theme-circle" data-theme="dusk" data-name="Dusk Glow"></div>
+      <div class="theme-circle" data-theme="emerald" data-name="Emerald Flow"></div>
     </div>
   </div>
 </div>
@@ -62,32 +64,49 @@ document.addEventListener("DOMContentLoaded", () => {
   const closeBtn = document.getElementById("close-menu");
 
   const themes = {
-    default: {
-      bg: "#0f0f14",
-      accent: "#6366f1",
-      animated: false,
-      preview: "linear-gradient(135deg, #0f0f14, #1f2937)"
-    },
-    midnight: {
-      bg: "linear-gradient(135deg, #020617, #0f172a, #020617)",
-      accent: "#38bdf8",
-      animated: true,
-      preview: "linear-gradient(135deg, #020617, #0f172a)"
-    },
-    violet: {
-      bg: "linear-gradient(135deg, #1e1b4b, #312e81, #1e1b4b)",
-      accent: "#a78bfa",
-      animated: true,
-      preview: "linear-gradient(135deg, #1e1b4b, #312e81)"
-    },
-    deepblue: {
-      bg: "linear-gradient(135deg, #0c4a6e, #1e3a8a, #0c4a6e)",
-      accent: "#60a5fa",
-      animated: true,
-      preview: "linear-gradient(135deg, #0c4a6e, #1e3a8a)"
-    }
-  };
+  default: {
+    bg: "#0f0f14",
+    accent: "#6366f1",
+    animated: false,
+    preview: "linear-gradient(135deg, #0f0f14, #1f2937)"
+  },
 
+  midnight: {
+    bg: "linear-gradient(135deg, #020617, #0f172a, #1e293b, #020617)",
+    accent: "#38bdf8",
+    animated: true,
+    preview: "linear-gradient(135deg, #020617, #1e293b)"
+  },
+
+  violet: {
+    bg: "linear-gradient(135deg, #140f3a, #312e81, #4c1d95, #140f3a)",
+    accent: "#a78bfa",
+    animated: true,
+    preview: "linear-gradient(135deg, #1e1b4b, #4c1d95)"
+  },
+
+  deepblue: {
+    bg: "linear-gradient(135deg, #082f49, #1e3a8a, #2563eb, #082f49)",
+    accent: "#60a5fa",
+    animated: true,
+    preview: "linear-gradient(135deg, #0c4a6e, #2563eb)"
+  },
+
+  dusk: {
+    bg: "linear-gradient(135deg, #1f0f2e, #4c1d95, #9333ea, #1f0f2e)",
+    accent: "#c084fc",
+    animated: true,
+    preview: "linear-gradient(135deg, #4c1d95, #9333ea)"
+  },
+
+  emerald: {
+    bg: "linear-gradient(135deg, #022c22, #065f46, #10b981, #022c22)",
+    accent: "#34d399",
+    animated: true,
+    preview: "linear-gradient(135deg, #065f46, #10b981)"
+  }
+};
+  
   function applyTheme(theme) {
     document.body.style.background = theme.bg;
     document.body.style.backgroundSize = "200% 200%";
