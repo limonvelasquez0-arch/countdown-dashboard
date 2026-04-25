@@ -2,33 +2,18 @@ body {
   margin: 0;
   font-family: sans-serif;
   overflow-x: hidden;
-}
 
-/* 🔥 BACKGROUND LAYER (KEY FIX) */
-#bg-layer {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
+  background-color: #0f0f14;
 
-  background: #0f0f14;
-  background-repeat: no-repeat;
+  /* 🔥 FIX MOSAIC ISSUE */
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
-/* animation now applies here */
-#bg-layer.animated-bg {
-  background-size: 300% 300%;
-  animation: gradientMove 25s ease infinite;
-}
+/* ===== DASHBOARD ===== */
 
-@keyframes gradientMove {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-/* DASHBOARD */
 .dashboard {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(420px, 420px));
@@ -36,6 +21,8 @@ body {
   gap: 20px;
   padding: 80px 20px;
 }
+
+/* ===== PANELS ===== */
 
 iframe {
   width: 420px;
@@ -45,53 +32,158 @@ iframe {
   display: block;
 
   box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-  transition: 0.25s;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 iframe:hover {
   transform: translateY(-6px) scale(1.02);
+
+  box-shadow:
+    0 14px 35px rgba(0,0,0,0.4),
+    0 0 20px rgba(125, 211, 252, 0.2),
+    0 0 30px rgba(167, 139, 250, 0.15);
 }
 
-/* TOP BAR */
+/* ===== TOP BAR ===== */
+
 .top-buttons {
   position: fixed;
   top: 15px;
   right: 15px;
   display: flex;
   gap: 10px;
+  z-index: 2000;
 }
 
 .top-btn {
+  background: rgba(30, 64, 175, 0.25);
+  backdrop-filter: blur(10px);
+  color: #c7d2fe;
+  text-decoration: none;
   padding: 10px 16px;
   border-radius: 10px;
-  color: #c7d2fe;
-  background: rgba(30,64,175,0.25);
-  border: 1px solid rgba(99,102,241,0.3);
-  transition: 0.25s;
+  font-size: 14px;
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  transition: 0.25s ease;
 }
 
 .top-btn:hover {
-  box-shadow: 0 0 10px var(--accent);
+  background: rgba(59, 130, 246, 0.35);
+  border-color: rgba(147, 197, 253, 0.8);
+  box-shadow:
+    0 0 10px rgba(59, 130, 246, 0.4),
+    0 0 20px rgba(99, 102, 241, 0.25);
 }
 
-/* MENU */
+/* ===== MENU ===== */
+
+:root {
+  --accent: #6366f1;
+  --accent-soft: rgba(99,102,241,0.25);
+}
+
 .bg-menu {
   position: fixed;
   inset: 0;
+  background: rgba(0,0,0,0.65);
+  backdrop-filter: blur(8px);
   display: none;
-  justify-content: center;
   align-items: center;
-  background: rgba(0,0,0,0.6);
+  justify-content: center;
+  z-index: 3000;
 }
 
-.bg-menu.open { display: flex; }
+.bg-menu.open {
+  display: flex;
+}
 
 .bg-panel {
-  padding: 20px;
-  border-radius: 16px;
-  width: 320px;
+  background: rgba(20,20,30,0.7);
   backdrop-filter: blur(18px);
+  color: #e5e7eb;
+
+  padding: 22px;
+  border-radius: 16px;
+
+  width: 320px;
+  max-width: 90vw;
+
+  border: 1px solid rgba(255,255,255,0.06);
+
+  box-shadow:
+    0 8px 25px rgba(0,0,0,0.4),
+    0 0 20px var(--accent-soft);
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  color: #aaa;
+  cursor: pointer;
+}
+
+.bg-panel input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.04);
   color: white;
 }
 
-/* buttons, preview, etc unchanged */
+.bg-preview {
+  width: 100%;
+  height: 130px;
+  margin-top: 12px;
+  border-radius: 12px;
+  background-size: cover;
+  background-position: center;
+}
+
+.bg-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.bg-actions button {
+  flex: 1;
+  padding: 10px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.05);
+  color: #cbd5f5;
+  border: 1px solid rgba(255,255,255,0.08);
+  cursor: pointer;
+}
+
+.theme-options {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.theme-circle {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* ===== FIXED ANIMATED BACKGROUND ===== */
+
+body.animated-bg {
+  background-size: 300% 300%;
+  background-repeat: no-repeat;
+  animation: gradientMove 22s ease infinite;
+}
+
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
