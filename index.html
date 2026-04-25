@@ -64,11 +64,6 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("SCRIPT LOADED");
-
-document.getElementById("bg-btn")?.addEventListener("click", () => {
-  console.log("BG CLICKED");
-});
 
 /* ================= DOM ================= */
 const dashboard = document.getElementById("dashboard");
@@ -204,47 +199,54 @@ function render() {
 
  items.forEach((item) => {
 
-  newSet.add(item.id);
+    newSet.add(String(index));
 
-  let card = existingCards.get(item.id);
-
-  if (card) {
-    const iframe = card.querySelector("iframe");
-    if (iframe && iframe.src !== item.url) {
-      iframe.src = item.url;
-    }
-    return;
+   let card = existingCards.get(item.id);
+   
+if (card) {
+  const iframe = card.querySelector("iframe");
+  if (iframe && iframe.src !== url) {
+    iframe.src = url; // force refresh if needed
   }
+  return;
+}
 
-  card = document.createElement("div");
-  card.className = "count-card enter";
-  card.dataset.id = item.id;
-  card.draggable = true;
+    card = document.createElement("div");
+    card.className = "count-card enter";
+    card.dataset.id = item.id;
+    card.draggable = true;
 
-  const iframe = document.createElement("iframe");
-  iframe.src = item.url;
+    const iframe = document.createElement("iframe");
+    iframe.src = url;
 
-  const del = document.createElement("button");
-  del.className = "delete-btn";
-  del.innerText = "✕";
+    const del = document.createElement("button");
+    del.className = "delete-btn";
+    del.innerText = "✕";
 
-  del.onclick = () => {
-  items = items.filter(i => i.id !== item.id);
-  save();
-  render();
-};
+    del.onclick = () => {
+      card.classList.add("exit");
 
-  card.appendChild(iframe);
-  card.appendChild(del);
-  dashboard.appendChild(card);
+      setTimeout(() => {
+        items = items.filter(i => i.id !== item.id);
+        save();
+        render();
+      }, 250);
+    };
 
-  requestAnimationFrame(() => {
-    card.classList.remove("enter");
+    card.addEventListener("dragstart", () => card.classList.add("dragging"));
+    card.addEventListener("dragend", () => card.classList.remove("dragging"));
+
+    card.appendChild(iframe);
+    card.appendChild(del);
+    dashboard.appendChild(card);
+
+    requestAnimationFrame(() => {
+      card.classList.remove("enter");
+    });
   });
-});
 
   document.querySelectorAll(".count-card").forEach((card) => {
-    if (!newSet.has(card.dataset.id)) {
+    if (!newSet.has(card.dataset.index)) {
       card.classList.add("exit");
       setTimeout(() => card.remove(), 250);
     }
@@ -290,7 +292,7 @@ dashboard.addEventListener("dragover", (e) => {
 function getAfterElement(container, y) {
   const elements = [...container.querySelectorAll(".count-card:not(.dragging)")];
 
-  const result = elements.reduce((closest, child) => {
+  return elements.reduce((closest, child) => {
     const box = child.getBoundingClientRect();
     const offset = y - box.top - box.height / 2;
 
@@ -298,9 +300,7 @@ function getAfterElement(container, y) {
       return { offset, element: child };
     }
     return closest;
-  }, { offset: Number.NEGATIVE_INFINITY, element: null });
-
-  return result.element;
+  }, { offset: Number.NEGATIVE_INFINITY }).element;
 }
 
 /* EDIT MODE */
@@ -311,8 +311,6 @@ editBtn.onclick = (e) => {
 };
 
 /* ADD */
-/* ================= ADD ================= */
-/* ================= ADD ================= */
 addBtn.onclick = (e) => {
   e.preventDefault();
   countMenu.classList.add("open");
@@ -324,21 +322,16 @@ addCount.onclick = () => {
   const url = countInput.value.trim();
   if (!url) return;
 
-  items.push({
-    id: crypto.randomUUID(),
-    url
-  });
-
+  items.push(url);
   save();
 
   countInput.value = "";
   countMenu.classList.remove("open");
 
-  render(); // ✅ fixed (no undefined function)
+  render();
 };
 
-
-/* ================= BG ================= */
+/* BG */
 bgBtn.onclick = (e) => {
   e.preventDefault();
   bgMenu.classList.add("open");
@@ -358,6 +351,7 @@ applyBg.onclick = () => {
     localStorage.setItem("customBg", url);
   }
 
+  // 🔥 ALWAYS close menu (even if empty)
   bgMenu.classList.remove("open");
 };
 
@@ -366,24 +360,20 @@ resetBg.onclick = () => {
   localStorage.removeItem("customBg");
 };
 
-
-/* ================= LOAD ================= */
+/* LOAD BG */
 const savedBg = localStorage.getItem("customBg");
 if (savedBg) {
   document.body.style.background = `url(${savedBg}) center/cover no-repeat fixed`;
 }
-
+  
 const savedTheme = localStorage.getItem("theme");
 if (savedTheme) {
   applyTheme(JSON.parse(savedTheme));
 }
-/* ================= CLEAN INITIAL LOAD ================= */
-
-
-
-
-/* INITIAL RENDER */
+  
 render();
+
+});
 </script>
 
 </body>
