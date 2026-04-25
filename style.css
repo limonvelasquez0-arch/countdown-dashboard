@@ -5,10 +5,10 @@ body {
 
   background-color: #0f0f14;
 
-  /* 🔥 FIX MOSAIC ISSUE */
-  background-size: 100% 100%; 
-  background-repeat: no-repeat;
+  /* 🔥 REAL FIX (no tiling, full screen always) */
+  background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
   background-attachment: fixed;
 }
 
@@ -82,20 +82,20 @@ iframe:hover {
   transform: translateY(-2px);
 }
 
-/* ================= THEME VARIABLES ================= */
+/* ================= THEME VARS ================= */
 
 :root {
   --accent: #6366f1;
-  --accent-soft: rgba(99,102,241,0.18); /* softer */
+  --accent-soft: rgba(99,102,241,0.18);
 }
 
-/* ================= MENU OVERLAY ================= */
+/* ================= MENU ================= */
 
 .bg-menu {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.65);
-  backdrop-filter: blur(8px);
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(6px);
 
   display: flex;
   align-items: center;
@@ -114,13 +114,12 @@ iframe:hover {
   pointer-events: all;
 }
 
-/* ================= PANEL ================= */
-
+/* PANEL (SMOOTH FIX) */
 .bg-panel {
   position: relative;
 
-  background: rgba(20, 20, 30, 0.75);
-  backdrop-filter: blur(20px);
+  background: rgba(20, 20, 30, 0.72);
+  backdrop-filter: blur(18px);
 
   color: #e5e7eb;
 
@@ -134,27 +133,32 @@ iframe:hover {
 
   box-shadow:
     0 8px 25px rgba(0,0,0,0.4),
-    0 0 12px var(--accent-soft);
+    0 0 10px var(--accent-soft);
 
-  transform: scale(0.95);
+  transform: translateY(10px) scale(0.96);
+  opacity: 0;
+
   transition: all 0.25s ease;
 }
 
 .bg-menu.open .bg-panel {
-  transform: scale(1);
+  transform: translateY(0) scale(1);
+  opacity: 1;
 }
 
 /* ================= CLOSE BUTTON (FIXED) ================= */
 
 .close-btn {
   position: absolute;
-  top: 12px;
-  left: 12px; /* 🔥 moved to left */
+  top: 10px;
+  right: 10px; /* 🔥 RIGHT SIDE */
 
-  width: 28px;
-  height: 28px;
+  width: 22px;
+  height: 22px;
 
-  border-radius: 8px;
+  font-size: 12px;
+
+  border-radius: 6px;
   border: 1px solid rgba(255,255,255,0.08);
 
   background: rgba(255,255,255,0.05);
@@ -166,14 +170,12 @@ iframe:hover {
 
   cursor: pointer;
 
-  transition: 0.25s ease;
+  transition: 0.2s ease;
 }
 
 .close-btn:hover {
   background: rgba(255,255,255,0.1);
   color: white;
-
-  box-shadow: 0 0 8px var(--accent-soft);
 }
 
 /* ================= INPUT ================= */
@@ -260,41 +262,10 @@ iframe:hover {
 
 .theme-circle:hover {
   transform: scale(1.1);
-  box-shadow: 0 0 10px var(--accent-soft);
+  box-shadow: 0 0 8px var(--accent-soft);
 }
 
-/* 🔥 BETTER THEMES (MORE VARIETY, DARKER) */
-
-.theme-circle[data-theme="default"] {
-  background: #0f0f14;
-}
-
-.theme-circle[data-theme="midnight"] {
-  background: linear-gradient(135deg, #020617, #0f172a);
-}
-
-.theme-circle[data-theme="violet"] {
-  background: linear-gradient(135deg, #1e1b4b, #312e81);
-}
-
-.theme-circle[data-theme="deepblue"] {
-  background: linear-gradient(135deg, #0c4a6e, #1e3a8a);
-}
-
-/* NEW ONES */
-.theme-circle[data-theme="charcoal"] {
-  background: linear-gradient(135deg, #111111, #1f1f1f);
-}
-
-.theme-circle[data-theme="forest"] {
-  background: linear-gradient(135deg, #022c22, #064e3b);
-}
-
-.theme-circle[data-theme="sunset"] {
-  background: linear-gradient(135deg, #3b0764, #7c2d12);
-}
-
-/* ================= BACKGROUND ANIMATION ================= */
+/* ================= BACKGROUND ANIMATION FIX ================= */
 
 body.animated-bg {
   background-size: 200% 200%;
