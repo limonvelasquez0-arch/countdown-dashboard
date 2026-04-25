@@ -91,53 +91,46 @@ const themes = {
   default: {
     bg: "#0f0f14",
     accent: "#6366f1",
-    preview: "linear-gradient(135deg, #0f0f14, #1f2937)"
+    animated: false
   },
   midnight: {
-    bg: "#010409",
+    bg: "radial-gradient(circle at 50% 50%, #1e293b, #020617)",
     accent: "#38bdf8",
-    preview: "linear-gradient(135deg, #020617, #1e293b)"
+    animated: true
   },
   violet: {
-    bg: "#0a061a",
+    bg: "radial-gradient(circle at 50% 50%, #4c1d95, #0a061a)",
     accent: "#a78bfa",
-    preview: "linear-gradient(135deg, #1e1b4b, #4c1d95)"
+    animated: true
   },
   deepblue: {
-    bg: "#010c18",
+    bg: "radial-gradient(circle at 50% 50%, #1e40af, #010c18)",
     accent: "#60a5fa",
-    preview: "linear-gradient(135deg, #0c4a6e, #1e40af)"
+    animated: true
   },
   dusk: {
-    bg: "#0a0414",
+    bg: "radial-gradient(circle at 50% 50%, #6b21a8, #0a0414)",
     accent: "#c084fc",
-    preview: "linear-gradient(135deg, #2e1065, #6b21a8)"
+    animated: true
   },
   emerald: {
-    bg: "#010f0c",
+    bg: "radial-gradient(circle at 50% 50%, #065f46, #010f0c)",
     accent: "#34d399",
-    preview: "linear-gradient(135deg, #064e3b, #065f46)"
+    animated: true
   }
 };
 
 function applyTheme(theme) {
   document.body.style.background = theme.bg;
-  document.body.style.backgroundSize = "200% 200%";
-  document.body.style.backgroundRepeat = "no-repeat";
-  document.body.style.backgroundAttachment = "fixed";
-
   document.documentElement.style.setProperty("--accent", theme.accent);
-  document.documentElement.style.setProperty("--accent-soft", theme.accent + "33");
 
-  // 🔥 restore animation behavior
   if (theme.animated) {
     document.body.classList.add("animated-bg");
   } else {
     document.body.classList.remove("animated-bg");
   }
 
-  localStorage.setItem("themeData", JSON.stringify(theme));
-  localStorage.removeItem("customBg");
+  localStorage.setItem("theme", JSON.stringify(theme));
 }
 
 /* ================= DEFAULT DATA ================= */
