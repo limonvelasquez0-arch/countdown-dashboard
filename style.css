@@ -88,3 +88,87 @@ iframe:hover {
 
   transform: translateY(-2px);
 }
+
+/* ===== MENU OVERLAY ===== */
+.bg-menu {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(6px);
+
+  display: none;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 3000;
+}
+
+.bg-menu.open {
+  display: flex;
+}
+
+/* ===== PANEL ===== */
+.bg-panel {
+  background: rgba(20,20,30,0.95);
+  padding: 20px;
+  border-radius: 14px;
+  width: 300px;
+}
+
+/* ===== INPUT ===== */
+.bg-panel input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+
+  border-radius: 8px;
+  border: none;
+  outline: none;
+}
+
+/* ===== PREVIEW ===== */
+.bg-preview {
+  width: 100%;
+  height: 120px;
+  margin-top: 12px;
+  border-radius: 10px;
+
+  background-size: cover;
+  background-position: center;
+  background-color: #222;
+}
+
+/* ===== BUTTONS ===== */
+.bg-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.bg-actions button {
+  flex: 1;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+/* ===== THEMES ===== */
+.theme-options {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.theme-circle {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  cursor: pointer;
+
+  border: 2px solid rgba(255,255,255,0.2);
+}
+
+.theme-circle:hover {
+  transform: scale(1.1);
+}
