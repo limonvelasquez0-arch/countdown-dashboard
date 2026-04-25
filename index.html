@@ -29,8 +29,8 @@
 
 </div>
 
+<!-- SETTINGS MENU -->
 <div class="bg-menu" id="bg-menu">
-
   <div class="bg-panel">
 
     <button class="close-btn" id="close-menu">✕</button>
@@ -54,7 +54,6 @@
     </div>
 
   </div>
-
 </div>
 
 <script>
@@ -64,79 +63,103 @@ document.addEventListener("DOMContentLoaded", () => {
   const btn = document.getElementById("bg-btn");
   const input = document.getElementById("bg-input");
   const preview = document.getElementById("bg-preview");
+
   const apply = document.getElementById("apply-bg");
   const reset = document.getElementById("reset-bg");
+
   const closeBtn = document.getElementById("close-menu");
 
+  /* ===== THEMES ===== */
   const themes = {
-    default: { bg: "#0f0f14", accent: "#6366f1", animated: false },
-    midnight: { bg: "linear-gradient(135deg,#020617,#0f172a,#020617)", accent: "#38bdf8", animated: true },
-    violet: { bg: "linear-gradient(135deg,#1e1b4b,#312e81,#1e1b4b)", accent: "#a78bfa", animated: true },
-    deepblue: { bg: "linear-gradient(135deg,#0c4a6e,#1e3a8a,#0c4a6e)", accent: "#60a5fa", animated: true }
+    default: {
+      bg: "#0f0f14",
+      accent: "#6366f1",
+      animated: false
+    },
+    midnight: {
+      bg: "linear-gradient(135deg,#020617,#0f172a,#020617)",
+      accent: "#38bdf8",
+      animated: true
+    },
+    violet: {
+      bg: "linear-gradient(135deg,#1e1b4b,#312e81,#1e1b4b)",
+      accent: "#a78bfa",
+      animated: true
+    },
+    deepblue: {
+      bg: "linear-gradient(135deg,#0c4a6e,#1e3a8a,#0c4a6e)",
+      accent: "#60a5fa",
+      animated: true
+    }
   };
 
-  function applyTheme(t) {
-    document.body.style.background = t.bg;
+  function applyTheme(theme) {
+    document.body.style.background = theme.bg;
+    document.documentElement.style.setProperty("--accent", theme.accent);
+    document.documentElement.style.setProperty("--accent-soft", theme.accent + "33");
 
-    document.documentElement.style.setProperty("--accent", t.accent);
-    document.documentElement.style.setProperty("--accent-soft", t.accent + "33");
-
-    /* 🔥 subtle but visible menu tint */
-    document.querySelector(".bg-panel").style.background =
-      `linear-gradient(180deg, rgba(20,20,30,0.75), ${t.accent}22)`;
-
-    if (t.animated) {
+    if (theme.animated) {
       document.body.classList.add("animated-bg");
     } else {
       document.body.classList.remove("animated-bg");
     }
 
-    localStorage.setItem("themeData", JSON.stringify(t));
+    localStorage.setItem("themeData", JSON.stringify(theme));
     localStorage.removeItem("customBg");
   }
 
-  btn.onclick = e => { e.preventDefault(); menu.classList.add("open"); };
+  /* OPEN */
+  btn.onclick = (e) => {
+    e.preventDefault();
+    menu.classList.add("open");
+  };
+
+  /* CLOSE */
   closeBtn.onclick = () => menu.classList.remove("open");
 
-  menu.onclick = e => {
+  menu.onclick = (e) => {
     if (e.target === menu) menu.classList.remove("open");
   };
 
+  /* PREVIEW */
   input.oninput = () => {
     preview.style.backgroundImage = `url(${input.value})`;
   };
 
+  /* APPLY IMAGE (FIXED: closes menu) */
   apply.onclick = () => {
-    if (!input.value) return;
+    const url = input.value;
+    if (!url) return;
 
-    document.body.style.background = `url(${input.value}) center/cover no-repeat fixed`;
+    document.body.style.background = `url(${url}) center / cover no-repeat fixed`;
     document.body.classList.remove("animated-bg");
 
-    localStorage.setItem("customBg", input.value);
+    localStorage.setItem("customBg", url);
     localStorage.removeItem("themeData");
 
-    menu.classList.remove("open"); /* 🔥 FIX */
+    menu.classList.remove("open"); // 🔥 FIX
   };
 
+  /* RESET */
   reset.onclick = () => {
     applyTheme(themes.default);
-    localStorage.clear();
+    localStorage.removeItem("customBg");
     menu.classList.remove("open");
   };
 
+  /* THEMES */
   document.querySelectorAll(".theme-circle").forEach(c => {
     c.onclick = () => applyTheme(themes[c.dataset.theme]);
   });
 
-  const savedTheme = localStorage.getItem("themeData");
+  /* LOAD SAVED */
   const savedBg = localStorage.getItem("customBg");
+  const savedTheme = localStorage.getItem("themeData");
 
   if (savedBg) {
-    document.body.style.background = `url(${savedBg}) center/cover no-repeat fixed`;
+    document.body.style.background = `url(${savedBg}) center / cover no-repeat fixed`;
   } else if (savedTheme) {
     applyTheme(JSON.parse(savedTheme));
-  } else {
-    applyTheme(themes.default);
   }
 
 });
