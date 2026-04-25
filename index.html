@@ -224,13 +224,9 @@ function render() {
   del.innerText = "✕";
 
   del.onclick = () => {
-  card.classList.add("exit");
-
-  setTimeout(() => {
-    items = items.filter(i => i.id !== item.id);
-    save();
-    render();
-  }, 250);
+  items = items.filter(i => i.id !== item.id);
+  save();
+  render();
 };
 
   card.appendChild(iframe);
