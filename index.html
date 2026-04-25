@@ -5,6 +5,36 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Countdown Dashboard</title>
 <link rel="stylesheet" href="style.css">
+
+<!-- FIX: small required overrides so themes + animation actually work -->
+<style>
+  body{
+    margin:0;
+    min-height:100vh;
+    width:100%;
+    background: var(--base, #0b0c10);
+    background-attachment: fixed;
+    transition: background 0.6s ease;
+  }
+
+  /* FIX: stops dashboard from “jumping upward / empty bottom feel” */
+  .dashboard{
+    min-height:100vh;
+    align-content:start;
+    justify-content:center;
+  }
+
+  /* FIX: animation layer actually visible (works only for gradient themes) */
+  body.animated-bg{
+    animation: softBreath 22s ease-in-out infinite;
+  }
+
+  @keyframes softBreath {
+    0%   { background-position: 50% 50%; filter: saturate(1) brightness(1); }
+    50%  { background-position: 48% 52%; filter: saturate(1.08) brightness(1.05); }
+    100% { background-position: 50% 50%; filter: saturate(1) brightness(1); }
+  }
+</style>
 </head>
 
 <body>
@@ -61,117 +91,66 @@
     </div>
   </div>
 </div>
-  
+
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
-/* ================= THEME SYSTEM ================= */
+/* ================= THEMES (FIXED + NOW ACTUALLY DIFFERENT) ================= */
 
-/* ================= THEMES ================= */
 const themes = {
   default: {
-    bg: "#0f0f14",
-    accent: "#6366f1",
+    base: "radial-gradient(circle at 20% 30%, #1b1b2a, #0b0c10 60%, #07070c)",
+    accent: "#7c7dff",
     animated: false
   },
 
   midnight: {
-    bg: `
-      radial-gradient(circle at 20% 30%, #1b2a4a 0%, transparent 55%),
-      radial-gradient(circle at 80% 70%, #0b1020 0%, transparent 60%),
-      linear-gradient(180deg, #070a12, #0b0f1d)
-    `,
+    base: "radial-gradient(circle at 30% 20%, #1b2a44, #05070d 60%, #02030a)",
     accent: "#7aa2ff",
     animated: true
   },
 
   violet: {
-    bg: `
-      radial-gradient(circle at 30% 20%, #3b2a5a 0%, transparent 60%),
-      radial-gradient(circle at 70% 80%, #1a1428 0%, transparent 65%),
-      linear-gradient(180deg, #080611, #120a1f)
-    `,
-    accent: "#b39df3",
+    base: "radial-gradient(circle at 30% 30%, #2a1b3d, #07050c 60%, #05040a)",
+    accent: "#c2a8ff",
     animated: true
   },
 
   deepblue: {
-    bg: `
-      radial-gradient(circle at 25% 25%, #1a3a6b 0%, transparent 60%),
-      radial-gradient(circle at 75% 75%, #0a1626 0%, transparent 65%),
-      linear-gradient(180deg, #050a12, #0b1a2c)
-    `,
-    accent: "#6fb6ff",
+    base: "radial-gradient(circle at 25% 25%, #102a4a, #04060a 60%, #02040a)",
+    accent: "#6fc2ff",
     animated: true
   },
 
   dusk: {
-    bg: `
-      radial-gradient(circle at 30% 30%, #4a2a5e 0%, transparent 60%),
-      radial-gradient(circle at 70% 70%, #1b1024 0%, transparent 65%),
-      linear-gradient(180deg, #07050c, #120a18)
-    `,
-    accent: "#c49bff",
+    base: "radial-gradient(circle at 40% 30%, #3a1b2a, #05040a 60%, #030308)",
+    accent: "#ff9bd1",
     animated: true
   },
 
   emerald: {
-    bg: `
-      radial-gradient(circle at 20% 30%, #1f4a3a 0%, transparent 60%),
-      radial-gradient(circle at 80% 70%, #0a1f18 0%, transparent 65%),
-      linear-gradient(180deg, #050b09, #071612)
-    `,
-    accent: "#5fd6a6",
+    base: "radial-gradient(circle at 30% 30%, #123a2f, #040807 60%, #020504)",
+    accent: "#6fffd1",
     animated: true
   }
 };
 
-/* ================= APPLY THEME (FIXED) ================= */
 function applyTheme(name) {
+  const t = themes[name];
+  if (!t) return;
 
-  const theme = themes[name];
-  if (!theme) return;
+  // FIX: real background system (no override bugs anymore)
+  document.body.style.setProperty("--base", t.base);
+  document.documentElement.style.setProperty("--accent", t.accent);
 
-  document.body.classList.remove("animated-bg");
-
-  document.body.style.backgroundImage = theme.bg;
-  document.body.style.backgroundSize = "300% 300%";
+  document.body.style.background = t.base;
+  document.body.style.backgroundSize = "200% 200%";
   document.body.style.backgroundAttachment = "fixed";
 
-  document.documentElement.style.setProperty("--accent", theme.accent);
-
-  if (theme.animated) {
-    setTimeout(() => {
-      document.body.classList.add("animated-bg");
-    }, 50);
-  }
-
   localStorage.setItem("theme", name);
-}
 
-/* ================= THEME BUTTONS (FIXED) ================= */
-document.querySelectorAll(".theme-circle").forEach(circle => {
-
-  const name = circle.dataset.theme;
-
-  const preview = {
-    default: "#6366f1",
-    midnight: "#7aa2ff",
-    violet: "#b39df3",
-    deepblue: "#6fb6ff",
-    dusk: "#c49bfc",
-    emerald: "#5fd6a6"
-  };
-
-  circle.style.background = preview[name];
-
-  circle.onclick = () => applyTheme(name);
-});
-
-/* ================= LOAD THEME (FIXED) ================= */
-const savedTheme = localStorage.getItem("theme");
-if (savedTheme && themes[savedTheme]) {
-  applyTheme(savedTheme);
+  if (t.animated) document.body.classList.add("animated-bg");
+  else document.body.classList.remove("animated-bg");
 }
 
 /* ================= DOM ================= */
@@ -201,6 +180,25 @@ let editMode = false;
 const savedTheme = localStorage.getItem("theme");
 if (savedTheme) applyTheme(savedTheme);
 
+/* ================= FIX: THEME CIRCLES COLORS ================= */
+
+const previewColors = {
+  default: "#7c7dff",
+  midnight: "#7aa2ff",
+  violet: "#c2a8ff",
+  deepblue: "#6fc2ff",
+  dusk: "#ff9bd1",
+  emerald: "#6fffd1"
+};
+
+document.querySelectorAll(".theme-circle").forEach(c => {
+  const name = c.dataset.theme;
+
+  c.style.background = previewColors[name] || "#fff";
+
+  c.onclick = () => applyTheme(name);
+});
+
 /* ================= DATA ================= */
 
 const defaultCounts = [
@@ -225,6 +223,7 @@ function render() {
     const card = document.createElement("div");
     card.className = "count-card";
     card.dataset.index = index;
+    card.draggable = true;
 
     const iframe = document.createElement("iframe");
     iframe.src = url;
@@ -234,9 +233,13 @@ function render() {
     del.innerText = "✕";
 
     del.onclick = () => {
-      items.splice(index, 1);
-      save();
-      render();
+      card.classList.add("exit");
+
+      setTimeout(() => {
+        items.splice(index, 1);
+        save();
+        render();
+      }, 200);
     };
 
     card.appendChild(iframe);
@@ -245,7 +248,7 @@ function render() {
   });
 }
 
-/* ================= BUTTONS ================= */
+/* ================= BG ================= */
 
 bgBtn.onclick = (e) => {
   e.preventDefault();
@@ -253,6 +256,10 @@ bgBtn.onclick = (e) => {
 };
 
 closeBg.onclick = () => bgMenu.classList.remove("open");
+
+bgInput.addEventListener("input", () => {
+  bgPreview.style.backgroundImage = `url(${bgInput.value})`;
+});
 
 applyBg.onclick = () => {
   const url = bgInput.value.trim();
@@ -266,10 +273,12 @@ applyBg.onclick = () => {
 };
 
 resetBg.onclick = () => {
-  document.body.style.background = "#0f0f14";
+  document.body.style.background = "";
   localStorage.removeItem("customBg");
   bgMenu.classList.remove("open");
 };
+
+/* ================= ADD ================= */
 
 addBtn.onclick = (e) => {
   e.preventDefault();
@@ -289,6 +298,8 @@ addCount.onclick = () => {
   countInput.value = "";
   countMenu.classList.remove("open");
 };
+
+/* ================= EDIT ================= */
 
 editBtn.onclick = (e) => {
   e.preventDefault();
