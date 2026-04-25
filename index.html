@@ -188,63 +188,31 @@ if (!Array.isArray(items)) {
 
 /* ================= RENDER ================= */
 function render() {
+  dashboard.innerHTML = "";
 
-  const existingCards = new Map();
+  items.forEach((item) => {
+    const card = document.createElement("div");
+    card.className = "count-card";
+    card.dataset.id = item.id;
+    card.draggable = true;
 
-  document.querySelectorAll(".count-card").forEach((card) => {
-    existingCards.set(card.dataset.id, card);
+    const iframe = document.createElement("iframe");
+    iframe.src = item.url;
+
+    const del = document.createElement("button");
+    del.className = "delete-btn";
+    del.innerText = "✕";
+
+    del.onclick = () => {
+      items = items.filter(i => i.id !== item.id);
+      save();
+      render();
+    };
+
+    card.appendChild(iframe);
+    card.appendChild(del);
+    dashboard.appendChild(card);
   });
-
-  const newSet = new Set();
-
-items.forEach((item) => {
-
-  newSet.add(item.id);
-
-  let card = existingCards.get(item.id);
-
-  if (card) {
-    const iframe = card.querySelector("iframe");
-    if (iframe && iframe.src !== item.url) {
-      iframe.src = item.url;
-    }
-    return;
-  }
-
-  card = document.createElement("div");
-  card.className = "count-card enter";
-  card.dataset.id = item.id;
-  card.draggable = true;
-
-  const iframe = document.createElement("iframe");
-  iframe.src = item.url;
-
-  const del = document.createElement("button");
-  del.className = "delete-btn";
-  del.innerText = "✕";
-
- del.onclick = () => {
-  const id = card.dataset.id;
-
-  items = items.filter(i => i.id !== id);
-  save();
-
-  render();
-};
-
-  card.addEventListener("dragstart", () => card.classList.add("dragging"));
-  card.addEventListener("dragend", () => card.classList.remove("dragging"));
-
-  card.appendChild(iframe);
-  card.appendChild(del);
-  dashboard.appendChild(card);
-
-  requestAnimationFrame(() => {
-    card.classList.remove("enter");
-  });
-});
-
- 
 }
 
 /* ================= THEME CIRCLE FIX (ADDED) ================= */
