@@ -224,42 +224,26 @@ document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener("DOMContentLoaded", () => {
 
 const dashboard = document.getElementById("dashboard");
-
-/* ===== EDIT MODE ===== */
 const editBtn = document.getElementById("edit-btn");
+
 let editMode = false;
 
-editBtn.addEventListener("click", (e) => {
-  e.preventDefault();
-  editMode = !editMode;
-  document.body.classList.toggle("edit-mode", editMode);
-});
+/* ===== DEFAULT COUNTDOWNS (your original ones) ===== */
+const defaultCounts = [
+  "https://count.live/?date=2026-04-29T01%3A00%3A00-07%3A00&title=Heidemarie%20(CZN)&font=display&bgimg=https%3A%2F%2Fblog.prydwen.gg%2Fwp-content%2Fuploads%2F2026%2F04%2Fmaxresdefault-2.webp&units=w,d,h,m,s&showtz=1&progress=1&percent=1&start=2026-04-20T00%3A00%3A00-07%3A00&tz=America%2FTijuana",
 
-/* ===== MENU ===== */
-const countMenu = document.getElementById("count-menu");
-const countBtn = document.createElement("a");
-const topButtons = document.querySelector(".top-buttons");
+  "https://count.live/?date=2026-05-13T15%3A00%3A00-07%3A00&title=Evanescia%20(HSR)&font=display&bgimg=https%3A%2F%2Fi.redd.it%2Fwith-the-design-reveal-of-evanescia-and-sparxie-it-feels-v0-1cu4wje40ndg1.jpg%3Fwidth%3D1920%26format%3Dpjpg%26auto%3Dwebp%26s%3De41a3002a5357463537e9624314a0cd803a63a84&units=w,d,h,m,s&showtz=1&progress=1&percent=1&start=2026-04-20T00%3A00%3A00-07%3A00&tz=America%2FTijuana",
 
-countBtn.className = "top-btn";
-countBtn.href = "#";
-countBtn.innerText = "Add";
-topButtons.appendChild(countBtn);
+  "https://count.live/?date=2026-04-23T18%3A00%3A00-07%3A00&title=Beta%20Access%20(Petit%20Planet)&font=display&bgimg=https%3A%2F%2Ffastcdn.hoyoverse.com%2Fstatic-resource-v2%2F2026%2F03%2F25%2Fcf6e120d2032ac9c62cdc31e0d7504df_3968736085113746422.png&units=w,d,h,m,s&showtz=1&progress=1&percent=1&start=2026-04-20T00%3A00%3A00-07%3A00&tz=America%2FTijuana"
+];
 
-const closeCount = document.getElementById("close-count");
-const countInput = document.getElementById("count-input");
-const addCount = document.getElementById("add-count");
+/* ===== LOAD ===== */
+let items = JSON.parse(localStorage.getItem("counts"));
 
-countBtn.addEventListener("click", (e) => {
-  e.preventDefault();
-  countMenu.classList.add("open");
-});
-
-closeCount.addEventListener("click", () => {
-  countMenu.classList.remove("open");
-});
-
-/* ===== STORAGE ===== */
-let items = JSON.parse(localStorage.getItem("counts") || "[]");
+if (!items || items.length === 0) {
+  items = [...defaultCounts];
+  localStorage.setItem("counts", JSON.stringify(items));
+}
 
 function save() {
   localStorage.setItem("counts", JSON.stringify(items));
@@ -272,7 +256,6 @@ function render() {
   items.forEach((url, index) => {
     const card = document.createElement("div");
     card.className = "count-card";
-    card.draggable = true;
     card.dataset.index = index;
 
     const iframe = document.createElement("iframe");
@@ -282,13 +265,15 @@ function render() {
     del.className = "delete-btn";
     del.innerText = "✕";
 
-    del.addEventListener("click", () => {
+    del.onclick = () => {
       items.splice(index, 1);
       save();
       render();
-    });
+    };
 
-    /* drag */
+    /* drag reorder */
+    card.draggable = true;
+
     card.addEventListener("dragstart", () => {
       card.classList.add("dragging");
     });
@@ -297,20 +282,8 @@ function render() {
       card.classList.remove("dragging");
     });
 
-    card.appendChild(iframe);
-    card.appendChild(del);
-    dashboard.appendChild(card);
-  });
-
-  enableDragSort();
-}
-
-/* ===== DRAG SORT ===== */
-function enableDragSort() {
-  const cards = [...document.querySelectorAll(".count-card")];
-
-  cards.forEach(card => {
-    card.addEventListener("dragover", (e) => {
+    dashboard.addEventListener("dragover", (e) => {
+      if (!editMode) return;
       e.preventDefault();
 
       const dragging = document.querySelector(".dragging");
@@ -322,9 +295,14 @@ function enableDragSort() {
         dashboard.insertBefore(dragging, after);
       }
     });
+
+    card.appendChild(iframe);
+    card.appendChild(del);
+    dashboard.appendChild(card);
   });
 }
 
+/* ===== DRAG HELP ===== */
 function getAfterElement(container, y) {
   const elements = [...container.querySelectorAll(".count-card:not(.dragging)")];
 
@@ -333,25 +311,19 @@ function getAfterElement(container, y) {
     const offset = y - box.top - box.height / 2;
 
     if (offset < 0 && offset > closest.offset) {
-      return { offset: offset, element: child };
+      return { offset, element: child };
     } else {
       return closest;
     }
   }, { offset: Number.NEGATIVE_INFINITY }).element;
 }
 
-/* ===== ADD ===== */
-addCount.addEventListener("click", () => {
-  const url = countInput.value.trim();
+/* ===== EDIT MODE ===== */
+editBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  editMode = !editMode;
 
-  if (!url) return;
-
-  items.push(url);
-  save();
-  render();
-
-  countInput.value = "";
-  countMenu.classList.remove("open");
+  document.body.classList.toggle("edit-mode", editMode);
 });
 
 /* ===== INIT ===== */
