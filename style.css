@@ -274,19 +274,18 @@ iframe:hover {
 
 /* 🔥 BREATHING EFFECT (NO MOVEMENT, ONLY LIGHT SHIFT) */
 body.animated-bg {
-  animation: breathe 18s ease-in-out infinite;
+  animation: breathe 20s ease-in-out infinite;
 }
 
-/* subtle light pulsing */
 @keyframes breathe {
   0% {
-    filter: brightness(1) contrast(1);
+    filter: brightness(0.95) contrast(1);
   }
   50% {
-    filter: brightness(1.12) contrast(1.08);
+    filter: brightness(1.08) contrast(1.06);
   }
   100% {
-    filter: brightness(1) contrast(1);
+    filter: brightness(0.95) contrast(1);
   }
 }
 
