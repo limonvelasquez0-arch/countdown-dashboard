@@ -208,15 +208,24 @@ function render() {
 }
 
 /* ================= THEME CIRCLE FIX (ADDED) ================= */
-document.querySelectorAll(".theme-circle").forEach((c) => {
-  const theme = themes[c.dataset.theme];
-  if (!theme) return;
+document.querySelectorAll(".theme-circle").forEach(circle => {
+  const themeName = circle.dataset.theme;
 
-  c.style.background = theme.preview;
+  // give preview color so they are not blank
+  const preview = {
+    default: "#6366f1",
+    midnight: "#38bdf8",
+    violet: "#a78bfa",
+    deepblue: "#60a5fa",
+    dusk: "#c084fc",
+    emerald: "#34d399"
+  };
 
-  c.addEventListener("click", () => {
-    applyTheme(theme);
-  });
+  circle.style.background = preview[themeName];
+
+  circle.onclick = () => {
+    applyTheme(themes[themeName]);
+  };
 });
 
 /* drag reorder */
