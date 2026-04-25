@@ -86,9 +86,68 @@ const editBtn = document.getElementById("edit-btn");
 
 let editMode = false;
 
-/* ================= THEME ================= */
+/* ================= THEME FIX (ADDED) ================= */
 const themes = {
-  default: { bg: "#0f0f14", accent: "#6366f1", animated: false }
+  default: {
+    bg: "#0f0f14",
+    accent: "#6366f1",
+    animated: false
+  },
+
+  midnight: {
+    bg: `
+      radial-gradient(circle at 20% 30%, #1b2a44, transparent 60%),
+      radial-gradient(circle at 80% 70%, #0a1222, transparent 65%),
+      radial-gradient(circle at 50% 50%, #121a2e, transparent 70%),
+      #05070d
+    `,
+    accent: "#5b8cff",
+    animated: true
+  },
+
+  violet: {
+    bg: `
+      radial-gradient(circle at 25% 25%, #5b3fd6, transparent 60%),
+      radial-gradient(circle at 75% 70%, #2a1240, transparent 65%),
+      radial-gradient(circle at 50% 50%, #140a22, transparent 75%),
+      #07050c
+    `,
+    accent: "#b89cff",
+    animated: true
+  },
+
+  deepblue: {
+    bg: `
+      radial-gradient(circle at 20% 25%, #1f66ff, transparent 60%),
+      radial-gradient(circle at 80% 75%, #081a2e, transparent 65%),
+      radial-gradient(circle at 50% 50%, #0a1624, transparent 75%),
+      #04070d
+    `,
+    accent: "#4fb6ff",
+    animated: true
+  },
+
+  dusk: {
+    bg: `
+      radial-gradient(circle at 25% 25%, #ff4f9a, transparent 60%),
+      radial-gradient(circle at 75% 70%, #3a1630, transparent 65%),
+      radial-gradient(circle at 50% 50%, #1a0c16, transparent 75%),
+      #06040a
+    `,
+    accent: "#ff7fbf",
+    animated: true
+  },
+
+  emerald: {
+    bg: `
+      radial-gradient(circle at 20% 30%, #1fd6a3, transparent 60%),
+      radial-gradient(circle at 80% 70%, #0a3a2e, transparent 65%),
+      radial-gradient(circle at 50% 50%, #0a1c18, transparent 75%),
+      #040a07
+    `,
+    accent: "#4fffd0",
+    animated: true
+  }
 };
 
 function applyTheme(theme) {
@@ -110,34 +169,21 @@ function applyTheme(theme) {
   localStorage.setItem("theme", JSON.stringify(theme));
 }
 
-/* ================= DATA ================= */
+/* ================= DEFAULT DATA ================= */
 const defaultCounts = [
-"https://count.live/?date=2026-04-29T01%3A00%3A00-07%3A00&title=Heidemarie",
-"https://count.live/?date=2026-05-13T15%3A00%3A00-07%3A00&title=Evanescia",
-"https://count.live/?date=2026-04-23T18%3A00%3A00-07%3A00&title=Beta"
+"https://count.live/?date=2026-04-29T01%3A00%3A00-07%3A00&title=Heidemarie%20(CZN)&font=display&bgimg=https%3A%2F%2Fblog.prydwen.gg%2Fwp-content%2Fuploads%2F2026%2F04%2Fmaxresdefault-2.webp&units=w,d,h,m,s&showtz=1&progress=1&percent=1&start=2026-04-20T00%3A00%3A00-07%3A00&tz=America%2FTijuana",
+"https://count.live/?date=2026-05-13T15%3A00%3A00-07%3A00&title=Evanescia%20(HSR)&font=display&bgimg=https%3A%2F%2Fi.redd.it%2Fwith-the-design-reveal-of-evanescia-and-sparxie-it-feels-v0-1cu4wje40ndg1.jpg",
+"https://count.live/?date=2026-04-23T18%3A00%3A00-07%3A00&title=Beta%20Access"
 ];
 
 let items = JSON.parse(localStorage.getItem("counts"));
-if (!items || items.length === 0) {
-  items = defaultCounts.map(url => ({
-    id: crypto.randomUUID(),
-    url
-  }));
-}
+if (!items || items.length === 0) items = defaultCounts.map(url => ({
+  id: crypto.randomUUID(),
+  url
+}));
 
 function save() {
   localStorage.setItem("counts", JSON.stringify(items));
-}
-
-/* ================= FIX: POSITIONS ================= */
-function getPositions() {
-  const map = new Map();
-
-  document.querySelectorAll(".count-card").forEach(el => {
-    map.set(el.dataset.id, el.getBoundingClientRect());
-  });
-
-  return map;
 }
 
 /* ================= RENDER ================= */
@@ -145,58 +191,58 @@ function render() {
 
   const existingCards = new Map();
 
-  document.querySelectorAll(".count-card").forEach(card => {
+  document.querySelectorAll(".count-card").forEach((card) => {
     existingCards.set(card.dataset.id, card);
   });
 
   const newSet = new Set();
 
-  items.forEach(item => {
+ items.forEach((item) => {
 
-    newSet.add(item.id);
+  newSet.add(item.id);
 
-    let card = existingCards.get(item.id);
+  let card = existingCards.get(item.id);
 
-    if (card) {
-      const iframe = card.querySelector("iframe");
-      if (iframe && iframe.src !== item.url) {
-        iframe.src = item.url;
-      }
-      return;
+  if (card) {
+    const iframe = card.querySelector("iframe");
+    if (iframe && iframe.src !== item.url) {
+      iframe.src = item.url;
     }
+    return;
+  }
 
-    card = document.createElement("div");
-    card.className = "count-card enter";
-    card.dataset.id = item.id;
-    card.draggable = true;
+  card = document.createElement("div");
+  card.className = "count-card enter";
+  card.dataset.id = item.id;
+  card.draggable = true;
 
-    const iframe = document.createElement("iframe");
-    iframe.src = item.url;
+  const iframe = document.createElement("iframe");
+  iframe.src = item.url;
 
-    const del = document.createElement("button");
-    del.className = "delete-btn";
-    del.innerText = "✕";
+  const del = document.createElement("button");
+  del.className = "delete-btn";
+  del.innerText = "✕";
 
-    del.onclick = () => {
-      card.classList.add("exit");
+  del.onclick = () => {
+    card.classList.add("exit");
 
-      setTimeout(() => {
-        items = items.filter(i => i.id !== item.id);
-        save();
-        renderWithAnimation();
-      }, 250);
-    };
+    setTimeout(() => {
+      items = items.filter(i => i.id !== item.id);
+      save();
+      renderWithAnimation();
+    }, 250);
+  };
 
-    card.appendChild(iframe);
-    card.appendChild(del);
-    dashboard.appendChild(card);
+  card.appendChild(iframe);
+  card.appendChild(del);
+  dashboard.appendChild(card);
 
-    requestAnimationFrame(() => {
-      card.classList.remove("enter");
-    });
+  requestAnimationFrame(() => {
+    card.classList.remove("enter");
   });
+});
 
-  document.querySelectorAll(".count-card").forEach(card => {
+  document.querySelectorAll(".count-card").forEach((card) => {
     if (!newSet.has(card.dataset.id)) {
       card.classList.add("exit");
       setTimeout(() => card.remove(), 250);
@@ -204,11 +250,132 @@ function render() {
   });
 }
 
-/* ================= FIXED ANIMATION ================= */
-function renderWithAnimation() {
-  const first = getPositions();
+/* ================= THEME CIRCLE FIX (ADDED) ================= */
+document.querySelectorAll(".theme-circle").forEach(circle => {
+  const themeName = circle.dataset.theme;
 
-  render();
+  // give preview color so they are not blank
+  const preview = {
+    default: "#6366f1",
+    midnight: "#38bdf8",
+    violet: "#a78bfa",
+    deepblue: "#60a5fa",
+    dusk: "#c084fc",
+    emerald: "#34d399"
+  };
+
+  circle.style.background = preview[themeName];
+
+  circle.onclick = () => {
+    applyTheme(themes[themeName]);
+  };
+});
+
+/* drag reorder */
+dashboard.addEventListener("dragover", (e) => {
+  if (!editMode) return;
+  e.preventDefault();
+
+  const dragging = document.querySelector(".dragging");
+  const after = getAfterElement(dashboard, e.clientY);
+
+  if (after == null) {
+    dashboard.appendChild(dragging);
+  } else {
+    dashboard.insertBefore(dragging, after);
+  }
+});
+
+function getAfterElement(container, y) {
+  const elements = [...container.querySelectorAll(".count-card:not(.dragging)")];
+
+  return elements.reduce((closest, child) => {
+    const box = child.getBoundingClientRect();
+    const offset = y - box.top - box.height / 2;
+
+    if (offset < 0 && offset > closest.offset) {
+      return { offset, element: child };
+    }
+    return closest;
+  }, { offset: Number.NEGATIVE_INFINITY }).element;
+}
+
+/* EDIT MODE */
+editBtn.onclick = (e) => {
+  e.preventDefault();
+  editMode = !editMode;
+  document.body.classList.toggle("edit-mode", editMode);
+};
+
+/* ADD */
+addBtn.onclick = (e) => {
+  e.preventDefault();
+  countMenu.classList.add("open");
+};
+
+closeCount.onclick = () => countMenu.classList.remove("open");
+
+addCount.onclick = () => {
+  const url = countInput.value.trim();
+  if (!url) return;
+
+  items.push({
+    id: crypto.randomUUID(),
+    url: url
+  });
+
+  save();
+
+  countInput.value = "";
+  countMenu.classList.remove("open");
+
+  renderWithAnimation();
+};
+
+/* BG */
+bgBtn.onclick = (e) => {
+  e.preventDefault();
+  bgMenu.classList.add("open");
+};
+
+closeBg.onclick = () => bgMenu.classList.remove("open");
+
+bgInput.addEventListener("input", () => {
+  bgPreview.style.backgroundImage = `url(${bgInput.value})`;
+});
+
+applyBg.onclick = () => {
+  const url = bgInput.value;
+
+  if (url) {
+    document.body.style.background = `url(${url}) center/cover no-repeat fixed`;
+    localStorage.setItem("customBg", url);
+  }
+
+  // 🔥 ALWAYS close menu (even if empty)
+  bgMenu.classList.remove("open");
+};
+
+resetBg.onclick = () => {
+  document.body.style.background = "#0f0f14";
+  localStorage.removeItem("customBg");
+};
+
+/* LOAD BG */
+const savedBg = localStorage.getItem("customBg");
+if (savedBg) {
+  document.body.style.background = `url(${savedBg}) center/cover no-repeat fixed`;
+}
+  
+const savedTheme = localStorage.getItem("theme");
+if (savedTheme) {
+  applyTheme(JSON.parse(savedTheme));
+}
+  
+  function renderWithAnimation() {
+  const first = getPositions(); // BEFORE changes
+
+  renderWithAnimation(); // DOM update
 
   requestAnimationFrame(() => {
     document.querySelectorAll(".count-card").forEach(el => {
@@ -222,7 +389,6 @@ function renderWithAnimation() {
       const dx = firstBox.left - lastBox.left;
       const dy = firstBox.top - lastBox.top;
 
-      el.style.transition = "none";
       el.style.transform = `translate(${dx}px, ${dy}px)`;
 
       requestAnimationFrame(() => {
@@ -232,27 +398,6 @@ function renderWithAnimation() {
     });
   });
 }
-
-/* ================= ADD ================= */
-addCount.onclick = () => {
-  const url = countInput.value.trim();
-  if (!url) return;
-
-  items.push({
-    id: crypto.randomUUID(),
-    url
-  });
-
-  save();
-  countInput.value = "";
-  countMenu.classList.remove("open");
-
-  renderWithAnimation();
-};
-
-/* ================= INIT ================= */
-render();
-
 });
 </script>
 
