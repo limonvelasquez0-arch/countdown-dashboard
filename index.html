@@ -10,25 +10,27 @@
 <body>
 
 <div class="top-buttons">
-  <a href="https://github.com/limonvelasquez0-arch/countdown-dashboard" target="_blank" class="top-btn">GitHub</a>
-  <a href="#" class="top-btn" id="bg-btn">Background</a>
-</div>
+  <a href="https://github.com/limonvelasquez0-arch/countdown-dashboard" target="_blank" class="top-btn">
+    GitHub
+  </a>
 
-<!-- 🔥 BACKGROUND LAYER (FIXES MOSAIC) -->
-<div id="bg-layer"></div>
+  <a href="#" class="top-btn" id="bg-btn">
+    Background
+  </a>
+</div>
 
 <div class="dashboard">
 
   <iframe src="https://count.live/?date=2026-04-29T01%3A00%3A00-07%3A00&title=Heidemarie%20(CZN)&font=display&bgimg=https%3A%2F%2Fblog.prydwen.gg%2Fwp-content%2Fuploads%2F2026%2F04%2Fmaxresdefault-2.webp&units=w,d,h,m,s&showtz=1&progress=1&percent=1&start=2026-04-20T00%3A00%3A00-07%3A00&tz=America%2FTijuana"></iframe>
 
-  <iframe src="https://count.live/?date=2026-05-13T15%3A00%3A00-07%3A00&title=Evanescia%20(HSR)&font=display&bgimg=https%3A%2F%2Fi.redd.it%2Fwith-the-design-reveal-of-evanescia-and-sparxie-it-feels-v0-1cu4wje40ndg1.jpg"></iframe>
+  <iframe src="https://count.live/?date=2026-05-13T15%3A00%3A00-07%3A00&title=Evanescia%20(HSR)&font=display&bgimg=https%3A%2F%2Fi.redd.it%2Fwith-the-design-reveal-of-evanescia-and-sparxie-it-feels-v0-1cu4wje40ndg1.jpg%3Fwidth%3D1920%26format%3Dpjpg%26auto%3Dwebp%26s%3De41a3002a5357463537e9624314a0cd803a63a84&units=w,d,h,m,s&showtz=1&progress=1&percent=1&start=2026-04-20T00%3A00%3A00-07%3A00&tz=America%2FTijuana"></iframe>
 
-  <iframe src="https://count.live/?date=2026-04-23T18%3A00%3A00-07%3A00&title=Beta%20Access%20(Petit%20Planet)&font=display&bgimg=https%3A%2F%2Ffastcdn.hoyoverse.com%2Fstatic-resource-v2%2F2026%2F03%2F25%2Fcf6e120d2032ac9c62cdc31e0d7504df_3968736085113746422.png"></iframe>
+  <iframe src="https://count.live/?date=2026-04-23T18%3A00%3A00-07%3A00&title=Beta%20Access%20(Petit%20Planet)&font=display&bgimg=https%3A%2F%2Ffastcdn.hoyoverse.com%2Fstatic-resource-v2%2F2026%2F03%2F25%2Fcf6e120d2032ac9c62cdc31e0d7504df_3968736085113746422.png&units=w,d,h,m,s&showtz=1&progress=1&percent=1&start=2026-04-20T00%3A00%3A00-07%3A00&tz=America%2FTijuana"></iframe>
 
 </div>
 
-<!-- ===== MENU ===== -->
 <div class="bg-menu" id="bg-menu">
+
   <div class="bg-panel">
 
     <button class="close-btn" id="close-menu">✕</button>
@@ -36,6 +38,7 @@
     <h3>Background Settings</h3>
 
     <input type="text" id="bg-input" placeholder="Paste image URL...">
+
     <div class="bg-preview" id="bg-preview"></div>
 
     <div class="bg-actions">
@@ -51,6 +54,7 @@
     </div>
 
   </div>
+
 </div>
 
 <script>
@@ -63,9 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const apply = document.getElementById("apply-bg");
   const reset = document.getElementById("reset-bg");
   const closeBtn = document.getElementById("close-menu");
-  const bgLayer = document.getElementById("bg-layer");
 
-  /* ===== THEMES ===== */
   const themes = {
     default: { bg: "#0f0f14", accent: "#6366f1", animated: false },
     midnight: { bg: "linear-gradient(135deg,#020617,#0f172a,#020617)", accent: "#38bdf8", animated: true },
@@ -74,41 +76,44 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   function applyTheme(t) {
-    bgLayer.style.background = t.bg;
+    document.body.style.background = t.bg;
 
     document.documentElement.style.setProperty("--accent", t.accent);
     document.documentElement.style.setProperty("--accent-soft", t.accent + "33");
 
-    /* subtle menu tint */
+    /* 🔥 subtle but visible menu tint */
     document.querySelector(".bg-panel").style.background =
-      "linear-gradient(180deg, rgba(20,20,30,0.75), rgba(20,20,30,0.85))";
+      `linear-gradient(180deg, rgba(20,20,30,0.75), ${t.accent}22)`;
 
     if (t.animated) {
-      bgLayer.classList.add("animated-bg");
+      document.body.classList.add("animated-bg");
     } else {
-      bgLayer.classList.remove("animated-bg");
+      document.body.classList.remove("animated-bg");
     }
 
-    localStorage.setItem("theme", JSON.stringify(t));
+    localStorage.setItem("themeData", JSON.stringify(t));
     localStorage.removeItem("customBg");
   }
 
-  /* ===== MENU ===== */
   btn.onclick = e => { e.preventDefault(); menu.classList.add("open"); };
   closeBtn.onclick = () => menu.classList.remove("open");
-  menu.onclick = e => { if (e.target === menu) menu.classList.remove("open"); };
 
-  /* ===== IMAGE ===== */
-  input.oninput = () => preview.style.backgroundImage = `url(${input.value})`;
+  menu.onclick = e => {
+    if (e.target === menu) menu.classList.remove("open");
+  };
+
+  input.oninput = () => {
+    preview.style.backgroundImage = `url(${input.value})`;
+  };
 
   apply.onclick = () => {
     if (!input.value) return;
 
-    bgLayer.style.background = `url(${input.value}) center/cover no-repeat`;
-    bgLayer.classList.remove("animated-bg");
+    document.body.style.background = `url(${input.value}) center/cover no-repeat fixed`;
+    document.body.classList.remove("animated-bg");
 
     localStorage.setItem("customBg", input.value);
-    localStorage.removeItem("theme");
+    localStorage.removeItem("themeData");
 
     menu.classList.remove("open"); /* 🔥 FIX */
   };
@@ -119,17 +124,15 @@ document.addEventListener("DOMContentLoaded", () => {
     menu.classList.remove("open");
   };
 
-  /* ===== THEME CLICK ===== */
   document.querySelectorAll(".theme-circle").forEach(c => {
     c.onclick = () => applyTheme(themes[c.dataset.theme]);
   });
 
-  /* ===== LOAD ===== */
-  const savedTheme = localStorage.getItem("theme");
+  const savedTheme = localStorage.getItem("themeData");
   const savedBg = localStorage.getItem("customBg");
 
   if (savedBg) {
-    bgLayer.style.background = `url(${savedBg}) center/cover no-repeat`;
+    document.body.style.background = `url(${savedBg}) center/cover no-repeat fixed`;
   } else if (savedTheme) {
     applyTheme(JSON.parse(savedTheme));
   } else {
