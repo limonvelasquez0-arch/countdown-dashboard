@@ -199,7 +199,14 @@ function render() {
     newSet.add(String(index));
 
     let card = existingCards.get(String(index));
-    if (card) return;
+
+if (card) {
+  const iframe = card.querySelector("iframe");
+  if (iframe && iframe.src !== url) {
+    iframe.src = url; // force refresh if needed
+  }
+  return;
+}
 
     card = document.createElement("div");
     card.className = "count-card enter";
