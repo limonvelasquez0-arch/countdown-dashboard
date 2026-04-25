@@ -465,3 +465,54 @@ html, body {
   width: 100%;
   height: 100%;
 }
+
+/* ================= FIXED DARK THEME LIGHT SYSTEM ================= */
+
+:root {
+  --base: #0b0c10;
+  --accent: #7c7dff;
+  --g1: #7c7dff;
+  --g2: #5eead4;
+  --g3: #a78bfa;
+}
+
+/* soft random atmospheric glow layer (NO CENTER PULSE) */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+
+  background:
+    radial-gradient(circle at 18% 28%, var(--g1), transparent 50%),
+    radial-gradient(circle at 78% 35%, var(--g2), transparent 55%),
+    radial-gradient(circle at 55% 82%, var(--g3), transparent 60%),
+    var(--base);
+
+  filter: blur(75px) saturate(1.05);
+  transform: scale(1.25);
+
+  opacity: 0.88;
+
+  animation: ambientDrift 10s ease-in-out infinite alternate;
+}
+
+/* IMPORTANT: NO REPEATING PATTERN, NO CENTER PULSE */
+@keyframes ambientDrift {
+  0% {
+    transform: scale(1.24) translate(-1%, 1%);
+  }
+  25% {
+    transform: scale(1.28) translate(1%, -1%);
+  }
+  50% {
+    transform: scale(1.31) translate(-2%, 0%);
+  }
+  75% {
+    transform: scale(1.27) translate(2%, 2%);
+  }
+  100% {
+    transform: scale(1.24) translate(-1%, 1%);
+  }
+}
