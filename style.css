@@ -91,6 +91,13 @@ iframe:hover {
 
 /* ================= MENU OVERLAY ================= */
 
+/* ===== THEME VARIABLES ===== */
+:root {
+  --accent: #6366f1;
+  --accent-soft: rgba(99,102,241,0.25);
+}
+
+/* ===== OVERLAY ===== */
 .bg-menu {
   position: fixed;
   inset: 0;
@@ -108,9 +115,9 @@ iframe:hover {
   display: flex;
 }
 
-/* ================= PANEL ================= */
-
+/* ===== PANEL ===== */
 .bg-panel {
+  position: relative;
   background: rgba(20,20,30,0.95);
   color: #e5e7eb;
 
@@ -118,43 +125,49 @@ iframe:hover {
   border-radius: 16px;
 
   width: 320px;
-  max-width: 90vw; /* 🔥 prevents clipping */
+  max-width: 90vw;
 
   box-shadow:
     0 10px 30px rgba(0,0,0,0.5),
-    0 0 30px rgba(99,102,241,0.08);
+    0 0 30px var(--accent-soft);
 
   animation: popIn 0.25s ease;
 }
 
-/* smooth open */
-@keyframes popIn {
-  from {
-    opacity: 0;
-    transform: scale(0.96) translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
+/* ===== CLOSE BUTTON ===== */
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+
+  background: transparent;
+  border: none;
+  color: #aaa;
+
+  font-size: 16px;
+  cursor: pointer;
+
+  transition: 0.2s ease;
 }
 
-/* ================= TITLE ================= */
+.close-btn:hover {
+  color: white;
+  transform: scale(1.1);
+}
 
+/* ===== TITLE ===== */
 .bg-panel h3 {
-  margin: 0 0 10px;
-  font-size: 16px;
-  font-weight: 600;
+  margin: 0 0 12px;
   color: #c7d2fe;
 }
 
-/* ================= INPUT ================= */
-
+/* ===== INPUT (FIXED ALIGNMENT) ===== */
 .bg-panel input {
   width: 100%;
-  padding: 10px;
+  box-sizing: border-box; /* 🔥 FIX */
 
-  margin-top: 8px;
+  padding: 10px;
+  margin-top: 6px;
 
   border-radius: 10px;
   border: 1px solid rgba(255,255,255,0.08);
@@ -163,27 +176,20 @@ iframe:hover {
   color: white;
 
   outline: none;
-  transition: 0.2s ease;
-}
-
-.bg-panel input::placeholder {
-  color: rgba(255,255,255,0.4);
 }
 
 .bg-panel input:focus {
-  border-color: rgba(99,102,241,0.6);
-  box-shadow: 0 0 0 1px rgba(99,102,241,0.3);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent-soft);
 }
 
-/* ================= PREVIEW ================= */
-
+/* ===== PREVIEW ===== */
 .bg-preview {
   width: 100%;
   height: 130px;
-
   margin-top: 12px;
-  border-radius: 12px;
 
+  border-radius: 12px;
   background-size: cover;
   background-position: center;
   background-color: #111;
@@ -191,8 +197,7 @@ iframe:hover {
   border: 1px solid rgba(255,255,255,0.05);
 }
 
-/* ================= BUTTONS ================= */
-
+/* ===== BUTTONS ===== */
 .bg-actions {
   display: flex;
   gap: 10px;
@@ -204,57 +209,69 @@ iframe:hover {
 
   padding: 10px;
   border-radius: 10px;
-  border: 1px solid rgba(99,102,241,0.25);
+  border: 1px solid var(--accent-soft);
 
-  background: rgba(30,64,175,0.25);
+  background: var(--accent-soft);
   color: #c7d2fe;
 
   cursor: pointer;
-
-  transition: all 0.25s ease;
+  transition: 0.25s ease;
 }
 
-/* hover (same vibe as your top buttons) */
 .bg-actions button:hover {
-  background: rgba(59,130,246,0.35);
-  border-color: rgba(147,197,253,0.8);
+  border-color: var(--accent);
 
   box-shadow:
-    0 0 10px rgba(59,130,246,0.4),
-    0 0 20px rgba(99,102,241,0.25);
+    0 0 10px var(--accent),
+    0 0 20px var(--accent-soft);
 
   transform: translateY(-1px);
 }
 
-/* ================= THEMES ================= */
-
+/* ===== THEMES ===== */
 .theme-options {
   display: flex;
+  justify-content: center;
   gap: 12px;
   margin-top: 16px;
-  justify-content: center;
 }
 
-/* circles */
 .theme-circle {
-  width: 28px;
-  height: 28px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
 
   cursor: pointer;
 
-  border: 2px solid rgba(255,255,255,0.15);
+  border: 2px solid rgba(255,255,255,0.2);
 
-  transition: all 0.25s ease;
+  transition: 0.25s ease;
 }
 
-/* hover glow */
+/* GRADIENT THEMES */
+.theme-circle[data-theme="default"] {
+  background: linear-gradient(135deg, #0f0f14, #1f2937);
+}
+
+.theme-circle[data-theme="midnight"] {
+  background: linear-gradient(135deg, #020617, #0f172a);
+}
+
+.theme-circle[data-theme="violet"] {
+  background: linear-gradient(135deg, #1e1b4b, #312e81);
+}
+
+.theme-circle[data-theme="deepblue"] {
+  background: linear-gradient(135deg, #0c4a6e, #1e3a8a);
+}
+
 .theme-circle:hover {
   transform: scale(1.15);
+  box-shadow: 0 0 12px var(--accent);
+}
 
-  border-color: rgba(147,197,253,0.8);
-
-  box-shadow:
-    0 0 10px rgba(59,130,246,0.5),
-    0 0 18px rgba(99,102,241,0.3);
+/* ===== ANIMATION ===== */
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.96) translateY(8px); }
+  to { opacity: 1; transform: scale(1); }
 }
