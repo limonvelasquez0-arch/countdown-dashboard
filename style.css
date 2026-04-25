@@ -275,3 +275,17 @@ iframe:hover {
   from { opacity: 0; transform: scale(0.96) translateY(8px); }
   to { opacity: 1; transform: scale(1); }
 }
+
+/* ===== SUBTLE BACKGROUND ANIMATION ===== */
+
+.animated-bg {
+  background-size: 200% 200%;
+  animation: gradientMove 18s ease infinite;
+}
+
+/* 🔥 VERY SOFT MOVEMENT */
+@keyframes gradientMove {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
