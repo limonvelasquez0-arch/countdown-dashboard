@@ -5,45 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Countdown Dashboard</title>
 <link rel="stylesheet" href="style.css">
-
-<!-- FIX: small required overrides so themes + animation actually work -->
-<style>
-  body{
-    margin:0;
-    min-height:100vh;
-    width:100%;
-    background: var(--base, #0b0c10);
-    background-attachment: fixed;
-    transition: background 0.6s ease;
-  }
-
-  /* FIX: stops dashboard from “jumping upward / empty bottom feel” */
-  .dashboard{
-    min-height:100vh;
-    align-content:start;
-    justify-content:center;
-  }
-
-  /* FIX: animation layer actually visible (works only for gradient themes) */
-  body.animated-bg{
-    animation: softBreath 22s ease-in-out infinite;
-  }
-
-  @keyframes softBreath {
-    0%   { background-position: 50% 50%; filter: saturate(1) brightness(1); }
-    50%  { background-position: 48% 52%; filter: saturate(1.08) brightness(1.05); }
-    100% { background-position: 50% 50%; filter: saturate(1) brightness(1); }
-  }
-</style>
 </head>
 
 <body>
 
 <div class="top-buttons">
-  <a href="https://github.com/limonvelasquez0-arch/countdown-dashboard" target="_blank" class="top-btn">
-    GitHub
-  </a>
-
+  <a href="https://github.com/limonvelasquez0-arch/countdown-dashboard" target="_blank" class="top-btn">GitHub</a>
   <a href="#" class="top-btn" id="bg-btn">Background</a>
   <a href="#" class="top-btn" id="add-btn">Add</a>
   <a href="#" class="top-btn" id="edit-btn">Edit</a>
@@ -83,7 +50,6 @@
     <button class="close-btn" id="close-count">✕</button>
 
     <h3>Add Countdown</h3>
-
     <input type="text" id="count-input" placeholder="Paste count.live URL...">
 
     <div class="bg-actions">
@@ -95,42 +61,62 @@
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
-/* ================= THEMES (FIXED + NOW ACTUALLY DIFFERENT) ================= */
+const dashboard = document.getElementById("dashboard");
+
+/* ================= THEMES ================= */
 
 const themes = {
   default: {
-    base: "radial-gradient(circle at 20% 30%, #1b1b2a, #0b0c10 60%, #07070c)",
+    base: "#0b0c10",
     accent: "#7c7dff",
+    g1: "#7c7dff",
+    g2: "#5eead4",
+    g3: "#a78bfa",
     animated: false
   },
 
   midnight: {
-    base: "radial-gradient(circle at 30% 20%, #1b2a44, #05070d 60%, #02030a)",
+    base: "#05070d",
     accent: "#7aa2ff",
+    g1: "#7aa2ff",
+    g2: "#4f6fff",
+    g3: "#2dd4bf",
     animated: true
   },
 
   violet: {
-    base: "radial-gradient(circle at 30% 30%, #2a1b3d, #07050c 60%, #05040a)",
+    base: "#07050c",
     accent: "#c2a8ff",
+    g1: "#c2a8ff",
+    g2: "#ff6bd6",
+    g3: "#7c3aed",
     animated: true
   },
 
   deepblue: {
-    base: "radial-gradient(circle at 25% 25%, #102a4a, #04060a 60%, #02040a)",
+    base: "#04060a",
     accent: "#6fc2ff",
+    g1: "#6fc2ff",
+    g2: "#3b82f6",
+    g3: "#22c55e",
     animated: true
   },
 
   dusk: {
-    base: "radial-gradient(circle at 40% 30%, #3a1b2a, #05040a 60%, #030308)",
+    base: "#05040a",
     accent: "#ff9bd1",
+    g1: "#ff9bd1",
+    g2: "#fb7185",
+    g3: "#a78bfa",
     animated: true
   },
 
   emerald: {
-    base: "radial-gradient(circle at 30% 30%, #123a2f, #040807 60%, #020504)",
+    base: "#040807",
     accent: "#6fffd1",
+    g1: "#6fffd1",
+    g2: "#34d399",
+    g3: "#60a5fa",
     animated: true
   }
 };
@@ -139,13 +125,13 @@ function applyTheme(name) {
   const t = themes[name];
   if (!t) return;
 
-  // FIX: real background system (no override bugs anymore)
-  document.body.style.setProperty("--base", t.base);
-  document.documentElement.style.setProperty("--accent", t.accent);
+  const root = document.documentElement;
 
-  document.body.style.background = t.base;
-  document.body.style.backgroundSize = "200% 200%";
-  document.body.style.backgroundAttachment = "fixed";
+  root.style.setProperty("--base", t.base);
+  root.style.setProperty("--accent", t.accent);
+  root.style.setProperty("--g1", t.g1);
+  root.style.setProperty("--g2", t.g2);
+  root.style.setProperty("--g3", t.g3);
 
   localStorage.setItem("theme", name);
 
@@ -154,8 +140,6 @@ function applyTheme(name) {
 }
 
 /* ================= DOM ================= */
-
-const dashboard = document.getElementById("dashboard");
 
 const bgMenu = document.getElementById("bg-menu");
 const bgBtn = document.getElementById("bg-btn");
@@ -170,7 +154,6 @@ const countMenu = document.getElementById("count-menu");
 const countInput = document.getElementById("count-input");
 const addCount = document.getElementById("add-count");
 const closeCount = document.getElementById("close-count");
-
 const editBtn = document.getElementById("edit-btn");
 
 let editMode = false;
@@ -179,25 +162,6 @@ let editMode = false;
 
 const savedTheme = localStorage.getItem("theme");
 if (savedTheme) applyTheme(savedTheme);
-
-/* ================= FIX: THEME CIRCLES COLORS ================= */
-
-const previewColors = {
-  default: "#7c7dff",
-  midnight: "#7aa2ff",
-  violet: "#c2a8ff",
-  deepblue: "#6fc2ff",
-  dusk: "#ff9bd1",
-  emerald: "#6fffd1"
-};
-
-document.querySelectorAll(".theme-circle").forEach(c => {
-  const name = c.dataset.theme;
-
-  c.style.background = previewColors[name] || "#fff";
-
-  c.onclick = () => applyTheme(name);
-});
 
 /* ================= DATA ================= */
 
@@ -222,8 +186,6 @@ function render() {
   items.forEach((url, index) => {
     const card = document.createElement("div");
     card.className = "count-card";
-    card.dataset.index = index;
-    card.draggable = true;
 
     const iframe = document.createElement("iframe");
     iframe.src = url;
@@ -233,13 +195,9 @@ function render() {
     del.innerText = "✕";
 
     del.onclick = () => {
-      card.classList.add("exit");
-
-      setTimeout(() => {
-        items.splice(index, 1);
-        save();
-        render();
-      }, 200);
+      items.splice(index, 1);
+      save();
+      render();
     };
 
     card.appendChild(iframe);
@@ -248,7 +206,26 @@ function render() {
   });
 }
 
-/* ================= BG ================= */
+/* ================= THEME CIRCLES ================= */
+
+document.querySelectorAll(".theme-circle").forEach(circle => {
+  const name = circle.dataset.theme;
+
+  const preview = {
+    default: "#7c7dff",
+    midnight: "#7aa2ff",
+    violet: "#c2a8ff",
+    deepblue: "#6fc2ff",
+    dusk: "#ff9bd1",
+    emerald: "#6fffd1"
+  };
+
+  circle.style.background = preview[name];
+
+  circle.onclick = () => applyTheme(name);
+});
+
+/* ================= BUTTONS ================= */
 
 bgBtn.onclick = (e) => {
   e.preventDefault();
@@ -256,10 +233,6 @@ bgBtn.onclick = (e) => {
 };
 
 closeBg.onclick = () => bgMenu.classList.remove("open");
-
-bgInput.addEventListener("input", () => {
-  bgPreview.style.backgroundImage = `url(${bgInput.value})`;
-});
 
 applyBg.onclick = () => {
   const url = bgInput.value.trim();
@@ -273,12 +246,10 @@ applyBg.onclick = () => {
 };
 
 resetBg.onclick = () => {
-  document.body.style.background = "";
+  document.body.style.background = "#0f0f14";
   localStorage.removeItem("customBg");
   bgMenu.classList.remove("open");
 };
-
-/* ================= ADD ================= */
 
 addBtn.onclick = (e) => {
   e.preventDefault();
@@ -298,8 +269,6 @@ addCount.onclick = () => {
   countInput.value = "";
   countMenu.classList.remove("open");
 };
-
-/* ================= EDIT ================= */
 
 editBtn.onclick = (e) => {
   e.preventDefault();
