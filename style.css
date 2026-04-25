@@ -273,8 +273,8 @@ iframe:hover {
 /* ================= BACKGROUND ANIMATION FIX ================= */
 
 body.animated-bg {
-  background-size: 600% 600%; /* 🔥 BIGGER = movement becomes obvious */
-  animation: gradientMove 18s ease-in-out infinite;
+  background-size: 200% 200%, 200% 200%;
+  animation: gradientMove 20s ease-in-out infinite;
 }
 
 @keyframes gradientMove {
