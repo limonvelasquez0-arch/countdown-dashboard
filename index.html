@@ -177,7 +177,10 @@ const defaultCounts = [
 ];
 
 let items = JSON.parse(localStorage.getItem("counts"));
-if (!items || items.length === 0) items = [...defaultCounts];
+if (!items || items.length === 0) items = defaultCounts.map(url => ({
+  id: crypto.randomUUID(),
+  url
+}));
 
 function save() {
   localStorage.setItem("counts", JSON.stringify(items));
@@ -189,17 +192,17 @@ function render() {
   const existingCards = new Map();
 
   document.querySelectorAll(".count-card").forEach((card) => {
-    existingCards.set(card.dataset.index, card);
+    existingCards.set(card.dataset.id, card);
   });
 
   const newSet = new Set();
 
-  items.forEach((url, index) => {
+ items.forEach((item) => {
 
     newSet.add(String(index));
 
-    let card = existingCards.get(String(index));
-
+   let card = existingCards.get(item.id);
+   
 if (card) {
   const iframe = card.querySelector("iframe");
   if (iframe && iframe.src !== url) {
@@ -210,7 +213,7 @@ if (card) {
 
     card = document.createElement("div");
     card.className = "count-card enter";
-    card.dataset.index = index;
+    card.dataset.id = item.id;
     card.draggable = true;
 
     const iframe = document.createElement("iframe");
@@ -224,7 +227,7 @@ if (card) {
       card.classList.add("exit");
 
       setTimeout(() => {
-        items.splice(index, 1);
+        items = items.filter(i => i.id !== item.id);
         save();
         render();
       }, 250);
