@@ -5,125 +5,233 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Countdown Dashboard</title>
 <link rel="stylesheet" href="style.css">
-
-<style>
-body {
-  margin: 0;
-  background: #0f0f14;
-}
-
-.bg-menu {
-  position: fixed;
-  inset: 0;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0,0,0,0.5);
-}
-
-.bg-menu.open {
-  display: flex;
-}
-
-.bg-panel {
-  background: #111;
-  padding: 20px;
-  border-radius: 12px;
-}
-
-.theme-circle {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  margin: 6px;
-  display: inline-block;
-  cursor: pointer;
-}
-</style>
 </head>
 
 <body>
 
 <div class="top-buttons">
-  <a href="#" id="bg-btn">Background</a>
+  <a href="https://github.com/limonvelasquez0-arch/countdown-dashboard" target="_blank" class="top-btn">
+    GitHub
+  </a>
+
+  <a href="#" class="top-btn" id="bg-btn">
+    Background
+  </a>
 </div>
 
 <div class="dashboard">
-  <iframe src="https://count.live/?date=2026-04-29T01:00:00"></iframe>
+  <iframe src="https://count.live/?date=2026-04-29T01%3A00%3A00-07%3A00&title=Heidemarie%20(CZN)&font=display&bgimg=https%3A%2F%2Fblog.prydwen.gg%2Fwp-content%2Fuploads%2F2026%2F04%2Fmaxresdefault-2.webp&units=w,d,h,m,s&showtz=1&progress=1&percent=1&start=2026-04-20T00%3A00%3A00-07%3A00&tz=America%2FTijuana"></iframe>
+
+  <iframe src="https://count.live/?date=2026-05-13T15%3A00%3A00-07%3A00&title=Evanescia%20(HSR)&font=display&bgimg=https%3A%2F%2Fi.redd.it%2Fwith-the-design-reveal-of-evanescia-and-sparxie-it-feels-v0-1cu4wje40ndg1.jpg%3Fwidth%3D1920%26format%3Dpjpg%26auto%3Dwebp%26s%3De41a3002a5357463537e9624314a0cd803a63a84&units=w,d,h,m,s&showtz=1&progress=1&percent=1&start=2026-04-20T00%3A00%3A00-07%3A00&tz=America%2FTijuana"></iframe>
+
+  <iframe src="https://count.live/?date=2026-04-23T18%3A00%3A00-07%3A00&title=Beta%20Access%20(Petit%20Planet)&font=display&bgimg=https%3A%2F%2Ffastcdn.hoyoverse.com%2Fstatic-resource-v2%2F2026%2F03%2F25%2Fcf6e120d2032ac9c62cdc31e0d7504df_3968736085113746422.png&units=w,d,h,m,s&showtz=1&progress=1&percent=1&start=2026-04-20T00%3A00%3A00-07%3A00&tz=America%2FTijuana"></iframe>
 </div>
 
 <div class="bg-menu" id="bg-menu">
   <div class="bg-panel">
-    <button id="close-menu">✕</button>
+    <button class="close-btn" id="close-menu">✕</button>
 
-    <h3>Background</h3>
+    <h3>Background Settings</h3>
 
-    <input id="bg-input" placeholder="Image URL">
-    <button id="apply-bg">Apply</button>
-    <button id="reset-bg">Reset</button>
+    <input type="text" id="bg-input" placeholder="Paste image URL...">
+    <div class="bg-preview" id="bg-preview"></div>
 
-    <div>
+    <div class="bg-actions">
+      <button type="button" id="apply-bg">Apply</button>
+      <button id="reset-bg">Reset</button>
+      <button id="adjust-bg">Adjust</button>
+    </div>
+
+    <div class="theme-options">
       <div class="theme-circle" data-theme="default" data-name="Default"></div>
       <div class="theme-circle" data-theme="midnight" data-name="Midnight"></div>
-      <div class="theme-circle" data-theme="violet" data-name="Violet"></div>
+      <div class="theme-circle" data-theme="violet" data-name="Violet Drift"></div>
+      <div class="theme-circle" data-theme="deepblue" data-name="Deep Ocean"></div>
+      <div class="theme-circle" data-theme="dusk" data-name="Dusk Glow"></div>
+      <div class="theme-circle" data-theme="emerald" data-name="Emerald Flow"></div>
     </div>
   </div>
 </div>
 
 <script>
-const menu = document.getElementById("bg-menu");
-const btn = document.getElementById("bg-btn");
-const closeBtn = document.getElementById("close-menu");
-const apply = document.getElementById("apply-bg");
-const reset = document.getElementById("reset-bg");
-const input = document.getElementById("bg-input");
+document.addEventListener("DOMContentLoaded", () => {
 
-/* MENU */
-btn.onclick = (e) => {
-  e.preventDefault();
-  menu.classList.add("open");
+  const menu = document.getElementById("bg-menu");
+  const btn = document.getElementById("bg-btn");
+  const input = document.getElementById("bg-input");
+  const preview = document.getElementById("bg-preview");
+  const apply = document.getElementById("apply-bg");
+  const reset = document.getElementById("reset-bg");
+  const closeBtn = document.getElementById("close-menu");
+
+const themes = {
+  default: {
+    bg: "#0f0f14",
+    accent: "#6366f1",
+    animated: false,
+    preview: "linear-gradient(135deg, #0f0f14, #1f2937)"
+  },
+
+  midnight: {
+    bg: `
+      radial-gradient(circle at 20% 30%, #1e293b, transparent 55%),
+      radial-gradient(circle at 80% 70%, #020617, transparent 65%),
+      #010409
+    `,
+    accent: "#38bdf8",
+    animated: true,
+    preview: "linear-gradient(135deg, #020617, #1e293b)"
+  },
+
+  violet: {
+    bg: `
+      radial-gradient(circle at 30% 20%, #4c1d95, transparent 55%),
+      radial-gradient(circle at 70% 80%, #1e1b4b, transparent 65%),
+      #0a061a
+    `,
+    accent: "#a78bfa",
+    animated: true,
+    preview: "linear-gradient(135deg, #1e1b4b, #4c1d95)"
+  },
+
+  deepblue: {
+    bg: `
+      radial-gradient(circle at 25% 25%, #1e40af, transparent 55%),
+      radial-gradient(circle at 75% 75%, #0c1a2b, transparent 65%),
+      #010c18
+    `,
+    accent: "#60a5fa",
+    animated: true,
+    preview: "linear-gradient(135deg, #0c4a6e, #1e40af)"
+  },
+
+  dusk: {
+    bg: `
+      radial-gradient(circle at 30% 30%, #6b21a8, transparent 55%),
+      radial-gradient(circle at 70% 70%, #2e1065, transparent 65%),
+      #0a0414
+    `,
+    accent: "#c084fc",
+    animated: true,
+    preview: "linear-gradient(135deg, #2e1065, #6b21a8)"
+  },
+
+  emerald: {
+    bg: `
+      radial-gradient(circle at 20% 30%, #065f46, transparent 55%),
+      radial-gradient(circle at 80% 70%, #022c22, transparent 65%),
+      #010f0c
+    `,
+    accent: "#34d399",
+    animated: true,
+    preview: "linear-gradient(135deg, #064e3b, #065f46)"
+  }
 };
+  
+  function applyTheme(theme) {
+    document.body.style.background = theme.bg;
+    document.body.style.backgroundSize = "200% 200%";
+    document.body.style.backgroundRepeat = "no-repeat";
+    document.body.style.backgroundAttachment = "fixed";
 
-closeBtn.onclick = () => menu.classList.remove("open");
+    document.documentElement.style.setProperty("--accent", theme.accent);
+    document.documentElement.style.setProperty("--accent-soft", theme.accent + "33");
 
-menu.onclick = (e) => {
-  if (e.target === menu) menu.classList.remove("open");
-};
+    if (theme.animated) {
+      document.body.classList.add("animated-bg");
+    } else {
+      document.body.classList.remove("animated-bg");
+    }
 
-/* APPLY */
-apply.onclick = () => {
+    localStorage.setItem("themeData", JSON.stringify(theme));
+    localStorage.removeItem("customBg");
+  }
+
+  /* ===== MENU CONTROL ===== */
+
+  btn.addEventListener("click", (e) => {
+    e.preventDefault();
+    menu.classList.add("open");
+  });
+
+  closeBtn.addEventListener("click", () => {
+    menu.classList.remove("open");
+  });
+
+  menu.addEventListener("click", (e) => {
+    if (!e.target.closest(".bg-panel")) {
+      menu.classList.remove("open");
+    }
+  });
+
+  /* ===== PREVIEW ===== */
+
+  input.addEventListener("input", () => {
+    preview.style.backgroundImage = `url(${input.value})`;
+  });
+
+  /* ===== APPLY (FIXED) ===== */
+
+apply.addEventListener("click", () => {
   const url = input.value;
 
   if (url) {
     document.body.style.background = `url(${url}) center/cover no-repeat fixed`;
+
+    localStorage.setItem("customBg", url);
+    localStorage.removeItem("themeData");
   }
 
+  // 🔥 ALWAYS CLOSE — even if empty
   menu.classList.remove("open");
-};
-
-/* RESET */
-reset.onclick = () => {
-  document.body.style.background = "#0f0f14";
-  menu.classList.remove("open");
-};
-
-/* THEMES */
-const themes = {
-  default: "#0f0f14",
-  midnight: "#020617",
-  violet: "#1e1b4b"
-};
-
-document.querySelectorAll(".theme-circle").forEach(c => {
-  const theme = themes[c.dataset.theme];
-
-  c.style.background = theme;
-  c.title = c.dataset.name;
-
-  c.onclick = () => {
-    document.body.style.background = theme;
-  };
 });
+
+  /* ===== RESET ===== */
+
+  reset.addEventListener("click", () => {
+    document.body.style.background = "#0f0f14";
+
+    localStorage.removeItem("customBg");
+    localStorage.removeItem("themeData");
+
+    menu.classList.remove("open");
+  });
+
+  /* ===== THEMES ===== */
+
+  document.querySelectorAll(".theme-circle").forEach(c => {
+    const theme = themes[c.dataset.theme];
+    c.style.background = theme.preview;
+
+    c.addEventListener("click", () => {
+      applyTheme(theme);
+    });
+  });
+
+  /* ===== LOAD ===== */
+
+  const savedBg = localStorage.getItem("customBg");
+  const savedTheme = localStorage.getItem("themeData");
+
+  if (savedBg) {
+    document.body.style.background = `url(${savedBg}) center/cover no-repeat fixed`;
+  } else if (savedTheme) {
+    applyTheme(JSON.parse(savedTheme));
+  }
+
+});
+
+  const adjustBtn = document.getElementById("adjust-bg");
+
+let adjusting = false;
+let isDragging = false;
+
+let startX = 0;
+let startY = 0;
+
+let bgPosX = 50;
+let bgPosY = 50;
+  
 </script>
 
 </body>
