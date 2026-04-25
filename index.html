@@ -372,10 +372,20 @@ if (savedTheme) {
   applyTheme(JSON.parse(savedTheme));
 }
   
-  function renderWithAnimation() {
-  const first = getPositions(); // BEFORE changes
+ function getPositions() {
+  const map = new Map();
 
-  renderWithAnimation(); // DOM update
+  document.querySelectorAll(".count-card").forEach(el => {
+    map.set(el.dataset.id, el.getBoundingClientRect());
+  });
+
+  return map;
+}
+
+function renderWithAnimation() {
+  const first = getPositions(); // BEFORE DOM update
+
+  render(); // ✅ IMPORTANT FIX (was recursive before)
 
   requestAnimationFrame(() => {
     document.querySelectorAll(".count-card").forEach(el => {
