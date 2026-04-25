@@ -241,12 +241,7 @@ items.forEach((item) => {
   });
 });
 
-  document.querySelectorAll(".count-card").forEach((card) => {
-   if (!newSet.has(card.dataset.id)) {
-      card.classList.add("exit");
-      setTimeout(() => card.remove(), 250);
-    }
-  });
+ 
 }
 
 /* ================= THEME CIRCLE FIX (ADDED) ================= */
