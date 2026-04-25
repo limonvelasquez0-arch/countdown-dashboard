@@ -192,6 +192,9 @@ if (!Array.isArray(items)) {
   save();
 }
 
+  function save() {
+  localStorage.setItem("counts", JSON.stringify(items));
+}
 /* ================= RENDER ================= */
 function render() {
   dashboard.innerHTML = "";
