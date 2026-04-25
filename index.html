@@ -176,19 +176,23 @@ const defaultCounts = [
 "https://count.live/?date=2026-04-23T18%3A00%3A00-07%3A00&title=Beta%20Access"
 ];
 
-let items = JSON.parse(localStorage.getItem("counts") || "null");
+let items = JSON.parse(localStorage.getItem("counts"));
 
 if (!Array.isArray(items)) {
   items = defaultCounts.map(url => ({
     id: crypto.randomUUID(),
     url
   }));
-  save();
+}
+
+  function save() {
+  localStorage.setItem("counts", JSON.stringify(items));
 }
 
 /* ================= RENDER ================= */
 function render() {
   dashboard.innerHTML = "";
+  const currentIds = new Set(items.map(i => i.id));
 
   items.forEach((item) => {
     const card = document.createElement("div");
@@ -211,8 +215,13 @@ function render() {
 
     card.appendChild(iframe);
     card.appendChild(del);
-    dashboard.appendChild(card);
+    const currentIds = new Set(items.map(i => i.id));
   });
+  document.querySelectorAll(".count-card").forEach(card => {
+  if (!currentIds.has(card.dataset.id)) {
+    card.remove();
+  }
+});
 }
 
 /* ================= THEME CIRCLE FIX (ADDED) ================= */
