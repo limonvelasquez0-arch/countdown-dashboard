@@ -371,7 +371,7 @@ const savedTheme = localStorage.getItem("theme");
 if (savedTheme) {
   applyTheme(JSON.parse(savedTheme));
 }
-/* ================= CLEAN ANIMATION SYSTEM ================= */
+/* ================= CLEAN INITIAL LOAD ================= */
 
 function getPositions() {
   const map = new Map();
@@ -383,10 +383,11 @@ function getPositions() {
   return map;
 }
 
+/* FIXED: render without animation dependency */
 function renderWithAnimation() {
-  const first = getPositions(); // BEFORE DOM update
+  const first = getPositions();
 
-  render(); // update UI first
+  render();
 
   requestAnimationFrame(() => {
     document.querySelectorAll(".count-card").forEach(el => {
@@ -411,7 +412,7 @@ function renderWithAnimation() {
   });
 }
 
-/* INITIAL LOAD */
+/* INITIAL RENDER */
 render();
 </script>
 
