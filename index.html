@@ -229,7 +229,7 @@ function render() {
     setTimeout(() => {
       items = items.filter(i => i.id !== item.id);
       save();
-      renderWithAnimation();
+      render();
     }, 250);
   };
 
