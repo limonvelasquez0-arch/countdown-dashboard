@@ -161,7 +161,7 @@ exitBtn.addEventListener("click", exitAdjust);
 
 /* ===== DRAG ===== */
 
-document.addEventListener("mousedown", (e) => {
+document.body.addEventListener("mousedown", (e) => {
   if (!adjusting) return;
 
   // 🔥 DO NOT BLOCK ANY UI ELEMENT AT ALL
@@ -172,7 +172,7 @@ document.addEventListener("mousedown", (e) => {
   startY = e.clientY;
 });
 
-document.addEventListener("mousemove", (e) => {
+document.body.addEventListener("mousemove", (e) => {
   if (!adjusting || !isDragging) return;
 
   if (e.target.closest("button, a, input, .bg-panel, .top-buttons")) return;
