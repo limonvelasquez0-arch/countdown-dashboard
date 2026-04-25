@@ -6,7 +6,29 @@
 <title>Countdown Dashboard</title>
 <link rel="stylesheet" href="style.css">
 </head>
+  
+<script>
+/* ===== LOAD SAVED BACKGROUND ===== */
+const savedBg = localStorage.getItem("customBg");
+if (savedBg) {
+  document.body.style.background = `url(${savedBg}) center/cover no-repeat fixed`;
+}
 
+/* ===== BUTTON FUNCTION ===== */
+document.getElementById("bg-btn").addEventListener("click", (e) => {
+  e.preventDefault();
+
+  const url = prompt("Paste image URL:");
+
+  if (!url) return;
+
+  document.body.style.background = `url(${url}) center/cover no-repeat fixed`;
+
+  /* save for this user */
+  localStorage.setItem("customBg", url);
+});
+</script>
+  
 <body>
 
 <div class="top-buttons">
