@@ -197,53 +197,53 @@ function render() {
 
   const newSet = new Set();
 
- items.forEach((item) => {
+items.forEach((item) => {
 
-    newSet.add(String(index));
+  newSet.add(item.id);
 
-   let card = existingCards.get(item.id);
-   
-if (card) {
-  const iframe = card.querySelector("iframe");
-  if (iframe && iframe.src !== url) {
-    iframe.src = url; // force refresh if needed
+  let card = existingCards.get(item.id);
+
+  if (card) {
+    const iframe = card.querySelector("iframe");
+    if (iframe && iframe.src !== item.url) {
+      iframe.src = item.url;
+    }
+    return;
   }
-  return;
-}
 
-    card = document.createElement("div");
-    card.className = "count-card enter";
-    card.dataset.id = item.id;
-    card.draggable = true;
+  card = document.createElement("div");
+  card.className = "count-card enter";
+  card.dataset.id = item.id;
+  card.draggable = true;
 
-    const iframe = document.createElement("iframe");
-    iframe.src = url;
+  const iframe = document.createElement("iframe");
+  iframe.src = item.url;
 
-    const del = document.createElement("button");
-    del.className = "delete-btn";
-    del.innerText = "✕";
+  const del = document.createElement("button");
+  del.className = "delete-btn";
+  del.innerText = "✕";
 
-    del.onclick = () => {
-      card.classList.add("exit");
+  del.onclick = () => {
+    card.classList.add("exit");
 
-      setTimeout(() => {
-        items = items.filter(i => i.id !== item.id);
-        save();
-        render();
-      }, 250);
-    };
+    setTimeout(() => {
+      items = items.filter(i => i.id !== item.id);
+      save();
+      render();
+    }, 250);
+  };
 
-    card.addEventListener("dragstart", () => card.classList.add("dragging"));
-    card.addEventListener("dragend", () => card.classList.remove("dragging"));
+  card.addEventListener("dragstart", () => card.classList.add("dragging"));
+  card.addEventListener("dragend", () => card.classList.remove("dragging"));
 
-    card.appendChild(iframe);
-    card.appendChild(del);
-    dashboard.appendChild(card);
+  card.appendChild(iframe);
+  card.appendChild(del);
+  dashboard.appendChild(card);
 
-    requestAnimationFrame(() => {
-      card.classList.remove("enter");
-    });
+  requestAnimationFrame(() => {
+    card.classList.remove("enter");
   });
+});
 
   document.querySelectorAll(".count-card").forEach((card) => {
     if (!newSet.has(card.dataset.index)) {
