@@ -64,6 +64,11 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
+  console.log("SCRIPT LOADED");
+
+document.getElementById("bg-btn")?.addEventListener("click", () => {
+  console.log("BG CLICKED");
+});
 
 /* ================= DOM ================= */
 const dashboard = document.getElementById("dashboard");
