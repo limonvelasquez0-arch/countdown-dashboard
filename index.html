@@ -112,92 +112,131 @@ document.addEventListener("DOMContentLoaded", () => {
   const exitBtn = document.getElementById("exit-adjust");
 
   let adjusting = false;
-  let isDragging = false;
+let isDragging = false;
 
-  let startX = 0;
-  let startY = 0;
+let startX = 0;
+let startY = 0;
 
-  let bgPosX = 50;
-  let bgPosY = 50;
+let bgPosX = 50;
+let bgPosY = 50;
 
-  const savedPos = localStorage.getItem("bgPosition");
-  if (savedPos) {
-    const pos = JSON.parse(savedPos);
-    bgPosX = pos.x;
-    bgPosY = pos.y;
-    document.body.style.backgroundPosition = `${bgPosX}% ${bgPosY}%`;
-  }
+let bgZoom = 100;
+let bgRotate = 0;
 
-  /* ===== ADJUST MODE ===== */
+const zoomSlider = document.getElementById("zoom-slider");
+const rotateSlider = document.getElementById("rotate-slider");
+const exitBtn = document.getElementById("exit-adjust");
 
-  function enterAdjust() {
-    adjusting = true;
-    document.body.classList.add("adjusting");
-    adjustBtn.classList.add("active");
-    exitBtn.classList.add("show");
-    menu.classList.remove("open"); // hide panel while adjusting
-  }
+const savedPos = localStorage.getItem("bgPosition");
+if (savedPos) {
+  const pos = JSON.parse(savedPos);
+  bgPosX = pos.x;
+  bgPosY = pos.y;
+}
 
-  function exitAdjust() {
-    adjusting = false;
-    document.body.classList.remove("adjusting");
-    adjustBtn.classList.remove("active");
-    exitBtn.classList.remove("show");
-  }
+function updateBackground() {
+  document.body.style.backgroundPosition = `${bgPosX}% ${bgPosY}%`;
+  document.body.style.backgroundSize = `${bgZoom}%`;
+  document.body.style.transform = `rotate(${bgRotate}deg)`;
+}
 
-  adjustBtn.addEventListener("click", () => {
-    if (adjusting) {
-      exitAdjust();
-    } else {
-      enterAdjust();
-    }
-  });
+/* ===== ENTER / EXIT ===== */
 
-  exitBtn.addEventListener("click", exitAdjust);
+function enterAdjust() {
+  adjusting = true;
+  document.body.classList.add("adjusting");
+}
 
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && adjusting) {
-      exitAdjust();
-    }
-  });
+function exitAdjust() {
+  adjusting = false;
+  document.body.classList.remove("adjusting");
+}
 
-  document.addEventListener("mousedown", (e) => {
-    if (!adjusting) return;
+/* buttons */
+adjustBtn.addEventListener("click", () => {
+  adjusting ? exitAdjust() : enterAdjust();
+});
 
-    isDragging = true;
-    startX = e.clientX;
-    startY = e.clientY;
-  });
+exitBtn.addEventListener("click", exitAdjust);
 
-  document.addEventListener("mousemove", (e) => {
-    if (!adjusting || !isDragging) return;
+/* ===== DRAG ===== */
 
-    const dx = e.clientX - startX;
-    const dy = e.clientY - startY;
+document.addEventListener("mousedown", (e) => {
+  if (!adjusting) return;
+  isDragging = true;
+  startX = e.clientX;
+  startY = e.clientY;
+});
 
-    startX = e.clientX;
-    startY = e.clientY;
+document.addEventListener("mousemove", (e) => {
+  if (!adjusting || !isDragging) return;
 
-    bgPosX += dx * 0.1;
-    bgPosY += dy * 0.1;
+  const dx = e.clientX - startX;
+  const dy = e.clientY - startY;
 
-    bgPosX = Math.max(0, Math.min(100, bgPosX));
-    bgPosY = Math.max(0, Math.min(100, bgPosY));
+  startX = e.clientX;
+  startY = e.clientY;
 
-    document.body.style.backgroundPosition = `${bgPosX}% ${bgPosY}%`;
-  });
+  bgPosX += dx * 0.1;
+  bgPosY += dy * 0.1;
 
-  document.addEventListener("mouseup", () => {
-    if (!adjusting) return;
+  bgPosX = Math.max(0, Math.min(100, bgPosX));
+  bgPosY = Math.max(0, Math.min(100, bgPosY));
 
-    isDragging = false;
+  updateBackground();
+});
 
-    localStorage.setItem("bgPosition", JSON.stringify({
-      x: bgPosX,
-      y: bgPosY
-    }));
-  });
+document.addEventListener("mouseup", () => {
+  if (!adjusting) return;
 
+  isDragging = false;
+
+  localStorage.setItem("bgPosition", JSON.stringify({
+    x: bgPosX,
+    y: bgPosY,
+    zoom: bgZoom,
+    rotate: bgRotate
+  }));
+});
+
+/* ===== ZOOM (SCROLL) ===== */
+
+document.addEventListener("wheel", (e) => {
+  if (!adjusting) return;
+
+  bgZoom += e.deltaY * -0.05;
+  bgZoom = Math.max(50, Math.min(200, bgZoom));
+
+  zoomSlider.value = bgZoom;
+  updateBackground();
+});
+
+/* ===== SLIDERS ===== */
+
+zoomSlider.addEventListener("input", () => {
+  bgZoom = zoomSlider.value;
+  updateBackground();
+});
+
+rotateSlider.addEventListener("input", () => {
+  bgRotate = rotateSlider.value;
+  updateBackground();
+});
+
+/* LOAD FULL STATE */
+if (savedPos) {
+  const pos = JSON.parse(savedPos);
+
+  bgPosX = pos.x || 50;
+  bgPosY = pos.y || 50;
+  bgZoom = pos.zoom || 100;
+  bgRotate = pos.rotate || 0;
+
+  zoomSlider.value = bgZoom;
+  rotateSlider.value = bgRotate;
+
+  updateBackground();
+}
   /* ===== MENU ===== */
 
   btn.addEventListener("click", (e) => {
