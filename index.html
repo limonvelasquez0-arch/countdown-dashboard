@@ -86,7 +86,7 @@ const editBtn = document.getElementById("edit-btn");
 
 let editMode = false;
 
-/* ================= THEMES ================= */
+/* ================= THEME FIX (ADDED) ================= */
 const themes = {
   default: {
     bg: "#0f0f14",
@@ -95,31 +95,51 @@ const themes = {
   },
 
   midnight: {
-    bg: `radial-gradient(circle at 50% 50%, #1e2a44, #070a12)`,
+    bg: `
+      radial-gradient(circle at 20% 30%, #1f2a44, transparent 60%),
+      radial-gradient(circle at 80% 70%, #0b1020, transparent 65%),
+      #070a12
+    `,
     accent: "#7aa2ff",
     animated: true
   },
 
   violet: {
-    bg: `radial-gradient(circle at 50% 50%, #3b2a5a, #080611)`,
+    bg: `
+      radial-gradient(circle at 30% 20%, #3b2a5a, transparent 60%),
+      radial-gradient(circle at 70% 80%, #1a1428, transparent 65%),
+      #080611
+    `,
     accent: "#b39df3",
     animated: true
   },
 
   deepblue: {
-    bg: `radial-gradient(circle at 50% 50%, #1a3a6b, #050a12)`,
+    bg: `
+      radial-gradient(circle at 25% 25%, #1a3a6b, transparent 60%),
+      radial-gradient(circle at 75% 75%, #0a1626, transparent 65%),
+      #050a12
+    `,
     accent: "#6fb6ff",
     animated: true
   },
 
   dusk: {
-    bg: `radial-gradient(circle at 50% 50%, #4a2a5e, #07050c)`,
+    bg: `
+      radial-gradient(circle at 30% 30%, #4a2a5e, transparent 60%),
+      radial-gradient(circle at 70% 70%, #1b1024, transparent 65%),
+      #07050c
+    `,
     accent: "#c49bff",
     animated: true
   },
 
   emerald: {
-    bg: `radial-gradient(circle at 50% 50%, #1f4a3a, #050b09)`,
+    bg: `
+      radial-gradient(circle at 20% 30%, #1f4a3a, transparent 60%),
+      radial-gradient(circle at 80% 70%, #0a1f18, transparent 65%),
+      #050b09
+    `,
     accent: "#5fd6a6",
     animated: true
   }
@@ -129,7 +149,8 @@ function applyTheme(theme) {
   document.body.classList.remove("animated-bg");
 
   document.body.style.background = theme.bg;
-  document.body.style.backgroundSize = "200% 200%";
+  document.body.style.backgroundSize = "250% 250%";
+  document.body.style.backgroundRepeat = "no-repeat";
   document.body.style.backgroundAttachment = "fixed";
 
   document.documentElement.style.setProperty("--accent", theme.accent);
@@ -143,11 +164,11 @@ function applyTheme(theme) {
   localStorage.setItem("theme", JSON.stringify(theme));
 }
 
-/* ================= DATA ================= */
+/* ================= DEFAULT DATA ================= */
 const defaultCounts = [
-"https://count.live/?date=2026-04-29T01%3A00%3A00-07%3A00",
-"https://count.live/?date=2026-05-13T15%3A00%3A00-07%3A00",
-"https://count.live/?date=2026-04-23T18%3A00%3A00-07%3A00"
+"https://count.live/?date=2026-04-29T01%3A00%3A00-07%3A00&title=Heidemarie%20(CZN)&font=display&bgimg=https%3A%2F%2Fblog.prydwen.gg%2Fwp-content%2Fuploads%2F2026%2F04%2Fmaxresdefault-2.webp&units=w,d,h,m,s&showtz=1&progress=1&percent=1&start=2026-04-20T00%3A00%3A00-07%3A00&tz=America%2FTijuana",
+"https://count.live/?date=2026-05-13T15%3A00%3A00-07%3A00&title=Evanescia%20(HSR)&font=display&bgimg=https%3A%2F%2Fi.redd.it%2Fwith-the-design-reveal-of-evanescia-and-sparxie-it-feels-v0-1cu4wje40ndg1.jpg",
+"https://count.live/?date=2026-04-23T18%3A00%3A00-07%3A00&title=Beta%20Access"
 ];
 
 let items = JSON.parse(localStorage.getItem("counts"));
@@ -157,14 +178,25 @@ function save() {
   localStorage.setItem("counts", JSON.stringify(items));
 }
 
-/* ================= RENDER (NO LAYOUT SHIFT FIX) ================= */
+/* ================= RENDER ================= */
 function render() {
 
-  dashboard.innerHTML = "";
+  const existingCards = new Map();
+
+  document.querySelectorAll(".count-card").forEach((card) => {
+    existingCards.set(card.dataset.index, card);
+  });
+
+  const newSet = new Set();
 
   items.forEach((url, index) => {
 
-    const card = document.createElement("div");
+    newSet.add(String(index));
+
+    let card = existingCards.get(String(index));
+    if (card) return;
+
+    card = document.createElement("div");
     card.className = "count-card enter";
     card.dataset.index = index;
     card.draggable = true;
@@ -183,7 +215,7 @@ function render() {
         items.splice(index, 1);
         save();
         render();
-      }, 220);
+      }, 250);
     };
 
     card.addEventListener("dragstart", () => card.classList.add("dragging"));
@@ -193,11 +225,41 @@ function render() {
     card.appendChild(del);
     dashboard.appendChild(card);
 
-    requestAnimationFrame(() => card.classList.remove("enter"));
+    requestAnimationFrame(() => {
+      card.classList.remove("enter");
+    });
+  });
+
+  document.querySelectorAll(".count-card").forEach((card) => {
+    if (!newSet.has(card.dataset.index)) {
+      card.classList.add("exit");
+      setTimeout(() => card.remove(), 250);
+    }
   });
 }
 
-/* ================= DRAG ================= */
+/* ================= THEME CIRCLE FIX (ADDED) ================= */
+document.querySelectorAll(".theme-circle").forEach(circle => {
+  const themeName = circle.dataset.theme;
+
+  // give preview color so they are not blank
+  const preview = {
+    default: "#6366f1",
+    midnight: "#38bdf8",
+    violet: "#a78bfa",
+    deepblue: "#60a5fa",
+    dusk: "#c084fc",
+    emerald: "#34d399"
+  };
+
+  circle.style.background = preview[themeName];
+
+  circle.onclick = () => {
+    applyTheme(themes[themeName]);
+  };
+});
+
+/* drag reorder */
 dashboard.addEventListener("dragover", (e) => {
   if (!editMode) return;
   e.preventDefault();
@@ -205,8 +267,11 @@ dashboard.addEventListener("dragover", (e) => {
   const dragging = document.querySelector(".dragging");
   const after = getAfterElement(dashboard, e.clientY);
 
-  if (after == null) dashboard.appendChild(dragging);
-  else dashboard.insertBefore(dragging, after);
+  if (after == null) {
+    dashboard.appendChild(dragging);
+  } else {
+    dashboard.insertBefore(dragging, after);
+  }
 });
 
 function getAfterElement(container, y) {
@@ -223,13 +288,19 @@ function getAfterElement(container, y) {
   }, { offset: Number.NEGATIVE_INFINITY }).element;
 }
 
-/* ================= UI ================= */
-editBtn.onclick = () => {
+/* EDIT MODE */
+editBtn.onclick = (e) => {
+  e.preventDefault();
   editMode = !editMode;
   document.body.classList.toggle("edit-mode", editMode);
 };
 
-addBtn.onclick = () => countMenu.classList.add("open");
+/* ADD */
+addBtn.onclick = (e) => {
+  e.preventDefault();
+  countMenu.classList.add("open");
+};
+
 closeCount.onclick = () => countMenu.classList.remove("open");
 
 addCount.onclick = () => {
@@ -238,13 +309,24 @@ addCount.onclick = () => {
 
   items.push(url);
   save();
+
   countInput.value = "";
   countMenu.classList.remove("open");
+
   render();
 };
 
-bgBtn.onclick = () => bgMenu.classList.add("open");
+/* BG */
+bgBtn.onclick = (e) => {
+  e.preventDefault();
+  bgMenu.classList.add("open");
+};
+
 closeBg.onclick = () => bgMenu.classList.remove("open");
+
+bgInput.addEventListener("input", () => {
+  bgPreview.style.backgroundImage = `url(${bgInput.value})`;
+});
 
 applyBg.onclick = () => {
   const url = bgInput.value;
@@ -254,6 +336,7 @@ applyBg.onclick = () => {
     localStorage.setItem("customBg", url);
   }
 
+  // 🔥 ALWAYS close menu (even if empty)
   bgMenu.classList.remove("open");
 };
 
@@ -262,31 +345,17 @@ resetBg.onclick = () => {
   localStorage.removeItem("customBg");
 };
 
-/* ================= THEMES INIT ================= */
-document.querySelectorAll(".theme-circle").forEach(c => {
-  const name = c.dataset.theme;
-
-  const preview = {
-    default: "#6366f1",
-    midnight: "#7aa2ff",
-    violet: "#b39df3",
-    deepblue: "#6fb6ff",
-    dusk: "#c49bff",
-    emerald: "#5fd6a6"
-  };
-
-  c.style.background = preview[name];
-
-  c.onclick = () => applyTheme(themes[name]);
-});
-
-/* ================= LOAD ================= */
+/* LOAD BG */
 const savedBg = localStorage.getItem("customBg");
-if (savedBg) document.body.style.background = `url(${savedBg}) center/cover no-repeat fixed`;
-
+if (savedBg) {
+  document.body.style.background = `url(${savedBg}) center/cover no-repeat fixed`;
+}
+  
 const savedTheme = localStorage.getItem("theme");
-if (savedTheme) applyTheme(JSON.parse(savedTheme));
-
+if (savedTheme) {
+  applyTheme(JSON.parse(savedTheme));
+}
+  
 render();
 
 });
