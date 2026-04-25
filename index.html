@@ -176,25 +176,14 @@ const defaultCounts = [
 "https://count.live/?date=2026-04-23T18%3A00%3A00-07%3A00&title=Beta%20Access"
 ];
 
-let items = [];
+let items = JSON.parse(localStorage.getItem("counts") || "null");
 
-try {
-  const saved = JSON.parse(localStorage.getItem("counts"));
-
-  if (Array.isArray(saved) && saved.length > 0 && typeof saved[0] === "object") {
-    items = saved;
-  } else {
-    throw new Error("Invalid saved format");
-  }
-
-} catch (e) {
+if (!Array.isArray(items)) {
   items = defaultCounts.map(url => ({
     id: crypto.randomUUID(),
     url
   }));
-}
-function save() {
-  localStorage.setItem("counts", JSON.stringify(items));
+  save();
 }
 
 /* ================= RENDER ================= */
@@ -234,15 +223,11 @@ items.forEach((item) => {
   del.className = "delete-btn";
   del.innerText = "✕";
 
-  del.onclick = () => {
-    card.classList.add("exit");
-
-    setTimeout(() => {
-      items = items.filter(i => i.id !== item.id);
-      save();
-      render();
-    }, 250);
-  };
+ del.onclick = () => {
+  items = items.filter(i => i.id !== item.id);
+  save();
+  render();
+};
 
   card.addEventListener("dragstart", () => card.classList.add("dragging"));
   card.addEventListener("dragend", () => card.classList.remove("dragging"));
@@ -334,9 +319,9 @@ addCount.onclick = () => {
   if (!url) return;
 
   items.push({
-    id: crypto.randomUUID(),
-    url: url
-  });
+  id: crypto.randomUUID(),
+  url
+});
 
   save();
 
