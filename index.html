@@ -135,17 +135,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ================= APPLY IMAGE ================= */
 
-  apply.addEventListener("click", () => {
-    const url = input.value;
-    if (!url) return;
+  apply.addEventListener("click", (e) => {
+  e.preventDefault(); /* 🔥 stops any weird behavior */
 
-    document.body.style.background = `url(${url}) center/cover no-repeat fixed`;
+  const url = input.value;
+  if (!url) return;
 
-    localStorage.setItem("customBg", url);
-    localStorage.removeItem("themeData");
+  document.body.style.background = `url(${url}) center/cover no-repeat fixed`;
 
-    menu.classList.remove("open"); /* 🔥 CLOSE AFTER APPLY */
-  });
+  localStorage.setItem("customBg", url);
+  localStorage.removeItem("themeData");
+
+  /* 🔥 FORCE CLOSE */
+  menu.classList.remove("open");
+});
 
   /* ================= RESET ================= */
 
