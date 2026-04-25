@@ -28,6 +28,8 @@ html {
   justify-content: start;
   gap: 20px;
   padding: 80px 20px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 /* ================= PANELS ================= */
