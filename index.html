@@ -136,7 +136,8 @@ document.addEventListener("DOMContentLoaded", () => {
   /* ================= APPLY IMAGE ================= */
 
   apply.addEventListener("click", (e) => {
-  e.preventDefault(); /* 🔥 stops any weird behavior */
+  e.preventDefault();
+  e.stopPropagation(); // 🔥 stops overlay interference
 
   const url = input.value;
   if (!url) return;
@@ -146,8 +147,14 @@ document.addEventListener("DOMContentLoaded", () => {
   localStorage.setItem("customBg", url);
   localStorage.removeItem("themeData");
 
-  /* 🔥 FORCE CLOSE */
+  /* 🔥 HARD CLOSE (NO DEPENDENCE ON CLASS STATE) */
   menu.classList.remove("open");
+  menu.style.display = "none";
+
+  /* 🔥 FORCE REOPEN CLEAN NEXT TIME */
+  setTimeout(() => {
+    menu.style.display = "";
+  }, 10);
 });
 
   /* ================= RESET ================= */
