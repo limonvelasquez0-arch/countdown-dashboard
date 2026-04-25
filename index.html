@@ -224,8 +224,11 @@ items.forEach((item) => {
   del.innerText = "✕";
 
  del.onclick = () => {
-  items = items.filter(i => i.id !== item.id);
+  const id = card.dataset.id;
+
+  items = items.filter(i => i.id !== id);
   save();
+
   render();
 };
 
