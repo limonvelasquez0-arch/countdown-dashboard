@@ -315,6 +315,10 @@ addBtn.onclick = (e) => {
 
 closeCount.onclick = () => countMenu.classList.remove("open");
 
+function renderWithAnimation() {
+  render();
+}
+
 addCount.onclick = () => {
   const url = countInput.value.trim();
   if (!url) return;
