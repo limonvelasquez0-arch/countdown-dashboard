@@ -246,10 +246,15 @@ if (savedPos) {
 }
   /* ===== MENU ===== */
 
-  btn.addEventListener("click", (e) => {
-    e.preventDefault();
-    menu.classList.add("open");
-  });
+ btn.addEventListener("click", (e) => {
+  e.preventDefault();
+
+  // 🔥 force exit adjust mode if active
+  adjusting = false;
+  document.body.classList.remove("adjusting");
+
+  menu.classList.add("open");
+});
 
   closeBtn.addEventListener("click", () => {
     menu.classList.remove("open");
