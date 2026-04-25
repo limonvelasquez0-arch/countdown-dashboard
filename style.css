@@ -418,3 +418,21 @@ body.animated-bg {
 .delete-btn {
   box-shadow: 0 0 10px var(--accent-soft);
 }
+
+.count-card {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  transition: opacity 0.28s ease, transform 0.28s ease;
+}
+
+/* ENTRY animation */
+.count-card.enter {
+  opacity: 0;
+  transform: translateY(18px) scale(0.96);
+}
+
+/* EXIT animation */
+.count-card.exit {
+  opacity: 0;
+  transform: translateY(18px) scale(0.92) scaleX(0.98);
+}
