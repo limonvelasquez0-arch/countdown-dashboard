@@ -285,35 +285,26 @@ iframe:hover {
 
 body.animated-bg {
   background-size: 100% 100%;
-  animation: gradientMove 10s ease-in-out infinite;;
+  animation: gradientMove 12s ease-in-out infinite;
   overflow: hidden;
   position: relative;
 }
 
 @keyframes gradientMove {
   0% {
-    background-position: 0% 30%;
-  }
-  12% {
-    background-position: 20% 70%;
+    background-position: 50% 50%;
   }
   25% {
-    background-position: 80% 40%;
+    background-position: 55% 45%;
   }
-  40% {
-    background-position: 50% 90%;
+  50% {
+    background-position: 45% 55%;
   }
-  55% {
-    background-position: 100% 60%;
-  }
-  70% {
-    background-position: 60% 20%;
-  }
-  85% {
-    background-position: 10% 80%;
+  75% {
+    background-position: 52% 58%;
   }
   100% {
-    background-position: 0% 30%;
+    background-position: 50% 50%;
   }
 }
 /* ================= THEME TOOLTIP ================= */
