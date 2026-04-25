@@ -285,8 +285,8 @@ iframe:hover {
 /* ===== FIXED ANIMATED BACKGROUND ===== */
 
 body.animated-bg {
-  background-repeat: no-repeat;
-  background-size: 400% 400%; /* 🔥 BIG = no tiling */
+  background-size: 300% 300%;  /* big enough to animate smoothly */
+  background-repeat: no-repeat; /* 🔥 prevents tiling */
   animation: gradientMove 22s ease infinite;
 }
 
