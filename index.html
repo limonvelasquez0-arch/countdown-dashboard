@@ -10,27 +10,76 @@
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
-  /* LOAD SAVED BACKGROUND */
+  const menu = document.getElementById("bg-menu");
+  const btn = document.getElementById("bg-btn");
+  const input = document.getElementById("bg-input");
+  const preview = document.getElementById("bg-preview");
+
+  const apply = document.getElementById("apply-bg");
+  const reset = document.getElementById("reset-bg");
+
+  const circles = document.querySelectorAll(".theme-circle");
+
+  /* ===== OPEN MENU ===== */
+  btn.addEventListener("click", (e) => {
+    e.preventDefault();
+    menu.classList.add("open");
+  });
+
+  /* ===== CLOSE ON OUTSIDE CLICK ===== */
+  menu.addEventListener("click", (e) => {
+    if (e.target === menu) {
+      menu.classList.remove("open");
+    }
+  });
+
+  /* ===== PREVIEW IMAGE ===== */
+  input.addEventListener("input", () => {
+    preview.style.backgroundImage = `url(${input.value})`;
+  });
+
+  /* ===== APPLY IMAGE ===== */
+  apply.addEventListener("click", () => {
+    const url = input.value;
+    if (!url) return;
+
+    document.body.style.background = `url(${url}) center/cover no-repeat fixed`;
+    localStorage.setItem("customBg", url);
+
+    menu.classList.remove("open");
+  });
+
+  /* ===== RESET ===== */
+  reset.addEventListener("click", () => {
+    document.body.style.background = "#0f0f14";
+    localStorage.removeItem("customBg");
+    localStorage.removeItem("themeColor");
+
+    menu.classList.remove("open");
+  });
+
+  /* ===== THEMES ===== */
+  circles.forEach(c => {
+    c.style.background = c.dataset.color;
+
+    c.addEventListener("click", () => {
+      const color = c.dataset.color;
+
+      document.body.style.background = color;
+
+      localStorage.setItem("themeColor", color);
+      localStorage.removeItem("customBg");
+    });
+  });
+
+  /* ===== LOAD SAVED ===== */
   const savedBg = localStorage.getItem("customBg");
+  const savedColor = localStorage.getItem("themeColor");
+
   if (savedBg) {
     document.body.style.background = `url(${savedBg}) center/cover no-repeat fixed`;
-  }
-
-  /* BUTTON CLICK */
-  const btn = document.getElementById("bg-btn");
-
-  if (btn) {
-    btn.addEventListener("click", (e) => {
-      e.preventDefault();
-
-      const url = prompt("Paste image URL:");
-
-      if (!url) return;
-
-      document.body.style.background = `url(${url}) center/cover no-repeat fixed`;
-
-      localStorage.setItem("customBg", url);
-    });
+  } else if (savedColor) {
+    document.body.style.background = savedColor;
   }
 
 });
