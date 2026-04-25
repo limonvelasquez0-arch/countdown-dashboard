@@ -106,9 +106,10 @@ document.addEventListener("DOMContentLoaded", () => {
   function applyTheme(theme) {
   document.body.style.background = theme.bg;
 
-  /* 🔥 FIX MOSAIC FOR GRADIENTS */
+  /* 🔥 CRITICAL FIX */
   document.body.style.backgroundSize = "200% 200%";
   document.body.style.backgroundRepeat = "no-repeat";
+  document.body.style.backgroundAttachment = "fixed";
 
   document.documentElement.style.setProperty("--accent", theme.accent);
   document.documentElement.style.setProperty("--accent-soft", theme.accent + "33");
