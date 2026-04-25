@@ -4,10 +4,10 @@ body {
   overflow-x: hidden;
 
   background-color: #0f0f14;
-  background-size: cover;        /* 🔥 FIX mosaic */
+  background-size: cover;
   background-position: center;
-  background-repeat: no-repeat;  /* 🔥 FIX mosaic */
   background-attachment: fixed;
+  background-repeat: no-repeat; /* 🔥 FIX MOSAIC */
 }
 
 /* DASHBOARD */
@@ -60,11 +60,18 @@ iframe:hover {
 
 .top-btn:hover {
   background: rgba(59,130,246,0.35);
-  border-color: var(--accent);
-  box-shadow: 0 0 12px var(--accent-soft);
+  border-color: rgba(147,197,253,0.8);
+  box-shadow:
+    0 0 10px rgba(59,130,246,0.4),
+    0 0 20px rgba(99,102,241,0.25);
 }
 
 /* MENU */
+:root {
+  --accent: #6366f1;
+  --accent-soft: rgba(99,102,241,0.25);
+}
+
 .bg-menu {
   position: fixed;
   inset: 0;
@@ -78,24 +85,25 @@ iframe:hover {
 .bg-menu.open { display: flex; }
 
 .bg-panel {
-  background: rgba(20,20,30,0.7);
+  background: rgba(20,20,30,0.65);
   backdrop-filter: blur(18px);
-  color: white;
+  color: #e5e7eb;
   padding: 22px;
   border-radius: 16px;
   width: 320px;
   border: 1px solid rgba(255,255,255,0.06);
 
-  /* 🔥 slightly stronger theme response */
+  /* 🔥 slightly stronger but still subtle */
   box-shadow:
     0 8px 25px rgba(0,0,0,0.4),
-    0 0 30px var(--accent-soft);
+    0 0 28px var(--accent-soft);
 }
 
-/* ANIMATED BG FIX */
+/* ANIMATED BG */
 body.animated-bg {
-  background-size: 200% 200%;  /* 🔥 prevents tiling */
-  animation: gradientMove 25s ease infinite;
+  background-size: 200% 200%;
+  background-repeat: no-repeat;
+  animation: gradientMove 22s ease infinite;
 }
 
 @keyframes gradientMove {
