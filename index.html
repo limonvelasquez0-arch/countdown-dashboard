@@ -289,7 +289,7 @@ dashboard.addEventListener("dragover", (e) => {
 function getAfterElement(container, y) {
   const elements = [...container.querySelectorAll(".count-card:not(.dragging)")];
 
-  return elements.reduce((closest, child) => {
+  const result = elements.reduce((closest, child) => {
     const box = child.getBoundingClientRect();
     const offset = y - box.top - box.height / 2;
 
@@ -297,7 +297,9 @@ function getAfterElement(container, y) {
       return { offset, element: child };
     }
     return closest;
-  }, { offset: Number.NEGATIVE_INFINITY }).element;
+  }, { offset: Number.NEGATIVE_INFINITY, element: null });
+
+  return result.element;
 }
 
 /* EDIT MODE */
