@@ -8,24 +8,31 @@
 </head>
   
 <script>
-/* ===== LOAD SAVED BACKGROUND ===== */
-const savedBg = localStorage.getItem("customBg");
-if (savedBg) {
-  document.body.style.background = `url(${savedBg}) center/cover no-repeat fixed`;
-}
+document.addEventListener("DOMContentLoaded", () => {
 
-/* ===== BUTTON FUNCTION ===== */
-document.getElementById("bg-btn").addEventListener("click", (e) => {
-  e.preventDefault();
+  /* LOAD SAVED BACKGROUND */
+  const savedBg = localStorage.getItem("customBg");
+  if (savedBg) {
+    document.body.style.background = `url(${savedBg}) center/cover no-repeat fixed`;
+  }
 
-  const url = prompt("Paste image URL:");
+  /* BUTTON CLICK */
+  const btn = document.getElementById("bg-btn");
 
-  if (!url) return;
+  if (btn) {
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
 
-  document.body.style.background = `url(${url}) center/cover no-repeat fixed`;
+      const url = prompt("Paste image URL:");
 
-  /* save for this user */
-  localStorage.setItem("customBg", url);
+      if (!url) return;
+
+      document.body.style.background = `url(${url}) center/cover no-repeat fixed`;
+
+      localStorage.setItem("customBg", url);
+    });
+  }
+
 });
 </script>
   
