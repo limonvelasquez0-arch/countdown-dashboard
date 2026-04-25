@@ -40,28 +40,46 @@ iframe:hover {
     0 0 30px rgba(167, 139, 250, 0.15);
 }
 
-/* ================= GITHUB BUTTON ================= */
+/* ================= TOP RIGHT BUTTON STACK ================= */
 
-.github-btn {
+.top-buttons {
   position: fixed;
   top: 15px;
   right: 15px;
   z-index: 2000;
 
-  background: rgba(255,255,255,0.1);
-  backdrop-filter: blur(10px);
-
-  color: white;
-  text-decoration: none;
-  padding: 10px 16px;
-
-  border-radius: 10px;
-  font-size: 14px;
-
-  transition: 0.25s ease;
+  display: flex;
+  flex-direction: column; /* 🔥 vertical stack */
+  gap: 10px;
 }
 
-.github-btn:hover {
-  background: rgba(255,255,255,0.2);
+/* ================= BUTTON STYLE ================= */
+
+.top-btn {
+  background: rgba(30, 64, 175, 0.25); /* modern blue glass */
+  backdrop-filter: blur(10px);
+
+  color: #c7d2fe; /* soft blue text */
+  text-decoration: none;
+
+  padding: 10px 16px;
+  border-radius: 10px;
+
+  font-size: 14px;
+  border: 1px solid rgba(99, 102, 241, 0.3);
+
+  transition: all 0.25s ease;
+}
+
+/* 🔥 HOVER EFFECT */
+.top-btn:hover {
+  background: rgba(59, 130, 246, 0.35);
+
+  border-color: rgba(147, 197, 253, 0.8);
+
+  box-shadow:
+    0 0 10px rgba(59, 130, 246, 0.4),
+    0 0 20px rgba(99, 102, 241, 0.25);
+
   transform: translateY(-2px);
 }
