@@ -63,10 +63,9 @@
 </div>
   
 <script>
-  
 document.addEventListener("DOMContentLoaded", () => {
 
-/* ================= THEME SYSTEM (MUST COME FIRST) ================= */
+/* ================= THEME SYSTEM ================= */
 
 const themes = {
   default: {
@@ -162,7 +161,7 @@ const editBtn = document.getElementById("edit-btn");
 
 let editMode = false;
 
-/* ================= LOAD THEME SAFELY ================= */
+/* ================= LOAD THEME ================= */
 
 const savedTheme = localStorage.getItem("theme");
 if (savedTheme) applyTheme(savedTheme);
@@ -191,7 +190,6 @@ function render() {
     const card = document.createElement("div");
     card.className = "count-card";
     card.dataset.index = index;
-    card.draggable = true;
 
     const iframe = document.createElement("iframe");
     iframe.src = url;
@@ -201,13 +199,9 @@ function render() {
     del.innerText = "✕";
 
     del.onclick = () => {
-      card.classList.add("exit");
-
-      setTimeout(() => {
-        items.splice(index, 1);
-        save();
-        render();
-      }, 200);
+      items.splice(index, 1);
+      save();
+      render();
     };
 
     card.appendChild(iframe);
@@ -273,11 +267,13 @@ const savedBg = localStorage.getItem("customBg");
 if (savedBg) {
   document.body.style.background = `url(${savedBg}) center/cover no-repeat fixed`;
 }
-  
+
 /* ================= INIT ================= */
+
 render();
-</script>
+
 });
+</script>
 
 </body>
 </html>
