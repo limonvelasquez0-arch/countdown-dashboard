@@ -284,22 +284,34 @@ iframe:hover {
 /* ================= BACKGROUND ANIMATION FIX ================= */
 
 body.animated-bg {
-  background-size: 250% 250%;
-  animation: softBreath 22s ease-in-out infinite;
+  background-size: 220% 220%;
+  animation: deepBreath 16s ease-in-out infinite;
 }
 
-@keyframes softBreath {
+@keyframes deepBreath {
   0% {
-    background-position: 50% 50%;
-    filter: saturate(1) brightness(1);
+    background-position: 45% 50%;
+    filter: saturate(1) brightness(0.98);
   }
-  50% {
+
+  25% {
     background-position: 52% 48%;
-    filter: saturate(1.08) brightness(1.04);
+    filter: saturate(1.08) brightness(1.06);
   }
+
+  50% {
+    background-position: 55% 55%;
+    filter: saturate(1.02) brightness(0.96);
+  }
+
+  75% {
+    background-position: 48% 52%;
+    filter: saturate(1.1) brightness(1.08);
+  }
+
   100% {
-    background-position: 50% 50%;
-    filter: saturate(1) brightness(1);
+    background-position: 45% 50%;
+    filter: saturate(1) brightness(0.98);
   }
 }
 /* ================= THEME TOOLTIP ================= */
