@@ -154,7 +154,9 @@ function exitAdjust() {
 
 /* buttons */
 adjustBtn.addEventListener("click", () => {
-  adjusting ? exitAdjust() : enterAdjust();
+  adjusting = true;
+  document.body.classList.add("adjusting");
+  menu.classList.remove("open"); // enter adjust cleanly
 });
 
 exitBtn.addEventListener("click", exitAdjust);
@@ -251,7 +253,7 @@ if (savedPos) {
  btn.addEventListener("click", (e) => {
   e.preventDefault();
 
-  // 🔥 force exit adjust mode if active
+  // 🔥 FORCE EXIT ADJUST MODE
   adjusting = false;
   document.body.classList.remove("adjusting");
 
