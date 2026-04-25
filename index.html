@@ -102,12 +102,28 @@ function save() {
 
 /* ================= RENDER ================= */
 function render() {
-  dashboard.innerHTML = "";
+
+  const existingCards = new Map();
+
+  document.querySelectorAll(".count-card").forEach((card) => {
+    existingCards.set(card.dataset.index, card);
+  });
+
+  const newSet = new Set();
 
   items.forEach((url, index) => {
 
-    const card = document.createElement("div");
-    card.className = "count-card enter"; // 👈 entry animation
+    newSet.add(String(index));
+
+    let card = existingCards.get(String(index));
+
+    // 🔥 if card already exists → just update, DO NOT recreate
+    if (card) return;
+
+    // create new card only when needed
+    card = document.createElement("div");
+    card.className = "count-card enter";
+    card.dataset.index = index;
     card.draggable = true;
 
     const iframe = document.createElement("iframe");
@@ -118,14 +134,13 @@ function render() {
     del.innerText = "✕";
 
     del.onclick = () => {
-      // 👇 exit animation FIRST
       card.classList.add("exit");
 
       setTimeout(() => {
         items.splice(index, 1);
         save();
         render();
-      }, 250); // matches CSS transition time
+      }, 250);
     };
 
     card.addEventListener("dragstart", () => card.classList.add("dragging"));
@@ -135,13 +150,22 @@ function render() {
     card.appendChild(del);
     dashboard.appendChild(card);
 
-    // 👇 remove entry class AFTER insertion so animation plays
     requestAnimationFrame(() => {
       card.classList.remove("enter");
     });
   });
-}
 
+  // 🔥 REMOVE OLD CARDS SMOOTHLY (no flicker)
+  document.querySelectorAll(".count-card").forEach((card) => {
+    if (!newSet.has(card.dataset.index)) {
+      card.classList.add("exit");
+
+      setTimeout(() => {
+        card.remove();
+      }, 250);
+    }
+  });
+}
 /* drag reorder */
 dashboard.addEventListener("dragover", (e) => {
   if (!editMode) return;
