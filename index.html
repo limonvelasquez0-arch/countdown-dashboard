@@ -61,8 +61,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const reset = document.getElementById("reset-bg");
   const closeBtn = document.getElementById("close-menu");
 
-  /* ================= THEMES ================= */
-
   const themes = {
     default: {
       bg: "#0f0f14",
@@ -109,58 +107,44 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.removeItem("customBg");
   }
 
-  /* ================= MENU CONTROL ================= */
+  /* ===== MENU CONTROL ===== */
 
-/* ================= MENU CONTROL (FIXED) ================= */
+  btn.addEventListener("click", (e) => {
+    e.preventDefault();
+    menu.classList.add("open");
+  });
 
-/* OPEN MENU */
-btn.addEventListener("click", (e) => {
-  e.preventDefault();
-  menu.classList.add("open");
-});
-
-/* CLOSE WITH X */
-closeBtn.addEventListener("click", () => {
-  menu.classList.remove("open");
-});
-
-/* CLOSE WHEN CLICKING OUTSIDE */
-menu.addEventListener("click", (e) => {
-  if (e.target === menu) {
+  closeBtn.addEventListener("click", () => {
     menu.classList.remove("open");
-  }
-});
+  });
 
-  /* ================= PREVIEW ================= */
+  menu.addEventListener("click", (e) => {
+    if (!e.target.closest(".bg-panel")) {
+      menu.classList.remove("open");
+    }
+  });
+
+  /* ===== PREVIEW ===== */
 
   input.addEventListener("input", () => {
     preview.style.backgroundImage = `url(${input.value})`;
   });
 
-  /* ================= APPLY ================= */
+  /* ===== APPLY (FIXED) ===== */
 
-  apply.addEventListener("click", (e) => {
-  e.stopPropagation(); // 🔥 prevents menu click logic from interfering
+  apply.addEventListener("click", () => {
+    const url = input.value;
+    if (!url) return;
 
-  const url = input.value;
-  if (!url) return;
+    document.body.style.background = `url(${url}) center/cover no-repeat fixed`;
 
-  document.body.style.background = `url(${url}) center/cover no-repeat fixed`;
+    localStorage.setItem("customBg", url);
+    localStorage.removeItem("themeData");
 
-  localStorage.setItem("customBg", url);
-  localStorage.removeItem("themeData");
-
-  /* 🔥 HARD CLOSE */
-  menu.classList.remove("open");
-
-  /* 🔥 FORCE REPAINT (this is the real fix) */
-  menu.style.display = "none";
-
-  requestAnimationFrame(() => {
-    menu.style.display = "";
+    menu.classList.remove("open");
   });
-});
-  /* ================= RESET ================= */
+
+  /* ===== RESET ===== */
 
   reset.addEventListener("click", () => {
     document.body.style.background = "#0f0f14";
@@ -171,7 +155,7 @@ menu.addEventListener("click", (e) => {
     menu.classList.remove("open");
   });
 
-  /* ================= THEMES ================= */
+  /* ===== THEMES ===== */
 
   document.querySelectorAll(".theme-circle").forEach(c => {
     const theme = themes[c.dataset.theme];
@@ -182,7 +166,7 @@ menu.addEventListener("click", (e) => {
     });
   });
 
-  /* ================= LOAD SAVED ================= */
+  /* ===== LOAD ===== */
 
   const savedBg = localStorage.getItem("customBg");
   const savedTheme = localStorage.getItem("themeData");
