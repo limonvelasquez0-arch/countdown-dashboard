@@ -293,22 +293,10 @@ body.animated-bg {
     background-position: 50% 50%;
     filter: saturate(1) brightness(1);
   }
-
-  25% {
-    background-position: 52% 48%;
-    filter: saturate(1.05) brightness(1.03);
-  }
-
   50% {
-    background-position: 48% 52%;
-    filter: saturate(0.98) brightness(0.98);
+    background-position: 52% 48%;
+    filter: saturate(1.08) brightness(1.04);
   }
-
-  75% {
-    background-position: 51% 49%;
-    filter: saturate(1.02) brightness(1.01);
-  }
-
   100% {
     background-position: 50% 50%;
     filter: saturate(1) brightness(1);
