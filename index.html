@@ -88,6 +88,7 @@ body.adjusting::after {
   </div>
 </div>
 
+<!-- REPLACE ONLY YOUR <script> WITH THIS (everything else unchanged) -->
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -99,6 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const reset = document.getElementById("reset-bg");
   const closeBtn = document.getElementById("close-menu");
   const adjustBtn = document.getElementById("adjust-bg");
+  const exitBtn = document.getElementById("exit-adjust");
 
   let adjusting = false;
   let isDragging = false;
@@ -117,25 +119,42 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.style.backgroundPosition = `${bgPosX}% ${bgPosY}%`;
   }
 
-  /* 🔥 FIXED ADJUST BUTTON */
-  adjustBtn.addEventListener("click", () => {
-    adjusting = !adjusting;
+  /* ===== ADJUST MODE ===== */
 
-    document.body.classList.toggle("adjusting", adjusting);
-    adjustBtn.classList.toggle("active", adjusting);
+  function enterAdjust() {
+    adjusting = true;
+    document.body.classList.add("adjusting");
+    adjustBtn.classList.add("active");
+    exitBtn.classList.add("show");
+    menu.classList.remove("open"); // hide panel while adjusting
+  }
+
+  function exitAdjust() {
+    adjusting = false;
+    document.body.classList.remove("adjusting");
+    adjustBtn.classList.remove("active");
+    exitBtn.classList.remove("show");
+  }
+
+  adjustBtn.addEventListener("click", () => {
+    if (adjusting) {
+      exitAdjust();
+    } else {
+      enterAdjust();
+    }
   });
 
-  /* 🔥 EXIT WITH ESC */
+  exitBtn.addEventListener("click", exitAdjust);
+
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && adjusting) {
-      adjusting = false;
-      document.body.classList.remove("adjusting");
-      adjustBtn.classList.remove("active");
+      exitAdjust();
     }
   });
 
   document.addEventListener("mousedown", (e) => {
     if (!adjusting) return;
+
     isDragging = true;
     startX = e.clientX;
     startY = e.clientY;
@@ -170,6 +189,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }));
   });
 
+  /* ===== MENU ===== */
+
   btn.addEventListener("click", (e) => {
     e.preventDefault();
     menu.classList.add("open");
@@ -185,9 +206,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  /* ===== PREVIEW ===== */
+
   input.addEventListener("input", () => {
     preview.style.backgroundImage = `url(${input.value})`;
   });
+
+  /* ===== APPLY ===== */
 
   apply.addEventListener("click", () => {
     const url = input.value;
@@ -200,6 +225,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     menu.classList.remove("open");
   });
+
+  /* ===== RESET ===== */
 
   reset.addEventListener("click", () => {
     document.body.style.background = "#0f0f14";
