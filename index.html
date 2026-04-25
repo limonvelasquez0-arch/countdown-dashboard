@@ -29,7 +29,6 @@
 
 </div>
 
-<!-- ===== SETTINGS MODAL ===== -->
 <div class="bg-menu" id="bg-menu">
   <div class="bg-panel">
 
@@ -91,7 +90,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!url) return;
 
     document.body.style.backgroundImage = `url(${url})`;
-    document.body.classList.remove("animated-bg");
+    document.body.style.backgroundSize = "cover";
+    document.body.style.backgroundRepeat = "no-repeat";
 
     localStorage.setItem("customBg", url);
     localStorage.removeItem("themeData");
@@ -101,8 +101,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* RESET */
   reset.addEventListener("click", () => {
+    document.body.style.background = "#0f0f14";
     localStorage.clear();
-    location.reload();
+    menu.classList.remove("open");
   });
 
   /* THEMES */
@@ -115,7 +116,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function applyTheme(t) {
     document.body.style.backgroundImage = t.bg;
-    document.body.style.backgroundSize = "cover";
+    document.body.style.backgroundSize = "200% 200%"; /* 🔥 FIX MOSAIC */
     document.body.style.backgroundRepeat = "no-repeat";
 
     document.documentElement.style.setProperty("--accent", t.accent);
@@ -133,12 +134,14 @@ document.addEventListener("DOMContentLoaded", () => {
     c.addEventListener("click", () => applyTheme(themes[c.dataset.theme]));
   });
 
-  /* LOAD SAVED */
+  /* LOAD */
   const savedBg = localStorage.getItem("customBg");
   const savedTheme = localStorage.getItem("themeData");
 
   if (savedBg) {
     document.body.style.backgroundImage = `url(${savedBg})`;
+    document.body.style.backgroundSize = "cover";
+    document.body.style.backgroundRepeat = "no-repeat";
   } else if (savedTheme) {
     applyTheme(JSON.parse(savedTheme));
   }
