@@ -273,30 +273,28 @@ iframe:hover {
 /* ================= BACKGROUND ANIMATION FIX ================= */
 
 body.animated-bg {
-  background-size: 420% 420%;
-  animation: gradientMove 28s ease-in-out infinite;
+  background-size: 600% 600%; /* 🔥 BIGGER = movement becomes obvious */
+  animation: gradientMove 18s ease-in-out infinite;
 }
 
 @keyframes gradientMove {
   0% {
-    background-position: 0% 50%;
-    background-size: 380% 380%;
+    background-position: 0% 40%;
   }
-  25% {
-    background-position: 60% 40%;
-    background-size: 420% 420%;
-  }
-  50% {
-    background-position: 100% 50%;
-    background-size: 460% 460%;
-  }
-  75% {
+  20% {
     background-position: 40% 60%;
-    background-size: 420% 420%;
+  }
+  40% {
+    background-position: 100% 50%;
+  }
+  60% {
+    background-position: 60% 40%;
+  }
+  80% {
+    background-position: 20% 60%;
   }
   100% {
-    background-position: 0% 50%;
-    background-size: 380% 380%;
+    background-position: 0% 40%;
   }
 }
 
