@@ -382,7 +382,6 @@ if (savedTheme) {
   return map;
 }
 
-function renderWithAnimation() {
   const first = getPositions(); // BEFORE DOM update
 
   function getPositions() {
@@ -396,7 +395,6 @@ function renderWithAnimation() {
 }
   
   render(); // ✅ IMPORTANT FIX (was recursive before)
-
   requestAnimationFrame(() => {
     document.querySelectorAll(".count-card").forEach(el => {
       const id = el.dataset.id;
