@@ -442,3 +442,8 @@ body.animated-bg {
   opacity: 0;
   transform: translateY(18px) scale(0.92) scaleX(0.98);
 }
+
+html, body {
+  width: 100%;
+  height: 100%;
+}
