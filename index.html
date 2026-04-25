@@ -112,20 +112,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ================= BUTTON FIX (THIS WAS BROKEN) ================= */
 
-  btn.addEventListener("click", (e) => {
-    e.preventDefault();
-    menu.classList.add("open");
-  });
+/* ===== CLOSE MENU CLEAN ===== */
 
-  closeBtn.addEventListener("click", () => {
+/* close with X */
+closeBtn.addEventListener("click", (e) => {
+  e.stopPropagation(); // prevent bubbling
+  menu.classList.remove("open");
+});
+
+/* close when clicking outside panel ONLY */
+menu.addEventListener("mousedown", (e) => {
+  if (!e.target.closest(".bg-panel")) {
     menu.classList.remove("open");
-  });
-
-  menu.addEventListener("click", (e) => {
-    if (e.target === menu) {
-      menu.classList.remove("open");
-    }
-  });
+  }
+});
 
   /* ================= IMAGE PREVIEW ================= */
 
