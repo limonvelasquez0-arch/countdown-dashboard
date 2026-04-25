@@ -129,6 +129,13 @@ function applyTheme(theme) {
   document.documentElement.style.setProperty("--accent", theme.accent);
   document.documentElement.style.setProperty("--accent-soft", theme.accent + "33");
 
+  // 🔥 restore animation behavior
+  if (theme.animated) {
+    document.body.classList.add("animated-bg");
+  } else {
+    document.body.classList.remove("animated-bg");
+  }
+
   localStorage.setItem("themeData", JSON.stringify(theme));
   localStorage.removeItem("customBg");
 }
