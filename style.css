@@ -278,12 +278,15 @@ iframe:hover {
 
 /* ===== SUBTLE BACKGROUND ANIMATION ===== */
 
-.animated-bg {
-  background-size: 200% 200%;
-  animation: gradientMove 18s ease infinite;
+/* ===== FIXED ANIMATED BACKGROUND ===== */
+
+body.animated-bg {
+  background-repeat: no-repeat;
+  background-size: 400% 400%; /* 🔥 BIG = no tiling */
+  animation: gradientMove 22s ease infinite;
 }
 
-/* 🔥 VERY SOFT MOVEMENT */
+/* smoother + slower */
 @keyframes gradientMove {
   0%   { background-position: 0% 50%; }
   50%  { background-position: 100% 50%; }
