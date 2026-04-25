@@ -86,6 +86,53 @@ const editBtn = document.getElementById("edit-btn");
 
 let editMode = false;
 
+/* ================= THEME FIX (ADDED) ================= */
+const themes = {
+  default: {
+    bg: "#0f0f14",
+    accent: "#6366f1",
+    preview: "linear-gradient(135deg, #0f0f14, #1f2937)"
+  },
+  midnight: {
+    bg: "#010409",
+    accent: "#38bdf8",
+    preview: "linear-gradient(135deg, #020617, #1e293b)"
+  },
+  violet: {
+    bg: "#0a061a",
+    accent: "#a78bfa",
+    preview: "linear-gradient(135deg, #1e1b4b, #4c1d95)"
+  },
+  deepblue: {
+    bg: "#010c18",
+    accent: "#60a5fa",
+    preview: "linear-gradient(135deg, #0c4a6e, #1e40af)"
+  },
+  dusk: {
+    bg: "#0a0414",
+    accent: "#c084fc",
+    preview: "linear-gradient(135deg, #2e1065, #6b21a8)"
+  },
+  emerald: {
+    bg: "#010f0c",
+    accent: "#34d399",
+    preview: "linear-gradient(135deg, #064e3b, #065f46)"
+  }
+};
+
+function applyTheme(theme) {
+  document.body.style.background = theme.bg;
+  document.body.style.backgroundSize = "200% 200%";
+  document.body.style.backgroundRepeat = "no-repeat";
+  document.body.style.backgroundAttachment = "fixed";
+
+  document.documentElement.style.setProperty("--accent", theme.accent);
+  document.documentElement.style.setProperty("--accent-soft", theme.accent + "33");
+
+  localStorage.setItem("themeData", JSON.stringify(theme));
+  localStorage.removeItem("customBg");
+}
+
 /* ================= DEFAULT DATA ================= */
 const defaultCounts = [
 "https://count.live/?date=2026-04-29T01%3A00%3A00-07%3A00&title=Heidemarie%20(CZN)&font=display&bgimg=https%3A%2F%2Fblog.prydwen.gg%2Fwp-content%2Fuploads%2F2026%2F04%2Fmaxresdefault-2.webp&units=w,d,h,m,s&showtz=1&progress=1&percent=1&start=2026-04-20T00%3A00%3A00-07%3A00&tz=America%2FTijuana",
@@ -116,11 +163,8 @@ function render() {
     newSet.add(String(index));
 
     let card = existingCards.get(String(index));
-
-    // 🔥 if card already exists → just update, DO NOT recreate
     if (card) return;
 
-    // create new card only when needed
     card = document.createElement("div");
     card.className = "count-card enter";
     card.dataset.index = index;
@@ -155,17 +199,26 @@ function render() {
     });
   });
 
-  // 🔥 REMOVE OLD CARDS SMOOTHLY (no flicker)
   document.querySelectorAll(".count-card").forEach((card) => {
     if (!newSet.has(card.dataset.index)) {
       card.classList.add("exit");
-
-      setTimeout(() => {
-        card.remove();
-      }, 250);
+      setTimeout(() => card.remove(), 250);
     }
   });
 }
+
+/* ================= THEME CIRCLE FIX (ADDED) ================= */
+document.querySelectorAll(".theme-circle").forEach((c) => {
+  const theme = themes[c.dataset.theme];
+  if (!theme) return;
+
+  c.style.background = theme.preview;
+
+  c.addEventListener("click", () => {
+    applyTheme(theme);
+  });
+});
+
 /* drag reorder */
 dashboard.addEventListener("dragover", (e) => {
   if (!editMode) return;
@@ -220,9 +273,9 @@ addCount.onclick = () => {
   countInput.value = "";
   countMenu.classList.remove("open");
 
-  // 👇 instead of full reset feel, we animate just the new render
   render();
 };
+
 /* BG */
 bgBtn.onclick = (e) => {
   e.preventDefault();
@@ -250,7 +303,7 @@ resetBg.onclick = () => {
   localStorage.removeItem("customBg");
 };
 
-/* LOAD */
+/* LOAD BG */
 const savedBg = localStorage.getItem("customBg");
 if (savedBg) {
   document.body.style.background = `url(${savedBg}) center/cover no-repeat fixed`;
