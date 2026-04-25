@@ -368,3 +368,53 @@ body.adjusting {
 body.adjusting:active {
   cursor: grabbing;
 }
+
+/* ADD THIS TO YOUR CSS (bottom) */
+
+body.adjusting .dashboard,
+body.adjusting .top-buttons {
+  opacity: 0;
+  pointer-events: none;
+}
+
+body.adjusting {
+  cursor: grab;
+}
+
+body.adjusting:active {
+  cursor: grabbing;
+}
+
+/* floating exit button */
+#exit-adjust {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+
+  background: rgba(20,20,30,0.8);
+  backdrop-filter: blur(10px);
+
+  color: #cbd5f5;
+  border: 1px solid rgba(255,255,255,0.1);
+
+  padding: 10px 14px;
+  border-radius: 10px;
+
+  cursor: pointer;
+  z-index: 5000;
+
+  opacity: 0;
+  pointer-events: none;
+
+  transition: 0.25s ease;
+}
+
+#exit-adjust.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#exit-adjust:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 10px var(--accent-soft);
+}
