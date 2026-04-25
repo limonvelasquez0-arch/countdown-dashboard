@@ -308,6 +308,7 @@ editBtn.onclick = (e) => {
 };
 
 /* ADD */
+/* ================= ADD ================= */
 addBtn.onclick = (e) => {
   e.preventDefault();
   countMenu.classList.add("open");
@@ -315,17 +316,13 @@ addBtn.onclick = (e) => {
 
 closeCount.onclick = () => countMenu.classList.remove("open");
 
-function renderWithAnimation() {
-  render();
-}
-
 addCount.onclick = () => {
   const url = countInput.value.trim();
   if (!url) return;
 
   items.push({
     id: crypto.randomUUID(),
-    url: url
+    url
   });
 
   save();
@@ -333,14 +330,11 @@ addCount.onclick = () => {
   countInput.value = "";
   countMenu.classList.remove("open");
 
-  renderWithAnimation();
+  render();
 };
 
-function renderWithAnimation() {
-  render();
-}
 
-/* BG */
+/* ================= BG ================= */
 bgBtn.onclick = (e) => {
   e.preventDefault();
   bgMenu.classList.add("open");
@@ -368,7 +362,8 @@ resetBg.onclick = () => {
   localStorage.removeItem("customBg");
 };
 
-/* LOAD BG */
+
+/* ================= LOAD ================= */
 const savedBg = localStorage.getItem("customBg");
 if (savedBg) {
   document.body.style.background = `url(${savedBg}) center/cover no-repeat fixed`;
