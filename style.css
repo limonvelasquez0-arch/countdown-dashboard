@@ -7,7 +7,7 @@ body {
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
-  background-repeat: no-repeat; /* 🔥 FIX MOSAIC */
+  background-repeat: no-repeat;
 }
 
 /* DASHBOARD */
@@ -27,7 +27,7 @@ iframe {
   border: none;
   display: block;
   box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: 0.25s ease;
 }
 
 iframe:hover {
@@ -43,7 +43,6 @@ iframe:hover {
   position: fixed;
   top: 15px;
   right: 15px;
-  z-index: 2000;
   display: flex;
   gap: 10px;
 }
@@ -60,18 +59,17 @@ iframe:hover {
 
 .top-btn:hover {
   background: rgba(59,130,246,0.35);
-  border-color: rgba(147,197,253,0.8);
-  box-shadow:
-    0 0 10px rgba(59,130,246,0.4),
-    0 0 20px rgba(99,102,241,0.25);
+  border-color: var(--accent);
+  box-shadow: 0 0 12px var(--accent-soft);
 }
 
-/* MENU */
+/* THEME VARS */
 :root {
   --accent: #6366f1;
   --accent-soft: rgba(99,102,241,0.25);
 }
 
+/* MENU */
 .bg-menu {
   position: fixed;
   inset: 0;
@@ -84,25 +82,114 @@ iframe:hover {
 
 .bg-menu.open { display: flex; }
 
+/* 🔥 FIXED MENU STYLE */
 .bg-panel {
-  background: rgba(20,20,30,0.65);
+  background: linear-gradient(
+    145deg,
+    rgba(20,20,30,0.75),
+    rgba(20,20,30,0.55)
+  );
+
   backdrop-filter: blur(18px);
+
   color: #e5e7eb;
+
   padding: 22px;
   border-radius: 16px;
-  width: 320px;
-  border: 1px solid rgba(255,255,255,0.06);
 
-  /* 🔥 slightly stronger but still subtle */
+  width: 320px;
+  max-width: 90vw;
+
+  border: 1px solid color-mix(in srgb, var(--accent) 25%, rgba(255,255,255,0.06));
+
   box-shadow:
     0 8px 25px rgba(0,0,0,0.4),
-    0 0 28px var(--accent-soft);
+    0 0 25px var(--accent-soft);
 }
 
-/* ANIMATED BG */
+/* TITLE */
+.bg-panel h3 {
+  color: color-mix(in srgb, var(--accent) 60%, white);
+}
+
+/* INPUT */
+.bg-panel input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 6px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.04);
+  color: white;
+}
+
+/* PREVIEW */
+.bg-preview {
+  width: 100%;
+  height: 130px;
+  margin-top: 12px;
+  border-radius: 12px;
+  background-size: cover;
+  background-position: center;
+}
+
+/* BUTTONS */
+.bg-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.bg-actions button {
+  flex: 1;
+  padding: 10px;
+  border-radius: 10px;
+
+  border: 1px solid rgba(255,255,255,0.08);
+  background: color-mix(in srgb, var(--accent) 10%, rgba(255,255,255,0.05));
+
+  color: #cbd5f5;
+  cursor: pointer;
+}
+
+.bg-actions button:hover {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 20%, rgba(255,255,255,0.05));
+  box-shadow: 0 0 10px var(--accent-soft);
+}
+
+/* THEMES */
+.theme-options {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.theme-circle {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.2);
+  cursor: pointer;
+}
+
+.theme-circle[data-theme="default"] {
+  background: linear-gradient(135deg, #0f0f14, #1f2937);
+}
+.theme-circle[data-theme="midnight"] {
+  background: linear-gradient(135deg, #020617, #0f172a);
+}
+.theme-circle[data-theme="violet"] {
+  background: linear-gradient(135deg, #1e1b4b, #312e81);
+}
+.theme-circle[data-theme="deepblue"] {
+  background: linear-gradient(135deg, #0c4a6e, #1e3a8a);
+}
+
+/* ANIMATION */
 body.animated-bg {
   background-size: 200% 200%;
-  background-repeat: no-repeat;
   animation: gradientMove 22s ease infinite;
 }
 
