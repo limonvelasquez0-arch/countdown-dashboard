@@ -10,7 +10,10 @@
 <body>
 
 <div class="top-buttons">
-  <a href="https://github.com/limonvelasquez0-arch/countdown-dashboard" target="_blank" class="top-btn">GitHub</a>
+  <a href="https://github.com/limonvelasquez0-arch/countdown-dashboard" target="_blank" class="top-btn">
+    GitHub
+  </a>
+
   <a href="#" class="top-btn" id="bg-btn">Background</a>
   <a href="#" class="top-btn" id="add-btn">Add</a>
   <a href="#" class="top-btn" id="edit-btn">Edit</a>
@@ -31,6 +34,15 @@
     <div class="bg-actions">
       <button id="apply-bg">Apply</button>
       <button id="reset-bg">Reset</button>
+    </div>
+
+    <div class="theme-options">
+      <div class="theme-circle" data-theme="default" data-name="Default"></div>
+      <div class="theme-circle" data-theme="midnight" data-name="Midnight"></div>
+      <div class="theme-circle" data-theme="violet" data-name="Violet"></div>
+      <div class="theme-circle" data-theme="deepblue" data-name="Deep Blue"></div>
+      <div class="theme-circle" data-theme="dusk" data-name="Dusk"></div>
+      <div class="theme-circle" data-theme="emerald" data-name="Emerald"></div>
     </div>
   </div>
 </div>
@@ -53,6 +65,7 @@
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
+/* ================= DOM ================= */
 const dashboard = document.getElementById("dashboard");
 
 const bgMenu = document.getElementById("bg-menu");
@@ -73,11 +86,11 @@ const editBtn = document.getElementById("edit-btn");
 
 let editMode = false;
 
-/* ===== DEFAULT DATA ===== */
+/* ================= DEFAULT DATA ================= */
 const defaultCounts = [
-"https://count.live/?date=2026-04-29T01%3A00%3A00-07%3A00&title=Heidemarie",
-"https://count.live/?date=2026-05-13T15%3A00%3A00-07%3A00&title=Evanescia",
-"https://count.live/?date=2026-04-23T18%3A00%3A00-07%3A00&title=Beta"
+"https://count.live/?date=2026-04-29T01%3A00%3A00-07%3A00&title=Heidemarie%20(CZN)&font=display&bgimg=https%3A%2F%2Fblog.prydwen.gg%2Fwp-content%2Fuploads%2F2026%2F04%2Fmaxresdefault-2.webp&units=w,d,h,m,s&showtz=1&progress=1&percent=1&start=2026-04-20T00%3A00%3A00-07%3A00&tz=America%2FTijuana",
+"https://count.live/?date=2026-05-13T15%3A00%3A00-07%3A00&title=Evanescia%20(HSR)&font=display&bgimg=https%3A%2F%2Fi.redd.it%2Fwith-the-design-reveal-of-evanescia-and-sparxie-it-feels-v0-1cu4wje40ndg1.jpg",
+"https://count.live/?date=2026-04-23T18%3A00%3A00-07%3A00&title=Beta%20Access"
 ];
 
 let items = JSON.parse(localStorage.getItem("counts"));
@@ -87,7 +100,7 @@ function save() {
   localStorage.setItem("counts", JSON.stringify(items));
 }
 
-/* ===== RENDER ===== */
+/* ================= RENDER ================= */
 function render() {
   dashboard.innerHTML = "";
 
@@ -127,8 +140,11 @@ dashboard.addEventListener("dragover", (e) => {
   const dragging = document.querySelector(".dragging");
   const after = getAfterElement(dashboard, e.clientY);
 
-  if (after == null) dashboard.appendChild(dragging);
-  else dashboard.insertBefore(dragging, after);
+  if (after == null) {
+    dashboard.appendChild(dragging);
+  } else {
+    dashboard.insertBefore(dragging, after);
+  }
 });
 
 function getAfterElement(container, y) {
@@ -145,14 +161,14 @@ function getAfterElement(container, y) {
   }, { offset: Number.NEGATIVE_INFINITY }).element;
 }
 
-/* ===== EDIT MODE ===== */
+/* EDIT MODE */
 editBtn.onclick = (e) => {
   e.preventDefault();
   editMode = !editMode;
   document.body.classList.toggle("edit-mode", editMode);
 };
 
-/* ===== ADD ===== */
+/* ADD */
 addBtn.onclick = (e) => {
   e.preventDefault();
   countMenu.classList.add("open");
@@ -172,7 +188,7 @@ addCount.onclick = () => {
   countMenu.classList.remove("open");
 };
 
-/* ===== BACKGROUND ===== */
+/* BG */
 bgBtn.onclick = (e) => {
   e.preventDefault();
   bgMenu.classList.add("open");
@@ -199,7 +215,7 @@ resetBg.onclick = () => {
   localStorage.removeItem("customBg");
 };
 
-/* ===== LOAD ===== */
+/* LOAD */
 const savedBg = localStorage.getItem("customBg");
 if (savedBg) {
   document.body.style.background = `url(${savedBg}) center/cover no-repeat fixed`;
