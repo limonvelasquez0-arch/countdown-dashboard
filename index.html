@@ -139,7 +139,9 @@ menu.addEventListener("click", (e) => {
 
   /* ================= APPLY ================= */
 
-  apply.addEventListener("click", () => {
+  apply.addEventListener("click", (e) => {
+  e.stopPropagation(); // 🔥 prevents menu click logic from interfering
+
   const url = input.value;
   if (!url) return;
 
@@ -148,10 +150,16 @@ menu.addEventListener("click", (e) => {
   localStorage.setItem("customBg", url);
   localStorage.removeItem("themeData");
 
-  /* 🔥 FORCE CLOSE */
+  /* 🔥 HARD CLOSE */
   menu.classList.remove("open");
-});
 
+  /* 🔥 FORCE REPAINT (this is the real fix) */
+  menu.style.display = "none";
+
+  requestAnimationFrame(() => {
+    menu.style.display = "";
+  });
+});
   /* ================= RESET ================= */
 
   reset.addEventListener("click", () => {
