@@ -10,7 +10,10 @@
 <body>
 
 <div class="top-buttons">
-  <a href="https://github.com/limonvelasquez0-arch/countdown-dashboard" target="_blank" class="top-btn">GitHub</a>
+  <a href="https://github.com/limonvelasquez0-arch/countdown-dashboard" target="_blank" class="top-btn">
+    GitHub
+  </a>
+
   <a href="#" class="top-btn" id="bg-btn">Background</a>
   <a href="#" class="top-btn" id="add-btn">Add</a>
   <a href="#" class="top-btn" id="edit-btn">Edit</a>
@@ -50,6 +53,7 @@
     <button class="close-btn" id="close-count">✕</button>
 
     <h3>Add Countdown</h3>
+
     <input type="text" id="count-input" placeholder="Paste count.live URL...">
 
     <div class="bg-actions">
@@ -61,85 +65,8 @@
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
-const dashboard = document.getElementById("dashboard");
-
-/* ================= THEMES ================= */
-
-const themes = {
-  default: {
-    base: "#0b0c10",
-    accent: "#7c7dff",
-    g1: "#7c7dff",
-    g2: "#5eead4",
-    g3: "#a78bfa",
-    animated: false
-  },
-
-  midnight: {
-    base: "#05070d",
-    accent: "#7aa2ff",
-    g1: "#7aa2ff",
-    g2: "#4f6fff",
-    g3: "#2dd4bf",
-    animated: true
-  },
-
-  violet: {
-    base: "#07050c",
-    accent: "#c2a8ff",
-    g1: "#c2a8ff",
-    g2: "#ff6bd6",
-    g3: "#7c3aed",
-    animated: true
-  },
-
-  deepblue: {
-    base: "#04060a",
-    accent: "#6fc2ff",
-    g1: "#6fc2ff",
-    g2: "#3b82f6",
-    g3: "#22c55e",
-    animated: true
-  },
-
-  dusk: {
-    base: "#05040a",
-    accent: "#ff9bd1",
-    g1: "#ff9bd1",
-    g2: "#fb7185",
-    g3: "#a78bfa",
-    animated: true
-  },
-
-  emerald: {
-    base: "#040807",
-    accent: "#6fffd1",
-    g1: "#6fffd1",
-    g2: "#34d399",
-    g3: "#60a5fa",
-    animated: true
-  }
-};
-
-function applyTheme(name) {
-  const t = themes[name];
-  if (!t) return;
-
-  const root = document.documentElement;
-
-  root.style.setProperty("--base", t.base);
-  root.style.setProperty("--accent", t.accent);
-  root.style.setProperty("--g1", t.g1);
-  root.style.setProperty("--g2", t.g2);
-  root.style.setProperty("--g3", t.g3);
-
-  localStorage.setItem("theme", name);
-
-  if (t.animated) document.body.classList.add("animated-bg");
-  else document.body.classList.remove("animated-bg");
-}
-
 /* ================= DOM ================= */
+const dashboard = document.getElementById("dashboard");
 
 const bgMenu = document.getElementById("bg-menu");
 const bgBtn = document.getElementById("bg-btn");
@@ -154,21 +81,91 @@ const countMenu = document.getElementById("count-menu");
 const countInput = document.getElementById("count-input");
 const addCount = document.getElementById("add-count");
 const closeCount = document.getElementById("close-count");
+
 const editBtn = document.getElementById("edit-btn");
 
 let editMode = false;
 
-/* ================= LOAD THEME ================= */
+/* ================= THEME FIX (ADDED) ================= */
+const themes = {
+  default: {
+    bg: "#0b0c10",
+    accent: "#7c7dff",
+    glowA: "#7c7dff",
+    glowB: "#5eead4",
+    glowC: "#a78bfa",
+    animated: false
+  },
 
-const savedTheme = localStorage.getItem("theme");
-if (savedTheme) applyTheme(savedTheme);
+  midnight: {
+    bg: "#05070d",
+    accent: "#7aa2ff",
+    glowA: "#7aa2ff",
+    glowB: "#4f6fff",
+    glowC: "#2dd4bf",
+    animated: true
+  },
 
-/* ================= DATA ================= */
+  violet: {
+    bg: "#07050c",
+    accent: "#c2a8ff",
+    glowA: "#c2a8ff",
+    glowB: "#ff6bd6",
+    glowC: "#7c3aed",
+    animated: true
+  },
 
+  deepblue: {
+    bg: "#04060a",
+    accent: "#6fc2ff",
+    glowA: "#6fc2ff",
+    glowB: "#3b82f6",
+    glowC: "#22c55e",
+    animated: true
+  },
+
+  dusk: {
+    bg: "#05040a",
+    accent: "#ff9bd1",
+    glowA: "#ff9bd1",
+    glowB: "#fb7185",
+    glowC: "#a78bfa",
+    animated: true
+  },
+
+  emerald: {
+    bg: "#040807",
+    accent: "#6fffd1",
+    glowA: "#6fffd1",
+    glowB: "#34d399",
+    glowC: "#60a5fa",
+    animated: true
+  }
+};
+
+function applyTheme(name) {
+  const t = themes[name];
+
+  document.body.style.setProperty("--base", t.bg);
+  document.body.style.setProperty("--accent", t.accent);
+
+  document.body.style.setProperty("--g1", t.glowA);
+  document.body.style.setProperty("--g2", t.glowB);
+  document.body.style.setProperty("--g3", t.glowC);
+
+  localStorage.setItem("theme", name);
+
+  if (t.animated) {
+    document.body.classList.add("animated-bg");
+  } else {
+    document.body.classList.remove("animated-bg");
+  }
+}
+/* ================= DEFAULT DATA ================= */
 const defaultCounts = [
-"https://count.live/?date=2026-04-29T01%3A00%3A00-07%3A00&title=Heidemarie",
-"https://count.live/?date=2026-05-13T15%3A00%3A00-07%3A00&title=Evanescia",
-"https://count.live/?date=2026-04-23T18%3A00%3A00-07%3A00&title=Beta"
+"https://count.live/?date=2026-04-29T01%3A00%3A00-07%3A00&title=Heidemarie%20(CZN)&font=display&bgimg=https%3A%2F%2Fblog.prydwen.gg%2Fwp-content%2Fuploads%2F2026%2F04%2Fmaxresdefault-2.webp&units=w,d,h,m,s&showtz=1&progress=1&percent=1&start=2026-04-20T00%3A00%3A00-07%3A00&tz=America%2FTijuana",
+"https://count.live/?date=2026-05-13T15%3A00%3A00-07%3A00&title=Evanescia%20(HSR)&font=display&bgimg=https%3A%2F%2Fi.redd.it%2Fwith-the-design-reveal-of-evanescia-and-sparxie-it-feels-v0-1cu4wje40ndg1.jpg",
+"https://count.live/?date=2026-04-23T18%3A00%3A00-07%3A00&title=Beta%20Access"
 ];
 
 let items = JSON.parse(localStorage.getItem("counts"));
@@ -179,13 +176,27 @@ function save() {
 }
 
 /* ================= RENDER ================= */
-
 function render() {
-  dashboard.innerHTML = "";
+
+  const existingCards = new Map();
+
+  document.querySelectorAll(".count-card").forEach((card) => {
+    existingCards.set(card.dataset.index, card);
+  });
+
+  const newSet = new Set();
 
   items.forEach((url, index) => {
-    const card = document.createElement("div");
-    card.className = "count-card";
+
+    newSet.add(String(index));
+
+    let card = existingCards.get(String(index));
+    if (card) return;
+
+    card = document.createElement("div");
+    card.className = "count-card enter";
+    card.dataset.index = index;
+    card.draggable = true;
 
     const iframe = document.createElement("iframe");
     iframe.src = url;
@@ -195,62 +206,93 @@ function render() {
     del.innerText = "✕";
 
     del.onclick = () => {
-      items.splice(index, 1);
-      save();
-      render();
+      card.classList.add("exit");
+
+      setTimeout(() => {
+        items.splice(index, 1);
+        save();
+        render();
+      }, 250);
     };
+
+    card.addEventListener("dragstart", () => card.classList.add("dragging"));
+    card.addEventListener("dragend", () => card.classList.remove("dragging"));
 
     card.appendChild(iframe);
     card.appendChild(del);
     dashboard.appendChild(card);
+
+    requestAnimationFrame(() => {
+      card.classList.remove("enter");
+    });
+  });
+
+  document.querySelectorAll(".count-card").forEach((card) => {
+    if (!newSet.has(card.dataset.index)) {
+      card.classList.add("exit");
+      setTimeout(() => card.remove(), 250);
+    }
   });
 }
 
-/* ================= THEME CIRCLES ================= */
-
+/* ================= THEME CIRCLE FIX (ADDED) ================= */
 document.querySelectorAll(".theme-circle").forEach(circle => {
-  const name = circle.dataset.theme;
+  const themeName = circle.dataset.theme;
 
+  // give preview color so they are not blank
   const preview = {
-    default: "#7c7dff",
-    midnight: "#7aa2ff",
-    violet: "#c2a8ff",
-    deepblue: "#6fc2ff",
-    dusk: "#ff9bd1",
-    emerald: "#6fffd1"
+    default: "#6366f1",
+    midnight: "#38bdf8",
+    violet: "#a78bfa",
+    deepblue: "#60a5fa",
+    dusk: "#c084fc",
+    emerald: "#34d399"
   };
 
-  circle.style.background = preview[name];
+  circle.style.background = preview[themeName];
 
-  circle.onclick = () => applyTheme(name);
+  circle.onclick = () => {
+    applyTheme(themes[themeName]);
+  };
 });
 
-/* ================= BUTTONS ================= */
-
-bgBtn.onclick = (e) => {
+/* drag reorder */
+dashboard.addEventListener("dragover", (e) => {
+  if (!editMode) return;
   e.preventDefault();
-  bgMenu.classList.add("open");
-};
 
-closeBg.onclick = () => bgMenu.classList.remove("open");
+  const dragging = document.querySelector(".dragging");
+  const after = getAfterElement(dashboard, e.clientY);
 
-applyBg.onclick = () => {
-  const url = bgInput.value.trim();
-
-  if (url) {
-    document.body.style.background = `url(${url}) center/cover no-repeat fixed`;
-    localStorage.setItem("customBg", url);
+  if (after == null) {
+    dashboard.appendChild(dragging);
+  } else {
+    dashboard.insertBefore(dragging, after);
   }
+});
 
-  bgMenu.classList.remove("open");
+function getAfterElement(container, y) {
+  const elements = [...container.querySelectorAll(".count-card:not(.dragging)")];
+
+  return elements.reduce((closest, child) => {
+    const box = child.getBoundingClientRect();
+    const offset = y - box.top - box.height / 2;
+
+    if (offset < 0 && offset > closest.offset) {
+      return { offset, element: child };
+    }
+    return closest;
+  }, { offset: Number.NEGATIVE_INFINITY }).element;
+}
+
+/* EDIT MODE */
+editBtn.onclick = (e) => {
+  e.preventDefault();
+  editMode = !editMode;
+  document.body.classList.toggle("edit-mode", editMode);
 };
 
-resetBg.onclick = () => {
-  document.body.style.background = "#0f0f14";
-  localStorage.removeItem("customBg");
-  bgMenu.classList.remove("open");
-};
-
+/* ADD */
 addBtn.onclick = (e) => {
   e.preventDefault();
   countMenu.classList.add("open");
@@ -264,27 +306,53 @@ addCount.onclick = () => {
 
   items.push(url);
   save();
-  render();
 
   countInput.value = "";
   countMenu.classList.remove("open");
+
+  render();
 };
 
-editBtn.onclick = (e) => {
+/* BG */
+bgBtn.onclick = (e) => {
   e.preventDefault();
-  editMode = !editMode;
-  document.body.classList.toggle("edit-mode", editMode);
+  bgMenu.classList.add("open");
 };
 
-/* ================= LOAD BG ================= */
+closeBg.onclick = () => bgMenu.classList.remove("open");
 
+bgInput.addEventListener("input", () => {
+  bgPreview.style.backgroundImage = `url(${bgInput.value})`;
+});
+
+applyBg.onclick = () => {
+  const url = bgInput.value;
+
+  if (url) {
+    document.body.style.background = `url(${url}) center/cover no-repeat fixed`;
+    localStorage.setItem("customBg", url);
+  }
+
+  // 🔥 ALWAYS close menu (even if empty)
+  bgMenu.classList.remove("open");
+};
+
+resetBg.onclick = () => {
+  document.body.style.background = "#0f0f14";
+  localStorage.removeItem("customBg");
+};
+
+/* LOAD BG */
 const savedBg = localStorage.getItem("customBg");
 if (savedBg) {
   document.body.style.background = `url(${savedBg}) center/cover no-repeat fixed`;
 }
-
-/* ================= INIT ================= */
-
+  
+const savedTheme = localStorage.getItem("theme");
+if (savedTheme) {
+  applyTheme(JSON.parse(savedTheme));
+}
+  
 render();
 
 });
