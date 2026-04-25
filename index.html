@@ -297,11 +297,13 @@ bgInput.addEventListener("input", () => {
 
 applyBg.onclick = () => {
   const url = bgInput.value;
-  if (!url) return;
 
-  document.body.style.background = `url(${url}) center/cover no-repeat fixed`;
-  localStorage.setItem("customBg", url);
+  if (url) {
+    document.body.style.background = `url(${url}) center/cover no-repeat fixed`;
+    localStorage.setItem("customBg", url);
+  }
 
+  // 🔥 ALWAYS close menu (even if empty)
   bgMenu.classList.remove("open");
 };
 
