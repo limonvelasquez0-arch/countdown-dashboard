@@ -418,3 +418,39 @@ body.adjusting:active {
   border-color: var(--accent);
   box-shadow: 0 0 10px var(--accent-soft);
 }
+
+/* ===== FIX THEME CIRCLES ===== */
+.theme-circle {
+  display: block; /* 🔥 ensures visible */
+}
+
+/* ===== ADJUST UI ===== */
+.adjust-controls {
+  display: none;
+  margin-top: 12px;
+  flex-direction: column;
+  gap: 8px;
+}
+
+body.adjusting #adjust-controls {
+  display: flex;
+}
+
+/* sliders */
+.adjust-controls input {
+  width: 100%;
+  accent-color: var(--accent);
+}
+
+/* hide panels ONLY visually (not layout break) */
+body.adjusting .dashboard {
+  opacity: 0.15;
+}
+
+/* cursor */
+body.adjusting {
+  cursor: grab;
+}
+body.adjusting:active {
+  cursor: grabbing;
+}
