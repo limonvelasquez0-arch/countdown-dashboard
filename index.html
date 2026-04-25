@@ -29,7 +29,7 @@
 
 </div>
 
-<!-- SETTINGS MENU -->
+<!-- ===== SETTINGS MODAL ===== -->
 <div class="bg-menu" id="bg-menu">
   <div class="bg-panel">
 
@@ -66,90 +66,71 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const apply = document.getElementById("apply-bg");
   const reset = document.getElementById("reset-bg");
-
   const closeBtn = document.getElementById("close-menu");
 
-  /* ===== THEMES ===== */
-  const themes = {
-    default: {
-      bg: "#0f0f14",
-      accent: "#6366f1",
-      animated: false
-    },
-    midnight: {
-      bg: "linear-gradient(135deg,#020617,#0f172a,#020617)",
-      accent: "#38bdf8",
-      animated: true
-    },
-    violet: {
-      bg: "linear-gradient(135deg,#1e1b4b,#312e81,#1e1b4b)",
-      accent: "#a78bfa",
-      animated: true
-    },
-    deepblue: {
-      bg: "linear-gradient(135deg,#0c4a6e,#1e3a8a,#0c4a6e)",
-      accent: "#60a5fa",
-      animated: true
-    }
-  };
-
-  function applyTheme(theme) {
-    document.body.style.background = theme.bg;
-    document.documentElement.style.setProperty("--accent", theme.accent);
-    document.documentElement.style.setProperty("--accent-soft", theme.accent + "33");
-
-    if (theme.animated) {
-      document.body.classList.add("animated-bg");
-    } else {
-      document.body.classList.remove("animated-bg");
-    }
-
-    localStorage.setItem("themeData", JSON.stringify(theme));
-    localStorage.removeItem("customBg");
-  }
-
   /* OPEN */
-  btn.onclick = (e) => {
+  btn.addEventListener("click", e => {
     e.preventDefault();
     menu.classList.add("open");
-  };
+  });
 
   /* CLOSE */
-  closeBtn.onclick = () => menu.classList.remove("open");
-
-  menu.onclick = (e) => {
+  closeBtn.addEventListener("click", () => menu.classList.remove("open"));
+  menu.addEventListener("click", e => {
     if (e.target === menu) menu.classList.remove("open");
-  };
+  });
 
   /* PREVIEW */
-  input.oninput = () => {
+  input.addEventListener("input", () => {
     preview.style.backgroundImage = `url(${input.value})`;
-  };
+  });
 
-  /* APPLY IMAGE (FIXED: closes menu) */
-  apply.onclick = () => {
+  /* APPLY IMAGE */
+  apply.addEventListener("click", () => {
     const url = input.value;
     if (!url) return;
 
-    document.body.style.background = `url(${url}) center / cover no-repeat fixed`;
+    document.body.style.backgroundImage = `url(${url})`;
     document.body.classList.remove("animated-bg");
 
     localStorage.setItem("customBg", url);
     localStorage.removeItem("themeData");
 
-    menu.classList.remove("open"); // 🔥 FIX
-  };
+    menu.classList.remove("open");
+  });
 
   /* RESET */
-  reset.onclick = () => {
-    applyTheme(themes.default);
-    localStorage.removeItem("customBg");
-    menu.classList.remove("open");
-  };
+  reset.addEventListener("click", () => {
+    localStorage.clear();
+    location.reload();
+  });
 
   /* THEMES */
+  const themes = {
+    default: { bg: "#0f0f14", accent: "#6366f1", animated: false },
+    midnight: { bg: "linear-gradient(135deg,#020617,#0f172a,#020617)", accent: "#38bdf8", animated: true },
+    violet: { bg: "linear-gradient(135deg,#1e1b4b,#312e81,#1e1b4b)", accent: "#a78bfa", animated: true },
+    deepblue: { bg: "linear-gradient(135deg,#0c4a6e,#1e3a8a,#0c4a6e)", accent: "#60a5fa", animated: true }
+  };
+
+  function applyTheme(t) {
+    document.body.style.backgroundImage = t.bg;
+    document.body.style.backgroundSize = "cover";
+    document.body.style.backgroundRepeat = "no-repeat";
+
+    document.documentElement.style.setProperty("--accent", t.accent);
+    document.documentElement.style.setProperty("--accent-soft", t.accent + "44");
+
+    document.body.classList.toggle("animated-bg", t.animated);
+
+    localStorage.setItem("themeData", JSON.stringify(t));
+    localStorage.removeItem("customBg");
+
+    menu.classList.remove("open");
+  }
+
   document.querySelectorAll(".theme-circle").forEach(c => {
-    c.onclick = () => applyTheme(themes[c.dataset.theme]);
+    c.addEventListener("click", () => applyTheme(themes[c.dataset.theme]));
   });
 
   /* LOAD SAVED */
@@ -157,7 +138,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const savedTheme = localStorage.getItem("themeData");
 
   if (savedBg) {
-    document.body.style.background = `url(${savedBg}) center / cover no-repeat fixed`;
+    document.body.style.backgroundImage = `url(${savedBg})`;
   } else if (savedTheme) {
     applyTheme(JSON.parse(savedTheme));
   }
