@@ -291,31 +291,42 @@ body::before {
   pointer-events: none;
 
   background:
-    radial-gradient(circle at var(--x1, 20%) var(--y1, 30%), var(--g1), transparent 55%),
-    radial-gradient(circle at var(--x2, 75%) var(--y2, 70%), var(--g2), transparent 60%),
-    radial-gradient(circle at var(--x3, 50%) var(--y3, 50%), var(--g3), transparent 65%),
-    var(--base);
+    radial-gradient(circle at 20% 30%, color-mix(in srgb, var(--accent) 70%, transparent), transparent 55%),
+    radial-gradient(circle at 75% 40%, color-mix(in srgb, var(--accent) 40%, transparent), transparent 60%),
+    radial-gradient(circle at 50% 85%, color-mix(in srgb, var(--accent) 55%, transparent), transparent 65%),
+    radial-gradient(circle at 10% 80%, color-mix(in srgb, var(--accent) 30%, transparent), transparent 70%),
+    #0f0f14;
 
-  filter: blur(60px) saturate(1.1);
+  filter: blur(55px) saturate(1.4) contrast(1.05);
   transform: scale(1.25);
 
-  opacity: 0.85;
-
-  animation: breathe 6.5s ease-in-out infinite;
+  animation: breathe 5.2s ease-in-out infinite;
 }
 
 @keyframes breathe {
   0% {
-    transform: scale(1.22);
-    opacity: 0.72;
+    transform: scale(1.18);
+    opacity: 0.75;
   }
-  50% {
+  20% {
+    transform: scale(1.23);
+    opacity: 0.9;
+  }
+  40% {
     transform: scale(1.28);
-    opacity: 0.88;
+    opacity: 1;
+  }
+  60% {
+    transform: scale(1.22);
+    opacity: 0.92;
+  }
+  80% {
+    transform: scale(1.26);
+    opacity: 0.85;
   }
   100% {
-    transform: scale(1.22);
-    opacity: 0.72;
+    transform: scale(1.18);
+    opacity: 0.75;
   }
 }
 /* ================= THEME TOOLTIP ================= */
