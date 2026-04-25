@@ -6,52 +6,13 @@ body {
   overflow-x: hidden;
 }
 
-/* ================= SIDEBAR ================= */
-
-.sidebar-toggle {
-  position: fixed;
-  top: 15px;
-  left: 15px;
-  z-index: 99999;
-  background: rgba(255,255,255,0.1);
-  border: none;
-  color: white;
-  padding: 10px 14px;
-  border-radius: 10px;
-  cursor: pointer;
-}
-
-.sidebar {
-  position: fixed;
-  top: 0;
-  left: -280px;
-  width: 240px;
-  height: 100vh;
-  background: rgba(20,20,30,0.95);
-  backdrop-filter: blur(20px);
-  padding: 70px 20px;
-  transition: left 0.3s ease;
-  z-index: 1500;
-}
-
-.sidebar.open { left: 0; }
-
-.sidebar a {
-  display: block;
-  color: white;
-  text-decoration: none;
-  padding: 12px;
-  margin-top: 10px;
-  border-radius: 10px;
-  background: rgba(255,255,255,0.05);
-}
-
 /* ================= DASHBOARD ================= */
 
 .dashboard {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
-  gap: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 40px;
   padding: 80px 20px;
 }
 
@@ -59,41 +20,38 @@ body {
 
 section {
   width: 420px;
-  position: relative;
-  transition: opacity 0.25s ease, transform 0.25s ease;
-}
-
-/* ALL MODE */
-body.all-mode .dashboard {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-body.all-mode section {
   margin-left: 20px;
+  transition: transform 0.25s ease;
+}
+
+/* 🔥 HOVER ANIMATION (clean + noticeable) */
+section:hover {
+  transform: translateY(-6px) scale(1.015);
 }
 
 /* spacing */
 section h2 {
   margin-bottom: 22px;
+  transition: color 0.25s ease;
 }
 
-/* ================= 🔥 FINAL WORKING DIVIDER ================= */
+/* subtle title glow on hover */
+section:hover h2 {
+  color: #7dd3fc;
+}
 
-/* ================= DIVIDER (FINAL STABLE FIX) ================= */
+/* ================= DIVIDER ================= */
 
 .divider {
   width: 100vw;
   height: 1px;
-  margin: 24px 0;
+  margin: 10px 0;
   position: relative;
   left: 50%;
   transform: translateX(-50%);
   overflow: hidden;
 }
 
-/* ================= STATIC LINE (NEVER MOVES) ================= */
 .divider::before {
   content: "";
   position: absolute;
@@ -111,7 +69,6 @@ section h2 {
   );
 }
 
-/* ================= CLEAN MOVING SPOT (NO GRADIENTS) ================= */
 .divider::after {
   content: "";
   position: absolute;
@@ -130,15 +87,11 @@ section h2 {
   animation: sweep 7s linear infinite;
 }
 
-/* ONLY TRANSLATION — NOTHING ELSE */
 @keyframes sweep {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(1100%);
-  }
+  0% { transform: translateX(0); }
+  100% { transform: translateX(1100%); }
 }
+
 /* ================= IFRAME ================= */
 
 iframe {
@@ -146,13 +99,21 @@ iframe {
   height: 225px;
   border-radius: 14px;
   border: none;
+
   box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 iframe:hover {
   transform: translateY(-4px);
+  box-shadow:
+    0 12px 30px rgba(0,0,0,0.35),
+    0 0 18px rgba(125, 211, 252, 0.18),
+    0 0 28px rgba(167, 139, 250, 0.12);
 }
+
+/* ================= GITHUB BUTTON ================= */
 
 .github-btn {
   position: fixed;
