@@ -360,3 +360,11 @@ body.animated-bg::before {
     filter: brightness(0.92) contrast(1);
   }
 }
+
+body.adjusting {
+  cursor: grab;
+}
+
+body.adjusting:active {
+  cursor: grabbing;
+}
