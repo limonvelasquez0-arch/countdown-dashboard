@@ -89,12 +89,13 @@ iframe:hover {
   transform: translateY(-2px);
 }
 
-/* ===== MENU OVERLAY ===== */
+/* ================= MENU OVERLAY ================= */
+
 .bg-menu {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.6);
-  backdrop-filter: blur(6px);
+  background: rgba(0,0,0,0.65);
+  backdrop-filter: blur(8px);
 
   display: none;
   align-items: center;
@@ -107,68 +108,153 @@ iframe:hover {
   display: flex;
 }
 
-/* ===== PANEL ===== */
+/* ================= PANEL ================= */
+
 .bg-panel {
   background: rgba(20,20,30,0.95);
-  padding: 20px;
-  border-radius: 14px;
-  width: 300px;
+  color: #e5e7eb;
+
+  padding: 22px;
+  border-radius: 16px;
+
+  width: 320px;
+  max-width: 90vw; /* 🔥 prevents clipping */
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,0.5),
+    0 0 30px rgba(99,102,241,0.08);
+
+  animation: popIn 0.25s ease;
 }
 
-/* ===== INPUT ===== */
+/* smooth open */
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* ================= TITLE ================= */
+
+.bg-panel h3 {
+  margin: 0 0 10px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #c7d2fe;
+}
+
+/* ================= INPUT ================= */
+
 .bg-panel input {
   width: 100%;
   padding: 10px;
-  margin-top: 10px;
 
-  border-radius: 8px;
-  border: none;
+  margin-top: 8px;
+
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.08);
+
+  background: rgba(255,255,255,0.04);
+  color: white;
+
   outline: none;
+  transition: 0.2s ease;
 }
 
-/* ===== PREVIEW ===== */
+.bg-panel input::placeholder {
+  color: rgba(255,255,255,0.4);
+}
+
+.bg-panel input:focus {
+  border-color: rgba(99,102,241,0.6);
+  box-shadow: 0 0 0 1px rgba(99,102,241,0.3);
+}
+
+/* ================= PREVIEW ================= */
+
 .bg-preview {
   width: 100%;
-  height: 120px;
+  height: 130px;
+
   margin-top: 12px;
-  border-radius: 10px;
+  border-radius: 12px;
 
   background-size: cover;
   background-position: center;
-  background-color: #222;
+  background-color: #111;
+
+  border: 1px solid rgba(255,255,255,0.05);
 }
 
-/* ===== BUTTONS ===== */
+/* ================= BUTTONS ================= */
+
 .bg-actions {
   display: flex;
   gap: 10px;
-  margin-top: 12px;
+  margin-top: 14px;
 }
 
 .bg-actions button {
   flex: 1;
+
   padding: 10px;
-  border-radius: 8px;
-  border: none;
+  border-radius: 10px;
+  border: 1px solid rgba(99,102,241,0.25);
+
+  background: rgba(30,64,175,0.25);
+  color: #c7d2fe;
+
   cursor: pointer;
+
+  transition: all 0.25s ease;
 }
 
-/* ===== THEMES ===== */
+/* hover (same vibe as your top buttons) */
+.bg-actions button:hover {
+  background: rgba(59,130,246,0.35);
+  border-color: rgba(147,197,253,0.8);
+
+  box-shadow:
+    0 0 10px rgba(59,130,246,0.4),
+    0 0 20px rgba(99,102,241,0.25);
+
+  transform: translateY(-1px);
+}
+
+/* ================= THEMES ================= */
+
 .theme-options {
   display: flex;
-  gap: 10px;
-  margin-top: 15px;
+  gap: 12px;
+  margin-top: 16px;
+  justify-content: center;
 }
 
+/* circles */
 .theme-circle {
-  width: 26px;
-  height: 26px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
+
   cursor: pointer;
 
-  border: 2px solid rgba(255,255,255,0.2);
+  border: 2px solid rgba(255,255,255,0.15);
+
+  transition: all 0.25s ease;
 }
 
+/* hover glow */
 .theme-circle:hover {
-  transform: scale(1.1);
+  transform: scale(1.15);
+
+  border-color: rgba(147,197,253,0.8);
+
+  box-shadow:
+    0 0 10px rgba(59,130,246,0.5),
+    0 0 18px rgba(99,102,241,0.3);
 }
