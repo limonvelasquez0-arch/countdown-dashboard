@@ -103,21 +103,25 @@ document.addEventListener("DOMContentLoaded", () => {
     deepblue: { bg: "linear-gradient(135deg,#0c4a6e,#1e3a8a,#0c4a6e)", accent: "#60a5fa", animated: true }
   };
 
-  function applyTheme(t) {
-    document.body.style.backgroundImage = t.bg;
-    document.body.style.backgroundSize = "200% 200%";
-    document.body.style.backgroundRepeat = "no-repeat";
+  function applyTheme(theme) {
+  document.body.style.background = theme.bg;
 
-    document.documentElement.style.setProperty("--accent", t.accent);
-    document.documentElement.style.setProperty("--accent-soft", t.accent + "44");
+  /* 🔥 FIX MOSAIC FOR GRADIENTS */
+  document.body.style.backgroundSize = "200% 200%";
+  document.body.style.backgroundRepeat = "no-repeat";
 
-    document.body.classList.toggle("animated-bg", t.animated);
+  document.documentElement.style.setProperty("--accent", theme.accent);
+  document.documentElement.style.setProperty("--accent-soft", theme.accent + "33");
 
-    localStorage.setItem("themeData", JSON.stringify(t));
-    localStorage.removeItem("customBg");
-
-    menu.classList.remove("open");
+  if (theme.animated) {
+    document.body.classList.add("animated-bg");
+  } else {
+    document.body.classList.remove("animated-bg");
   }
+
+  localStorage.setItem("themeData", JSON.stringify(theme));
+  localStorage.removeItem("customBg");
+}
 
   document.querySelectorAll(".theme-circle").forEach(c => {
     c.addEventListener("click", () => applyTheme(themes[c.dataset.theme]));
