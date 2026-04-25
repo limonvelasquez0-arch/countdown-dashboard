@@ -423,6 +423,8 @@ body.animated-bg {
   opacity: 1;
   transform: translateY(0) scale(1);
   transition: opacity 0.28s ease, transform 0.28s ease;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
 }
 
 /* ENTRY animation */
