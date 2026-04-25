@@ -20,24 +20,20 @@
 </div>
 
 <div class="dashboard">
-
   <iframe src="https://count.live/?date=2026-04-29T01%3A00%3A00-07%3A00&title=Heidemarie%20(CZN)&font=display&bgimg=https%3A%2F%2Fblog.prydwen.gg%2Fwp-content%2Fuploads%2F2026%2F04%2Fmaxresdefault-2.webp&units=w,d,h,m,s&showtz=1&progress=1&percent=1&start=2026-04-20T00%3A00%3A00-07%3A00&tz=America%2FTijuana"></iframe>
 
   <iframe src="https://count.live/?date=2026-05-13T15%3A00%3A00-07%3A00&title=Evanescia%20(HSR)&font=display&bgimg=https%3A%2F%2Fi.redd.it%2Fwith-the-design-reveal-of-evanescia-and-sparxie-it-feels-v0-1cu4wje40ndg1.jpg%3Fwidth%3D1920%26format%3Dpjpg%26auto%3Dwebp%26s%3De41a3002a5357463537e9624314a0cd803a63a84&units=w,d,h,m,s&showtz=1&progress=1&percent=1&start=2026-04-20T00%3A00%3A00-07%3A00&tz=America%2FTijuana"></iframe>
 
   <iframe src="https://count.live/?date=2026-04-23T18%3A00%3A00-07%3A00&title=Beta%20Access%20(Petit%20Planet)&font=display&bgimg=https%3A%2F%2Ffastcdn.hoyoverse.com%2Fstatic-resource-v2%2F2026%2F03%2F25%2Fcf6e120d2032ac9c62cdc31e0d7504df_3968736085113746422.png&units=w,d,h,m,s&showtz=1&progress=1&percent=1&start=2026-04-20T00%3A00%3A00-07%3A00&tz=America%2FTijuana"></iframe>
-
 </div>
 
 <div class="bg-menu" id="bg-menu">
   <div class="bg-panel">
-
     <button class="close-btn" id="close-menu">✕</button>
 
     <h3>Background Settings</h3>
 
     <input type="text" id="bg-input" placeholder="Paste image URL...">
-
     <div class="bg-preview" id="bg-preview"></div>
 
     <div class="bg-actions">
@@ -51,7 +47,6 @@
       <div class="theme-circle" data-theme="violet"></div>
       <div class="theme-circle" data-theme="deepblue"></div>
     </div>
-
   </div>
 </div>
 
@@ -62,29 +57,25 @@ document.addEventListener("DOMContentLoaded", () => {
   const btn = document.getElementById("bg-btn");
   const input = document.getElementById("bg-input");
   const preview = document.getElementById("bg-preview");
-
   const apply = document.getElementById("apply-bg");
   const reset = document.getElementById("reset-bg");
   const closeBtn = document.getElementById("close-menu");
 
-  /* OPEN */
   btn.addEventListener("click", e => {
     e.preventDefault();
     menu.classList.add("open");
   });
 
-  /* CLOSE */
   closeBtn.addEventListener("click", () => menu.classList.remove("open"));
+
   menu.addEventListener("click", e => {
     if (e.target === menu) menu.classList.remove("open");
   });
 
-  /* PREVIEW */
   input.addEventListener("input", () => {
     preview.style.backgroundImage = `url(${input.value})`;
   });
 
-  /* APPLY IMAGE */
   apply.addEventListener("click", () => {
     const url = input.value;
     if (!url) return;
@@ -99,14 +90,12 @@ document.addEventListener("DOMContentLoaded", () => {
     menu.classList.remove("open");
   });
 
-  /* RESET */
   reset.addEventListener("click", () => {
     document.body.style.background = "#0f0f14";
     localStorage.clear();
     menu.classList.remove("open");
   });
 
-  /* THEMES */
   const themes = {
     default: { bg: "#0f0f14", accent: "#6366f1", animated: false },
     midnight: { bg: "linear-gradient(135deg,#020617,#0f172a,#020617)", accent: "#38bdf8", animated: true },
@@ -116,7 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function applyTheme(t) {
     document.body.style.backgroundImage = t.bg;
-    document.body.style.backgroundSize = "200% 200%"; /* 🔥 FIX MOSAIC */
+    document.body.style.backgroundSize = "200% 200%";
     document.body.style.backgroundRepeat = "no-repeat";
 
     document.documentElement.style.setProperty("--accent", t.accent);
@@ -133,18 +122,6 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".theme-circle").forEach(c => {
     c.addEventListener("click", () => applyTheme(themes[c.dataset.theme]));
   });
-
-  /* LOAD */
-  const savedBg = localStorage.getItem("customBg");
-  const savedTheme = localStorage.getItem("themeData");
-
-  if (savedBg) {
-    document.body.style.backgroundImage = `url(${savedBg})`;
-    document.body.style.backgroundSize = "cover";
-    document.body.style.backgroundRepeat = "no-repeat";
-  } else if (savedTheme) {
-    applyTheme(JSON.parse(savedTheme));
-  }
 
 });
 </script>
