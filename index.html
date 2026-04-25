@@ -7,23 +7,18 @@
 <link rel="stylesheet" href="style.css">
 
 <style>
-/* ONLY ADDED THIS */
 body.adjusting {
   cursor: grab;
 }
-
 body.adjusting:active {
   cursor: grabbing;
 }
-
 #adjust-bg.active {
   border-color: var(--accent);
   box-shadow: 0 0 10px var(--accent-soft);
 }
-
-/* subtle indicator */
 body.adjusting::after {
-  content: "Adjust mode — drag • ESC to exit";
+  content: "Adjust mode — drag";
   position: fixed;
   bottom: 15px;
   left: 50%;
@@ -37,18 +32,14 @@ body.adjusting::after {
   z-index: 5000;
 }
 </style>
-
 </head>
-<!-- ADD THIS RIGHT BEFORE </body> -->
-<button id="exit-adjust">Exit Adjust</button>
-  
+
 <body>
 
 <div class="top-buttons">
   <a href="https://github.com/limonvelasquez0-arch/countdown-dashboard" target="_blank" class="top-btn">
     GitHub
   </a>
-
   <a href="#" class="top-btn" id="bg-btn">
     Background
   </a>
@@ -57,9 +48,9 @@ body.adjusting::after {
 <div class="dashboard">
   <iframe src="https://count.live/?date=2026-04-29T01%3A00%3A00-07%3A00&title=Heidemarie%20(CZN)&font=display&bgimg=https%3A%2F%2Fblog.prydwen.gg%2Fwp-content%2Fuploads%2F2026%2F04%2Fmaxresdefault-2.webp&units=w,d,h,m,s&showtz=1&progress=1&percent=1&start=2026-04-20T00%3A00%3A00-07%3A00&tz=America%2FTijuana"></iframe>
 
-  <iframe src="https://count.live/?date=2026-05-13T15%3A00%3A00-07%3A00&title=Evanescia%20(HSR)&font=display&bgimg=https%3A%2F%2Fi.redd.it%2Fwith-the-design-reveal-of-evanescia-and-sparxie-it-feels-v0-1cu4wje40ndg1.jpg%3Fwidth%3D1920%26format%3Dpjpg%26auto%3Dwebp%26s%3De41a3002a5357463537e9624314a0cd803a63a84&units=w,d,h,m,s&showtz=1&progress=1&percent=1&start=2026-04-20T00%3A00%3A00-07%3A00&tz=America%2FTijuana"></iframe>
+  <iframe src="https://count.live/?date=2026-05-13T15%3A00%3A00-07%3A00&title=Evanescia%20(HSR)&font=display&bgimg=https%3A%2F%2Fi.redd.it%2Fwith-the-design-reveal-of-evanescia-and-sparxie-it-feels-v0-1cu4wje40ndg1.jpg&units=w,d,h,m,s&showtz=1&progress=1&percent=1&start=2026-04-20T00%3A00%3A00-07%3A00&tz=America%2FTijuana"></iframe>
 
-  <iframe src="https://count.live/?date=2026-04-23T18%3A00%3A00-07%3A00&title=Beta%20Access%20(Petit%20Planet)&font=display&bgimg=https%3A%2F%2Ffastcdn.hoyoverse.com%2Fstatic-resource-v2%2F2026%2F03%2F25%2Fcf6e120d2032ac9c62cdc31e0d7504df_3968736085113746422.png&units=w,d,h,m,s&showtz=1&progress=1&percent=1&start=2026-04-20T00%3A00%3A00-07%3A00&tz=America%2FTijuana"></iframe>
+  <iframe src="https://count.live/?date=2026-04-23T18%3A00%3A00-07%3A00&title=Beta%20Access&font=display&bgimg=https%3A%2F%2Ffastcdn.hoyoverse.com%2Fstatic-resource-v2%2F2026%2F03%2F25%2Fcf6e120d2032ac9c62cdc31e0d7504df_3968736085113746422.png&units=w,d,h,m,s&showtz=1&progress=1&percent=1&start=2026-04-20T00%3A00%3A00-07%3A00&tz=America%2FTijuana"></iframe>
 </div>
 
 <div class="bg-menu" id="bg-menu">
@@ -75,29 +66,20 @@ body.adjusting::after {
       <button type="button" id="apply-bg">Apply</button>
       <button id="reset-bg">Reset</button>
       <button id="adjust-bg">Adjust</button>
-      <div class="adjust-controls" id="adjust-controls">
-  <label>Zoom</label>
-  <input type="range" id="zoom-slider" min="50" max="150" value="100">
 
-  <label>Rotate</label>
-  <input type="range" id="rotate-slider" min="-30" max="30" value="0">
+      <div class="adjust-controls">
+        <label>Zoom</label>
+        <input type="range" id="zoom-slider" min="50" max="150" value="100">
 
-  <button id="exit-adjust" class="top-btn">Exit Adjust</button>
-</div>
-    </div>
+        <label>Rotate</label>
+        <input type="range" id="rotate-slider" min="-30" max="30" value="0">
 
-    <div class="theme-options">
-      <div class="theme-circle" data-theme="default"></div>
-      <div class="theme-circle" data-theme="midnight"></div>
-      <div class="theme-circle" data-theme="violet"></div>
-      <div class="theme-circle" data-theme="deepblue"></div>
-      <div class="theme-circle" data-theme="dusk"></div>
-      <div class="theme-circle" data-theme="emerald"></div>
+        <button id="exit-adjust" class="top-btn">Exit Adjust</button>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- REPLACE ONLY YOUR <script> WITH THIS (everything else unchanged) -->
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -109,157 +91,95 @@ document.addEventListener("DOMContentLoaded", () => {
   const reset = document.getElementById("reset-bg");
   const closeBtn = document.getElementById("close-menu");
   const adjustBtn = document.getElementById("adjust-bg");
-  adjustBtn.style.display = "none";
   const exitBtn = document.getElementById("exit-adjust");
 
   let adjusting = false;
-let isDragging = false;
+  let isDragging = false;
+  let startX = 0;
+  let startY = 0;
 
-let startX = 0;
-let startY = 0;
+  let bgPosX = 50;
+  let bgPosY = 50;
+  let bgZoom = 100;
+  let bgRotate = 0;
 
-let bgPosX = 50;
-let bgPosY = 50;
+  const zoomSlider = document.getElementById("zoom-slider");
+  const rotateSlider = document.getElementById("rotate-slider");
 
-let bgZoom = 100;
-let bgRotate = 0;
+  function updateBackground() {
+    document.body.style.backgroundPosition = `${bgPosX}% ${bgPosY}%`;
+    document.body.style.backgroundSize = `${bgZoom}%`;
+    document.body.style.transform = `rotate(${bgRotate}deg)`;
+  }
 
-const zoomSlider = document.getElementById("zoom-slider");
-const rotateSlider = document.getElementById("rotate-slider");
-const exitBtn = document.getElementById("exit-adjust");
+  adjustBtn.addEventListener("click", () => {
+    adjusting = true;
+    document.body.classList.add("adjusting");
+    menu.classList.remove("open");
+  });
 
-const savedPos = localStorage.getItem("bgPosition");
-if (savedPos) {
-  const pos = JSON.parse(savedPos);
-  bgPosX = pos.x;
-  bgPosY = pos.y;
-}
+  exitBtn.addEventListener("click", () => {
+    adjusting = false;
+    document.body.classList.remove("adjusting");
+  });
 
-function updateBackground() {
-  document.body.style.backgroundPosition = `${bgPosX}% ${bgPosY}%`;
-  document.body.style.backgroundSize = `${bgZoom}%`;
-  document.body.style.transform = `rotate(${bgRotate}deg)`;
-}
+  document.body.addEventListener("mousedown", (e) => {
+    if (!adjusting) return;
+    if (e.target.closest("button, a, input, .bg-panel, .top-buttons")) return;
 
-/* ===== ENTER / EXIT ===== */
+    isDragging = true;
+    startX = e.clientX;
+    startY = e.clientY;
+  });
 
-function enterAdjust() {
-  adjusting = true;
-  document.body.classList.add("adjusting");
-}
+  document.body.addEventListener("mousemove", (e) => {
+    if (!adjusting || !isDragging) return;
 
-function exitAdjust() {
-  adjusting = false;
-  document.body.classList.remove("adjusting");
-}
+    const dx = e.clientX - startX;
+    const dy = e.clientY - startY;
 
-/* buttons */
-adjustBtn.addEventListener("click", () => {
-  adjusting = true;
-  document.body.classList.add("adjusting");
-  menu.classList.remove("open"); // enter adjust cleanly
-});
+    startX = e.clientX;
+    startY = e.clientY;
 
-exitBtn.addEventListener("click", exitAdjust);
+    bgPosX += dx * 0.1;
+    bgPosY += dy * 0.1;
 
-/* ===== DRAG ===== */
+    bgPosX = Math.max(0, Math.min(100, bgPosX));
+    bgPosY = Math.max(0, Math.min(100, bgPosY));
 
-document.body.addEventListener("mousedown", (e) => {
-  if (!adjusting) return;
+    updateBackground();
+  });
 
-  // 🔥 DO NOT BLOCK ANY UI ELEMENT AT ALL
-  if (e.target.closest("button, a, input, .bg-panel, .top-buttons")) return;
+  document.addEventListener("mouseup", () => {
+    isDragging = false;
+  });
 
-  isDragging = true;
-  startX = e.clientX;
-  startY = e.clientY;
-});
+  document.addEventListener("wheel", (e) => {
+    if (!adjusting) return;
 
-document.body.addEventListener("mousemove", (e) => {
-  if (!adjusting || !isDragging) return;
+    bgZoom += e.deltaY * -0.05;
+    bgZoom = Math.max(50, Math.min(200, bgZoom));
 
-  if (e.target.closest("button, a, input, .bg-panel, .top-buttons")) return;
+    zoomSlider.value = bgZoom;
+    updateBackground();
+  });
 
-  // 🔥 same protection
-  if (e.target.closest(".bg-panel") || e.target.closest(".top-buttons")) return;
+  zoomSlider.addEventListener("input", () => {
+    bgZoom = zoomSlider.value;
+    updateBackground();
+  });
 
-  const dx = e.clientX - startX;
-  const dy = e.clientY - startY;
+  rotateSlider.addEventListener("input", () => {
+    bgRotate = rotateSlider.value;
+    updateBackground();
+  });
 
-  startX = e.clientX;
-  startY = e.clientY;
-
-  bgPosX += dx * 0.1;
-  bgPosY += dy * 0.1;
-
-  bgPosX = Math.max(0, Math.min(100, bgPosX));
-  bgPosY = Math.max(0, Math.min(100, bgPosY));
-
-  updateBackground();
-});
-
-document.addEventListener("mouseup", () => {
-  if (!adjusting) return;
-
-  isDragging = false;
-
-  localStorage.setItem("bgPosition", JSON.stringify({
-    x: bgPosX,
-    y: bgPosY,
-    zoom: bgZoom,
-    rotate: bgRotate
-  }));
-});
-
-/* ===== ZOOM (SCROLL) ===== */
-
-document.addEventListener("wheel", (e) => {
-  if (!adjusting) return;
-
-  bgZoom += e.deltaY * -0.05;
-  bgZoom = Math.max(50, Math.min(200, bgZoom));
-
-  zoomSlider.value = bgZoom;
-  updateBackground();
-});
-
-/* ===== SLIDERS ===== */
-
-zoomSlider.addEventListener("input", () => {
-  bgZoom = zoomSlider.value;
-  updateBackground();
-});
-
-rotateSlider.addEventListener("input", () => {
-  bgRotate = rotateSlider.value;
-  updateBackground();
-});
-
-/* LOAD FULL STATE */
-if (savedPos) {
-  const pos = JSON.parse(savedPos);
-
-  bgPosX = pos.x || 50;
-  bgPosY = pos.y || 50;
-  bgZoom = pos.zoom || 100;
-  bgRotate = pos.rotate || 0;
-
-  zoomSlider.value = bgZoom;
-  rotateSlider.value = bgRotate;
-
-  updateBackground();
-}
-  /* ===== MENU ===== */
-
- btn.addEventListener("click", (e) => {
-  e.preventDefault();
-
-  // 🔥 FORCE EXIT ADJUST MODE
-  adjusting = false;
-  document.body.classList.remove("adjusting");
-
-  menu.classList.add("open");
-});
+  btn.addEventListener("click", (e) => {
+    e.preventDefault();
+    adjusting = false;
+    document.body.classList.remove("adjusting");
+    menu.classList.add("open");
+  });
 
   closeBtn.addEventListener("click", () => {
     menu.classList.remove("open");
@@ -271,13 +191,9 @@ if (savedPos) {
     }
   });
 
-  /* ===== PREVIEW ===== */
-
   input.addEventListener("input", () => {
     preview.style.backgroundImage = `url(${input.value})`;
   });
-
-  /* ===== APPLY ===== */
 
   apply.addEventListener("click", () => {
     const url = input.value;
@@ -285,18 +201,14 @@ if (savedPos) {
     if (url) {
       document.body.style.background = `url(${url}) center/cover no-repeat fixed`;
       localStorage.setItem("customBg", url);
-      localStorage.removeItem("themeData");
     }
 
     menu.classList.remove("open");
   });
 
-  /* ===== RESET ===== */
-
   reset.addEventListener("click", () => {
     document.body.style.background = "#0f0f14";
     localStorage.removeItem("customBg");
-    localStorage.removeItem("themeData");
     menu.classList.remove("open");
   });
 
