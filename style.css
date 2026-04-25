@@ -2,97 +2,19 @@ body {
   background: #0f0f14;
   margin: 0;
   font-family: sans-serif;
-  color: white;
   overflow-x: hidden;
 }
 
-/* ================= DASHBOARD ================= */
+/* ================= DASHBOARD GRID ================= */
 
 .dashboard {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 40px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  gap: 20px;
   padding: 80px 20px;
 }
 
-/* ================= SECTIONS ================= */
-
-section {
-  width: 420px;
-  margin-left: 20px;
-  transition: transform 0.25s ease;
-}
-
-/* 🔥 HOVER ANIMATION (clean + noticeable) */
-section:hover {
-  transform: translateY(-6px) scale(1.015);
-}
-
-/* spacing */
-section h2 {
-  margin-bottom: 22px;
-  transition: color 0.25s ease;
-}
-
-/* subtle title glow on hover */
-section:hover h2 {
-  color: #7dd3fc;
-}
-
-/* ================= DIVIDER ================= */
-
-.divider {
-  width: 100vw;
-  height: 1px;
-  margin: 10px 0;
-  position: relative;
-  left: 50%;
-  transform: translateX(-50%);
-  overflow: hidden;
-}
-
-.divider::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(79,195,255,0.0) 12%,
-    rgba(79,195,255,0.85) 25%,
-    rgba(192,132,252,0.95) 50%,
-    rgba(79,195,255,0.85) 75%,
-    rgba(79,195,255,0.0) 88%,
-    transparent 100%
-  );
-}
-
-.divider::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -10%;
-  width: 10%;
-  height: 100%;
-
-  background: white;
-  opacity: 0.35;
-
-  box-shadow:
-    0 0 10px rgba(79,195,255,0.6),
-    0 0 18px rgba(192,132,252,0.4);
-
-  animation: sweep 7s linear infinite;
-}
-
-@keyframes sweep {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(1100%); }
-}
-
-/* ================= IFRAME ================= */
+/* ================= PANELS ================= */
 
 iframe {
   width: 100%;
@@ -105,12 +27,14 @@ iframe {
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
+/* 🔥 CLEAN HOVER EFFECT */
 iframe:hover {
-  transform: translateY(-4px);
+  transform: translateY(-6px) scale(1.02);
+
   box-shadow:
-    0 12px 30px rgba(0,0,0,0.35),
-    0 0 18px rgba(125, 211, 252, 0.18),
-    0 0 28px rgba(167, 139, 250, 0.12);
+    0 14px 35px rgba(0,0,0,0.4),
+    0 0 20px rgba(125, 211, 252, 0.2),
+    0 0 30px rgba(167, 139, 250, 0.15);
 }
 
 /* ================= GITHUB BUTTON ================= */
