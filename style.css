@@ -282,3 +282,43 @@ body.animated-bg {
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
+
+/* ================= THEME TOOLTIP ================= */
+
+.theme-circle {
+  position: relative;
+}
+
+/* tooltip */
+.theme-circle::after {
+  content: attr(data-name);
+
+  position: absolute;
+  bottom: -28px;
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+
+  font-size: 11px;
+  color: #cbd5f5;
+
+  background: rgba(20, 20, 30, 0.9);
+  backdrop-filter: blur(8px);
+
+  padding: 4px 8px;
+  border-radius: 6px;
+
+  white-space: nowrap;
+
+  opacity: 0;
+  pointer-events: none;
+
+  transition: 0.2s ease;
+
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+/* show on hover */
+.theme-circle:hover::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
