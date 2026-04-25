@@ -62,34 +62,10 @@
   </div>
 </div>
 
-<script>
 document.addEventListener("DOMContentLoaded", () => {
 
-/* ================= DOM ================= */
-const dashboard = document.getElementById("dashboard");
+/* ================= THEME SYSTEM (MUST COME FIRST) ================= */
 
-const bgMenu = document.getElementById("bg-menu");
-const bgBtn = document.getElementById("bg-btn");
-const bgInput = document.getElementById("bg-input");
-const bgPreview = document.getElementById("bg-preview");
-const applyBg = document.getElementById("apply-bg");
-const resetBg = document.getElementById("reset-bg");
-const closeBg = document.getElementById("close-menu");
-
-const addBtn = document.getElementById("add-btn");
-const countMenu = document.getElementById("count-menu");
-const countInput = document.getElementById("count-input");
-const addCount = document.getElementById("add-count");
-const closeCount = document.getElementById("close-count");
-const savedTheme = localStorage.getItem("theme");
-if (savedTheme && themes[savedTheme]) {
-  applyTheme(savedTheme);
-}
-const editBtn = document.getElementById("edit-btn");
-
-let editMode = false;
-
-/* ================= THEME FIX (ADDED) ================= */
 const themes = {
   default: {
     bg: "#0b0c10",
@@ -148,27 +124,53 @@ const themes = {
 
 function applyTheme(name) {
   const t = themes[name];
+  if (!t) return;
 
   document.body.style.setProperty("--base", t.bg);
   document.body.style.setProperty("--accent", t.accent);
-
   document.body.style.setProperty("--g1", t.glowA);
   document.body.style.setProperty("--g2", t.glowB);
   document.body.style.setProperty("--g3", t.glowC);
 
   localStorage.setItem("theme", name);
 
-  if (t.animated) {
-    document.body.classList.add("animated-bg");
-  } else {
-    document.body.classList.remove("animated-bg");
-  }
+  if (t.animated) document.body.classList.add("animated-bg");
+  else document.body.classList.remove("animated-bg");
 }
-/* ================= DEFAULT DATA ================= */
+
+/* ================= DOM ================= */
+
+const dashboard = document.getElementById("dashboard");
+
+const bgMenu = document.getElementById("bg-menu");
+const bgBtn = document.getElementById("bg-btn");
+const bgInput = document.getElementById("bg-input");
+const bgPreview = document.getElementById("bg-preview");
+const applyBg = document.getElementById("apply-bg");
+const resetBg = document.getElementById("reset-bg");
+const closeBg = document.getElementById("close-menu");
+
+const addBtn = document.getElementById("add-btn");
+const countMenu = document.getElementById("count-menu");
+const countInput = document.getElementById("count-input");
+const addCount = document.getElementById("add-count");
+const closeCount = document.getElementById("close-count");
+
+const editBtn = document.getElementById("edit-btn");
+
+let editMode = false;
+
+/* ================= LOAD THEME SAFELY ================= */
+
+const savedTheme = localStorage.getItem("theme");
+if (savedTheme) applyTheme(savedTheme);
+
+/* ================= DATA ================= */
+
 const defaultCounts = [
-"https://count.live/?date=2026-04-29T01%3A00%3A00-07%3A00&title=Heidemarie%20(CZN)&font=display&bgimg=https%3A%2F%2Fblog.prydwen.gg%2Fwp-content%2Fuploads%2F2026%2F04%2Fmaxresdefault-2.webp&units=w,d,h,m,s&showtz=1&progress=1&percent=1&start=2026-04-20T00%3A00%3A00-07%3A00&tz=America%2FTijuana",
-"https://count.live/?date=2026-05-13T15%3A00%3A00-07%3A00&title=Evanescia%20(HSR)&font=display&bgimg=https%3A%2F%2Fi.redd.it%2Fwith-the-design-reveal-of-evanescia-and-sparxie-it-feels-v0-1cu4wje40ndg1.jpg",
-"https://count.live/?date=2026-04-23T18%3A00%3A00-07%3A00&title=Beta%20Access"
+"https://count.live/?date=2026-04-29T01%3A00%3A00-07%3A00&title=Heidemarie",
+"https://count.live/?date=2026-05-13T15%3A00%3A00-07%3A00&title=Evanescia",
+"https://count.live/?date=2026-04-23T18%3A00%3A00-07%3A00&title=Beta"
 ];
 
 let items = JSON.parse(localStorage.getItem("counts"));
@@ -179,25 +181,13 @@ function save() {
 }
 
 /* ================= RENDER ================= */
+
 function render() {
-
-  const existingCards = new Map();
-
-  document.querySelectorAll(".count-card").forEach((card) => {
-    existingCards.set(card.dataset.index, card);
-  });
-
-  const newSet = new Set();
+  dashboard.innerHTML = "";
 
   items.forEach((url, index) => {
-
-    newSet.add(String(index));
-
-    let card = existingCards.get(String(index));
-    if (card) return;
-
-    card = document.createElement("div");
-    card.className = "count-card enter";
+    const card = document.createElement("div");
+    card.className = "count-card";
     card.dataset.index = index;
     card.draggable = true;
 
@@ -215,87 +205,41 @@ function render() {
         items.splice(index, 1);
         save();
         render();
-      }, 250);
+      }, 200);
     };
-
-    card.addEventListener("dragstart", () => card.classList.add("dragging"));
-    card.addEventListener("dragend", () => card.classList.remove("dragging"));
 
     card.appendChild(iframe);
     card.appendChild(del);
     dashboard.appendChild(card);
-
-    requestAnimationFrame(() => {
-      card.classList.remove("enter");
-    });
-  });
-
-  document.querySelectorAll(".count-card").forEach((card) => {
-    if (!newSet.has(card.dataset.index)) {
-      card.classList.add("exit");
-      setTimeout(() => card.remove(), 250);
-    }
   });
 }
 
-/* ================= THEME CIRCLE FIX (ADDED) ================= */
-document.querySelectorAll(".theme-circle").forEach(circle => {
-  const themeName = circle.dataset.theme;
+/* ================= BUTTONS ================= */
 
-  // give preview color so they are not blank
-  const preview = {
-    default: "#6366f1",
-    midnight: "#38bdf8",
-    violet: "#a78bfa",
-    deepblue: "#60a5fa",
-    dusk: "#c084fc",
-    emerald: "#34d399"
-  };
-
-  circle.style.background = preview[themeName];
-
-  circle.onclick = () => {
-    applyTheme(themes[themeName]);
-  };
-});
-
-/* drag reorder */
-dashboard.addEventListener("dragover", (e) => {
-  if (!editMode) return;
+bgBtn.onclick = (e) => {
   e.preventDefault();
-
-  const dragging = document.querySelector(".dragging");
-  const after = getAfterElement(dashboard, e.clientY);
-
-  if (after == null) {
-    dashboard.appendChild(dragging);
-  } else {
-    dashboard.insertBefore(dragging, after);
-  }
-});
-
-function getAfterElement(container, y) {
-  const elements = [...container.querySelectorAll(".count-card:not(.dragging)")];
-
-  return elements.reduce((closest, child) => {
-    const box = child.getBoundingClientRect();
-    const offset = y - box.top - box.height / 2;
-
-    if (offset < 0 && offset > closest.offset) {
-      return { offset, element: child };
-    }
-    return closest;
-  }, { offset: Number.NEGATIVE_INFINITY }).element;
-}
-
-/* EDIT MODE */
-editBtn.onclick = (e) => {
-  e.preventDefault();
-  editMode = !editMode;
-  document.body.classList.toggle("edit-mode", editMode);
+  bgMenu.classList.add("open");
 };
 
-/* ADD */
+closeBg.onclick = () => bgMenu.classList.remove("open");
+
+applyBg.onclick = () => {
+  const url = bgInput.value.trim();
+
+  if (url) {
+    document.body.style.background = `url(${url}) center/cover no-repeat fixed`;
+    localStorage.setItem("customBg", url);
+  }
+
+  bgMenu.classList.remove("open");
+};
+
+resetBg.onclick = () => {
+  document.body.style.background = "#0f0f14";
+  localStorage.removeItem("customBg");
+  bgMenu.classList.remove("open");
+};
+
 addBtn.onclick = (e) => {
   e.preventDefault();
   countMenu.classList.add("open");
@@ -309,57 +253,30 @@ addCount.onclick = () => {
 
   items.push(url);
   save();
+  render();
 
   countInput.value = "";
   countMenu.classList.remove("open");
-
-  render();
 };
 
-/* BG */
-bgBtn.onclick = (e) => {
+editBtn.onclick = (e) => {
   e.preventDefault();
-  bgMenu.classList.add("open");
+  editMode = !editMode;
+  document.body.classList.toggle("edit-mode", editMode);
 };
 
-closeBg.onclick = () => bgMenu.classList.remove("open");
+/* ================= LOAD BG ================= */
 
-bgInput.addEventListener("input", () => {
-  bgPreview.style.backgroundImage = `url(${bgInput.value})`;
-});
-
-applyBg.onclick = () => {
-  const url = bgInput.value;
-
-  if (url) {
-    document.body.style.background = `url(${url}) center/cover no-repeat fixed`;
-    localStorage.setItem("customBg", url);
-  }
-
-  // 🔥 ALWAYS close menu (even if empty)
-  bgMenu.classList.remove("open");
-};
-
-resetBg.onclick = () => {
-  document.body.style.background = "#0f0f14";
-  localStorage.removeItem("customBg");
-};
-
-/* LOAD BG */
 const savedBg = localStorage.getItem("customBg");
 if (savedBg) {
   document.body.style.background = `url(${savedBg}) center/cover no-repeat fixed`;
 }
-  
-const savedTheme = localStorage.getItem("theme");
-if (savedTheme) {
-  applyTheme(JSON.parse(savedTheme));
-}
-  
+
+/* ================= INIT ================= */
+
 render();
 
 });
-</script>
 
 </body>
 </html>
