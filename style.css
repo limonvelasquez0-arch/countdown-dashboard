@@ -297,14 +297,13 @@ body.animated-bg::before {
   inset: -20%;
   pointer-events: none;
 
-  background:
-    radial-gradient(circle at 20% 30%, rgba(122,162,255,0.35), transparent 45%),
-    radial-gradient(circle at 70% 20%, rgba(195,168,255,0.28), transparent 50%),
-    radial-gradient(circle at 40% 80%, rgba(111,255,209,0.22), transparent 55%),
-    radial-gradient(circle at 80% 70%, rgba(255,155,209,0.22), transparent 50%);
-
-  filter: blur(40px) saturate(1.2);
-  animation: ambientDrift 10s ease-in-out infinite alternate;
+@keyframes gradientMove {
+  0% { background-position: 0% 40%; }
+  20% { background-position: 40% 60%; }
+  40% { background-position: 100% 50%; }
+  60% { background-position: 60% 40%; }
+  80% { background-position: 20% 60%; }
+  100% { background-position: 0% 40%; }
 }
 /* ================= THEME TOOLTIP ================= */
 
