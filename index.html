@@ -176,17 +176,20 @@ const defaultCounts = [
 "https://count.live/?date=2026-04-23T18%3A00%3A00-07%3A00&title=Beta%20Access"
 ];
 
-let items = JSON.parse(localStorage.getItem("counts"));
+let items;
+
+try {
+  items = JSON.parse(localStorage.getItem("counts"));
+} catch (e) {
+  items = null;
+}
 
 if (!Array.isArray(items)) {
   items = defaultCounts.map(url => ({
     id: crypto.randomUUID(),
     url
   }));
-}
-
-  function save() {
-  localStorage.setItem("counts", JSON.stringify(items));
+  save();
 }
 
 /* ================= RENDER ================= */
