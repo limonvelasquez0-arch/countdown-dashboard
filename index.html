@@ -42,10 +42,10 @@
     </div>
 
     <div class="theme-options">
-     <div class="theme-circle" data-theme="default" data-name="Default"></div>
-<div class="theme-circle" data-theme="midnight" data-name="Midnight"></div>
-<div class="theme-circle" data-theme="violet" data-name="Violet Drift"></div>
-<div class="theme-circle" data-theme="deepblue" data-name="Deep Ocean"></div>
+      <div class="theme-circle" data-theme="default" data-name="Default"></div>
+      <div class="theme-circle" data-theme="midnight" data-name="Midnight"></div>
+      <div class="theme-circle" data-theme="violet" data-name="Violet Drift"></div>
+      <div class="theme-circle" data-theme="deepblue" data-name="Deep Ocean"></div>
     </div>
   </div>
 </div>
@@ -92,7 +92,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function applyTheme(theme) {
     document.body.style.background = theme.bg;
-
     document.body.style.backgroundSize = "200% 200%";
     document.body.style.backgroundRepeat = "no-repeat";
     document.body.style.backgroundAttachment = "fixed";
@@ -110,52 +109,46 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.removeItem("customBg");
   }
 
-  /* ================= BUTTON FIX (THIS WAS BROKEN) ================= */
+  /* ================= MENU CONTROL ================= */
 
-/* ===== CLOSE MENU CLEAN ===== */
+  btn.addEventListener("click", (e) => {
+    e.preventDefault();
+    menu.classList.add("open");
+  });
 
-/* close with X */
-closeBtn.addEventListener("click", (e) => {
-  e.stopPropagation(); // prevent bubbling
-  menu.classList.remove("open");
-});
-
-/* close when clicking outside panel ONLY */
-menu.addEventListener("mousedown", (e) => {
-  if (!e.target.closest(".bg-panel")) {
+  closeBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
     menu.classList.remove("open");
-  }
-});
+  });
 
-  /* ================= IMAGE PREVIEW ================= */
+  menu.addEventListener("mousedown", (e) => {
+    if (!e.target.closest(".bg-panel")) {
+      menu.classList.remove("open");
+    }
+  });
+
+  /* ================= PREVIEW ================= */
 
   input.addEventListener("input", () => {
     preview.style.backgroundImage = `url(${input.value})`;
   });
 
-  /* ================= APPLY IMAGE ================= */
+  /* ================= APPLY ================= */
 
   apply.addEventListener("click", (e) => {
-  e.preventDefault();
-  e.stopPropagation(); // 🔥 stops overlay interference
+    e.preventDefault();
+    e.stopPropagation();
 
-  const url = input.value;
-  if (!url) return;
+    const url = input.value;
+    if (!url) return;
 
-  document.body.style.background = `url(${url}) center/cover no-repeat fixed`;
+    document.body.style.background = `url(${url}) center/cover no-repeat fixed`;
 
-  localStorage.setItem("customBg", url);
-  localStorage.removeItem("themeData");
+    localStorage.setItem("customBg", url);
+    localStorage.removeItem("themeData");
 
-  /* 🔥 HARD CLOSE (NO DEPENDENCE ON CLASS STATE) */
-  menu.classList.remove("open");
-  menu.style.display = "none";
-
-  /* 🔥 FORCE REOPEN CLEAN NEXT TIME */
-  setTimeout(() => {
-    menu.style.display = "";
-  }, 10);
-});
+    menu.classList.remove("open");
+  });
 
   /* ================= RESET ================= */
 
@@ -168,11 +161,10 @@ menu.addEventListener("mousedown", (e) => {
     menu.classList.remove("open");
   });
 
-  /* ================= THEME CIRCLES ================= */
+  /* ================= THEMES ================= */
 
   document.querySelectorAll(".theme-circle").forEach(c => {
     const theme = themes[c.dataset.theme];
-
     c.style.background = theme.preview;
 
     c.addEventListener("click", () => {
