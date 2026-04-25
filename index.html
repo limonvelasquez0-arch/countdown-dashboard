@@ -81,6 +81,10 @@ const countMenu = document.getElementById("count-menu");
 const countInput = document.getElementById("count-input");
 const addCount = document.getElementById("add-count");
 const closeCount = document.getElementById("close-count");
+const savedTheme = localStorage.getItem("theme");
+if (savedTheme && themes[savedTheme]) {
+  applyTheme(savedTheme);
+}
 const editBtn = document.getElementById("edit-btn");
 
 let editMode = false;
@@ -348,8 +352,8 @@ if (savedBg) {
 }
   
 const savedTheme = localStorage.getItem("theme");
-if (savedTheme && themes[savedTheme]) {
-  applyTheme(savedTheme);
+if (savedTheme) {
+  applyTheme(JSON.parse(savedTheme));
 }
   
 render();
