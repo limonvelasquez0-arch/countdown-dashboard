@@ -7,29 +7,37 @@
 <link rel="stylesheet" href="style.css">
 
 <style>
-body.adjusting {
-  cursor: grab;
+body {
+  margin: 0;
+  background: #0f0f14;
 }
-body.adjusting:active {
-  cursor: grabbing;
-}
-#adjust-bg.active {
-  border-color: var(--accent);
-  box-shadow: 0 0 10px var(--accent-soft);
-}
-body.adjusting::after {
-  content: "Adjust mode — drag";
+
+.bg-menu {
   position: fixed;
-  bottom: 15px;
-  left: 50%;
-  transform: translateX(-50%);
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
   background: rgba(0,0,0,0.5);
-  color: #cbd5f5;
-  padding: 6px 12px;
-  border-radius: 8px;
-  font-size: 13px;
-  pointer-events: none;
-  z-index: 5000;
+}
+
+.bg-menu.open {
+  display: flex;
+}
+
+.bg-panel {
+  background: #111;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+.theme-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin: 6px;
+  display: inline-block;
+  cursor: pointer;
 }
 </style>
 </head>
@@ -37,184 +45,84 @@ body.adjusting::after {
 <body>
 
 <div class="top-buttons">
-  <a href="https://github.com/limonvelasquez0-arch/countdown-dashboard" target="_blank" class="top-btn">
-    GitHub
-  </a>
-
-  <a href="#" class="top-btn" id="bg-btn">
-    Background
-  </a>
+  <a href="#" id="bg-btn">Background</a>
 </div>
 
 <div class="dashboard">
-  <iframe src="https://count.live/?date=2026-04-29T01%3A00%3A00-07%3A00&title=Heidemarie%20(CZN)&font=display&bgimg=https%3A%2F%2Fblog.prydwen.gg%2Fwp-content%2Fuploads%2F2026%2F04%2Fmaxresdefault-2.webp&units=w,d,h,m,s&showtz=1&progress=1&percent=1&start=2026-04-20T00%3A00%3A00-07%3A00&tz=America%2FTijuana"></iframe>
-
-  <iframe src="https://count.live/?date=2026-05-13T15%3A00%3A00-07%3A00&title=Evanescia%20(HSR)&font=display&bgimg=https%3A%2F%2Fi.redd.it%2Fwith-the-design-reveal-of-evanescia-and-sparxie-it-feels-v0-1cu4wje40ndg1.jpg&units=w,d,h,m,s&showtz=1&progress=1&percent=1&start=2026-04-20T00%3A00%3A00-07%3A00&tz=America%2FTijuana"></iframe>
-
-  <iframe src="https://count.live/?date=2026-04-23T18%3A00%3A00-07%3A00&title=Beta%20Access&font=display&bgimg=https%3A%2F%2Ffastcdn.hoyoverse.com%2Fstatic-resource-v2%2F2026%2F03%2F25%2Fcf6e120d2032ac9c62cdc31e0d7504df_3968736085113746422.png&units=w,d,h,m,s&showtz=1&progress=1&percent=1&start=2026-04-20T00%3A00%3A00-07%3A00&tz=America%2FTijuana"></iframe>
+  <iframe src="https://count.live/?date=2026-04-29T01:00:00"></iframe>
 </div>
 
 <div class="bg-menu" id="bg-menu">
   <div class="bg-panel">
-    <button class="close-btn" id="close-menu">✕</button>
+    <button id="close-menu">✕</button>
 
-    <h3>Background Settings</h3>
+    <h3>Background</h3>
 
-    <input type="text" id="bg-input" placeholder="Paste image URL...">
-    <div class="bg-preview" id="bg-preview"></div>
+    <input id="bg-input" placeholder="Image URL">
+    <button id="apply-bg">Apply</button>
+    <button id="reset-bg">Reset</button>
 
-    <div class="bg-actions">
-      <button type="button" id="apply-bg">Apply</button>
-      <button id="reset-bg">Reset</button>
-      <button id="adjust-bg">Adjust</button>
-
-      <div class="adjust-controls">
-        <label>Zoom</label>
-        <input type="range" id="zoom-slider" min="50" max="150" value="100">
-
-        <label>Rotate</label>
-        <input type="range" id="rotate-slider" min="-30" max="30" value="0">
-
-        <button id="exit-adjust" class="top-btn">Exit Adjust</button>
-      </div>
-    </div>
-
-    <div class="theme-options">
-      <div class="theme-circle" data-theme="default"></div>
-      <div class="theme-circle" data-theme="midnight"></div>
-      <div class="theme-circle" data-theme="violet"></div>
-      <div class="theme-circle" data-theme="deepblue"></div>
-      <div class="theme-circle" data-theme="dusk"></div>
-      <div class="theme-circle" data-theme="emerald"></div>
+    <div>
+      <div class="theme-circle" data-theme="default" data-name="Default"></div>
+      <div class="theme-circle" data-theme="midnight" data-name="Midnight"></div>
+      <div class="theme-circle" data-theme="violet" data-name="Violet"></div>
     </div>
   </div>
 </div>
 
 <script>
-document.addEventListener("DOMContentLoaded", () => {
+const menu = document.getElementById("bg-menu");
+const btn = document.getElementById("bg-btn");
+const closeBtn = document.getElementById("close-menu");
+const apply = document.getElementById("apply-bg");
+const reset = document.getElementById("reset-bg");
+const input = document.getElementById("bg-input");
 
-  const menu = document.getElementById("bg-menu");
-  const btn = document.getElementById("bg-btn");
-  const input = document.getElementById("bg-input");
-  const preview = document.getElementById("bg-preview");
-  const apply = document.getElementById("apply-bg");
-  const reset = document.getElementById("reset-bg");
-  const closeBtn = document.getElementById("close-menu");
-  const adjustBtn = document.getElementById("adjust-bg");
-  const exitBtn = document.getElementById("exit-adjust");
+/* MENU */
+btn.onclick = (e) => {
+  e.preventDefault();
+  menu.classList.add("open");
+};
 
-  let adjusting = false;
-  let isDragging = false;
+closeBtn.onclick = () => menu.classList.remove("open");
 
-  let startX = 0;
-  let startY = 0;
+menu.onclick = (e) => {
+  if (e.target === menu) menu.classList.remove("open");
+};
 
-  let bgPosX = 50;
-  let bgPosY = 50;
-  let bgZoom = 100;
+/* APPLY */
+apply.onclick = () => {
+  const url = input.value;
 
-  const zoomSlider = document.getElementById("zoom-slider");
-
-  function updateBackground() {
-    document.body.style.backgroundPosition = `${bgPosX}% ${bgPosY}%`;
-    document.body.style.backgroundSize = `${bgZoom}%`;
+  if (url) {
+    document.body.style.background = `url(${url}) center/cover no-repeat fixed`;
   }
 
-  adjustBtn.addEventListener("click", () => {
-    adjusting = true;
-    document.body.classList.add("adjusting");
-    menu.classList.remove("open");
-  });
+  menu.classList.remove("open");
+};
 
-  exitBtn.addEventListener("click", () => {
-    adjusting = false;
-    document.body.classList.remove("adjusting");
-  });
+/* RESET */
+reset.onclick = () => {
+  document.body.style.background = "#0f0f14";
+  menu.classList.remove("open");
+};
 
-  document.body.addEventListener("mousedown", (e) => {
-    if (!adjusting) return;
-    if (e.target.closest("button, a, input, .bg-panel, .top-buttons")) return;
+/* THEMES */
+const themes = {
+  default: "#0f0f14",
+  midnight: "#020617",
+  violet: "#1e1b4b"
+};
 
-    isDragging = true;
-    startX = e.clientX;
-    startY = e.clientY;
-  });
+document.querySelectorAll(".theme-circle").forEach(c => {
+  const theme = themes[c.dataset.theme];
 
-  document.body.addEventListener("mousemove", (e) => {
-    if (!adjusting || !isDragging) return;
+  c.style.background = theme;
+  c.title = c.dataset.name;
 
-    const dx = e.clientX - startX;
-    const dy = e.clientY - startY;
-
-    startX = e.clientX;
-    startY = e.clientY;
-
-    bgPosX += dx * 0.1;
-    bgPosY += dy * 0.1;
-
-    bgPosX = Math.max(0, Math.min(100, bgPosX));
-    bgPosY = Math.max(0, Math.min(100, bgPosY));
-
-    updateBackground();
-  });
-
-  document.addEventListener("mouseup", () => {
-    isDragging = false;
-  });
-
-  document.addEventListener("wheel", (e) => {
-    if (!adjusting) return;
-
-    bgZoom += e.deltaY * -0.05;
-    bgZoom = Math.max(50, Math.min(200, bgZoom));
-
-    zoomSlider.value = bgZoom;
-    updateBackground();
-  });
-
-  zoomSlider.addEventListener("input", () => {
-    bgZoom = zoomSlider.value;
-    updateBackground();
-  });
-
-  btn.addEventListener("click", (e) => {
-    e.preventDefault();
-    adjusting = false;
-    document.body.classList.remove("adjusting");
-    menu.classList.add("open");
-  });
-
-  closeBtn.addEventListener("click", () => {
-    menu.classList.remove("open");
-  });
-
-  menu.addEventListener("click", (e) => {
-    if (!e.target.closest(".bg-panel")) {
-      menu.classList.remove("open");
-    }
-  });
-
-  input.addEventListener("input", () => {
-    preview.style.backgroundImage = `url(${input.value})`;
-  });
-
-  apply.addEventListener("click", () => {
-    const url = input.value;
-
-    if (url) {
-      document.body.style.background = `url(${url}) center/cover no-repeat fixed`;
-      localStorage.setItem("customBg", url);
-    }
-
-    menu.classList.remove("open");
-  });
-
-  reset.addEventListener("click", () => {
-    document.body.style.background = "#0f0f14";
-    localStorage.removeItem("customBg");
-    menu.classList.remove("open");
-  });
-
+  c.onclick = () => {
+    document.body.style.background = theme;
+  };
 });
 </script>
 
