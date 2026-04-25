@@ -273,31 +273,32 @@ iframe:hover {
 /* ================= BACKGROUND ANIMATION FIX ================= */
 
 body.animated-bg {
-  background-size: 600% 600%; /* 🔥 BIGGER = movement becomes obvious */
-  animation: gradientMove 18s ease-in-out infinite;
+  background-size: 300% 300%;
+  animation: breathe 18s ease-in-out infinite;
 }
 
-@keyframes gradientMove {
+@keyframes breathe {
   0% {
-    background-position: 0% 40%;
+    background-position: 50% 50%;
+    filter: brightness(1);
   }
-  20% {
-    background-position: 40% 60%;
+  25% {
+    background-position: 45% 55%;
+    filter: brightness(1.05);
   }
-  40% {
-    background-position: 100% 50%;
+  50% {
+    background-position: 55% 45%;
+    filter: brightness(0.98);
   }
-  60% {
-    background-position: 60% 40%;
-  }
-  80% {
-    background-position: 20% 60%;
+  75% {
+    background-position: 48% 52%;
+    filter: brightness(1.03);
   }
   100% {
-    background-position: 0% 40%;
+    background-position: 50% 50%;
+    filter: brightness(1);
   }
 }
-
 /* ================= THEME TOOLTIP ================= */
 
 .theme-circle {
