@@ -75,6 +75,15 @@ body.adjusting::after {
       <button type="button" id="apply-bg">Apply</button>
       <button id="reset-bg">Reset</button>
       <button id="adjust-bg">Adjust</button>
+      <div class="adjust-controls" id="adjust-controls">
+  <label>Zoom</label>
+  <input type="range" id="zoom-slider" min="50" max="150" value="100">
+
+  <label>Rotate</label>
+  <input type="range" id="rotate-slider" min="-30" max="30" value="0">
+
+  <button id="exit-adjust" class="top-btn">Exit Adjust</button>
+</div>
     </div>
 
     <div class="theme-options">
