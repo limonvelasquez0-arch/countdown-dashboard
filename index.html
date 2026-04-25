@@ -142,25 +142,25 @@ const themes = {
     animated: true
   }
 };
-function applyTheme(theme) {
-  document.body.classList.remove("animated-bg");
 
-  document.body.style.background = theme.bg;
-  document.body.style.backgroundSize = "250% 250%";
-  document.body.style.backgroundRepeat = "no-repeat";
-  document.body.style.backgroundAttachment = "fixed";
+function applyTheme(name) {
+  const t = themes[name];
 
-  document.documentElement.style.setProperty("--accent", theme.accent);
+  document.body.style.setProperty("--base", t.bg);
+  document.body.style.setProperty("--accent", t.accent);
 
-  if (theme.animated) {
-    requestAnimationFrame(() => {
-      document.body.classList.add("animated-bg");
-    });
+  document.body.style.setProperty("--g1", t.glowA);
+  document.body.style.setProperty("--g2", t.glowB);
+  document.body.style.setProperty("--g3", t.glowC);
+
+  localStorage.setItem("theme", name);
+
+  if (t.animated) {
+    document.body.classList.add("animated-bg");
+  } else {
+    document.body.classList.remove("animated-bg");
   }
-
-  localStorage.setItem("theme", JSON.stringify(theme));
 }
-
 /* ================= DEFAULT DATA ================= */
 const defaultCounts = [
 "https://count.live/?date=2026-04-29T01%3A00%3A00-07%3A00&title=Heidemarie%20(CZN)&font=display&bgimg=https%3A%2F%2Fblog.prydwen.gg%2Fwp-content%2Fuploads%2F2026%2F04%2Fmaxresdefault-2.webp&units=w,d,h,m,s&showtz=1&progress=1&percent=1&start=2026-04-20T00%3A00%3A00-07%3A00&tz=America%2FTijuana",
