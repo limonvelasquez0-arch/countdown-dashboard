@@ -220,6 +220,145 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 });
+
+  document.addEventListener("DOMContentLoaded", () => {
+
+const dashboard = document.getElementById("dashboard");
+
+/* ===== EDIT MODE ===== */
+const editBtn = document.getElementById("edit-btn");
+let editMode = false;
+
+editBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  editMode = !editMode;
+  document.body.classList.toggle("edit-mode", editMode);
+});
+
+/* ===== MENU ===== */
+const countMenu = document.getElementById("count-menu");
+const countBtn = document.createElement("a");
+const topButtons = document.querySelector(".top-buttons");
+
+countBtn.className = "top-btn";
+countBtn.href = "#";
+countBtn.innerText = "Add";
+topButtons.appendChild(countBtn);
+
+const closeCount = document.getElementById("close-count");
+const countInput = document.getElementById("count-input");
+const addCount = document.getElementById("add-count");
+
+countBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  countMenu.classList.add("open");
+});
+
+closeCount.addEventListener("click", () => {
+  countMenu.classList.remove("open");
+});
+
+/* ===== STORAGE ===== */
+let items = JSON.parse(localStorage.getItem("counts") || "[]");
+
+function save() {
+  localStorage.setItem("counts", JSON.stringify(items));
+}
+
+/* ===== RENDER ===== */
+function render() {
+  dashboard.innerHTML = "";
+
+  items.forEach((url, index) => {
+    const card = document.createElement("div");
+    card.className = "count-card";
+    card.draggable = true;
+    card.dataset.index = index;
+
+    const iframe = document.createElement("iframe");
+    iframe.src = url;
+
+    const del = document.createElement("button");
+    del.className = "delete-btn";
+    del.innerText = "✕";
+
+    del.addEventListener("click", () => {
+      items.splice(index, 1);
+      save();
+      render();
+    });
+
+    /* drag */
+    card.addEventListener("dragstart", () => {
+      card.classList.add("dragging");
+    });
+
+    card.addEventListener("dragend", () => {
+      card.classList.remove("dragging");
+    });
+
+    card.appendChild(iframe);
+    card.appendChild(del);
+    dashboard.appendChild(card);
+  });
+
+  enableDragSort();
+}
+
+/* ===== DRAG SORT ===== */
+function enableDragSort() {
+  const cards = [...document.querySelectorAll(".count-card")];
+
+  cards.forEach(card => {
+    card.addEventListener("dragover", (e) => {
+      e.preventDefault();
+
+      const dragging = document.querySelector(".dragging");
+      const after = getAfterElement(dashboard, e.clientY);
+
+      if (after == null) {
+        dashboard.appendChild(dragging);
+      } else {
+        dashboard.insertBefore(dragging, after);
+      }
+    });
+  });
+}
+
+function getAfterElement(container, y) {
+  const elements = [...container.querySelectorAll(".count-card:not(.dragging)")];
+
+  return elements.reduce((closest, child) => {
+    const box = child.getBoundingClientRect();
+    const offset = y - box.top - box.height / 2;
+
+    if (offset < 0 && offset > closest.offset) {
+      return { offset: offset, element: child };
+    } else {
+      return closest;
+    }
+  }, { offset: Number.NEGATIVE_INFINITY }).element;
+}
+
+/* ===== ADD ===== */
+addCount.addEventListener("click", () => {
+  const url = countInput.value.trim();
+
+  if (!url) return;
+
+  items.push(url);
+  save();
+  render();
+
+  countInput.value = "";
+  countMenu.classList.remove("open");
+});
+
+/* ===== INIT ===== */
+render();
+
+});
+  
 </script>
 
 </body>
