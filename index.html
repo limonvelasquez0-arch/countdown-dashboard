@@ -132,17 +132,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ===== APPLY (FIXED) ===== */
 
-  apply.addEventListener("click", () => {
-    const url = input.value;
-    if (!url) return;
+apply.addEventListener("click", () => {
+  const url = input.value;
+  if (!url) return;
 
-    document.body.style.background = `url(${url}) center/cover no-repeat fixed`;
+  document.body.style.background = `url(${url}) center/cover no-repeat fixed`;
 
-    localStorage.setItem("customBg", url);
-    localStorage.removeItem("themeData");
+  localStorage.setItem("customBg", url);
+  localStorage.removeItem("themeData");
 
-    menu.classList.remove("open");
-  });
+  /* 🔥 EXACT SAME CLOSE LOGIC AS RESET */
+  menu.classList.remove("open");
+});
 
   /* ===== RESET ===== */
 
