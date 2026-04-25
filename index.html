@@ -107,7 +107,7 @@ function render() {
   items.forEach((url, index) => {
 
     const card = document.createElement("div");
-    card.className = "count-card";
+    card.className = "count-card enter"; // 👈 entry animation
     card.draggable = true;
 
     const iframe = document.createElement("iframe");
@@ -118,9 +118,14 @@ function render() {
     del.innerText = "✕";
 
     del.onclick = () => {
-      items.splice(index, 1);
-      save();
-      render();
+      // 👇 exit animation FIRST
+      card.classList.add("exit");
+
+      setTimeout(() => {
+        items.splice(index, 1);
+        save();
+        render();
+      }, 250); // matches CSS transition time
     };
 
     card.addEventListener("dragstart", () => card.classList.add("dragging"));
@@ -129,6 +134,11 @@ function render() {
     card.appendChild(iframe);
     card.appendChild(del);
     dashboard.appendChild(card);
+
+    // 👇 remove entry class AFTER insertion so animation plays
+    requestAnimationFrame(() => {
+      card.classList.remove("enter");
+    });
   });
 }
 
