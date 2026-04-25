@@ -213,10 +213,11 @@ iframe:hover {
 
   padding: 10px;
   border-radius: 10px;
-  border: 1px solid var(--accent-soft);
 
-  background: var(--accent-soft);
-  color: #c7d2fe;
+  border: 1px solid rgba(255,255,255,0.08);
+
+  background: rgba(255,255,255,0.05);
+  color: #cbd5f5;
 
   cursor: pointer;
   transition: 0.25s ease;
@@ -226,12 +227,10 @@ iframe:hover {
   border-color: var(--accent);
 
   box-shadow:
-    0 0 10px var(--accent),
-    0 0 20px var(--accent-soft);
+    0 0 8px var(--accent-soft);
 
   transform: translateY(-1px);
 }
-
 /* ===== THEMES ===== */
 .theme-options {
   display: flex;
