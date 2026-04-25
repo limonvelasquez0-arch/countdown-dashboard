@@ -39,7 +39,6 @@
     <div class="bg-actions">
       <button type="button" id="apply-bg">Apply</button>
       <button id="reset-bg">Reset</button>
-      <button id="adjust-bg">Adjust</button>
     </div>
 
     <div class="theme-options">
@@ -64,70 +63,70 @@ document.addEventListener("DOMContentLoaded", () => {
   const reset = document.getElementById("reset-bg");
   const closeBtn = document.getElementById("close-menu");
 
-const themes = {
-  default: {
-    bg: "#0f0f14",
-    accent: "#6366f1",
-    animated: false,
-    preview: "linear-gradient(135deg, #0f0f14, #1f2937)"
-  },
+  const themes = {
+    default: {
+      bg: "#0f0f14",
+      accent: "#6366f1",
+      animated: false,
+      preview: "linear-gradient(135deg, #0f0f14, #1f2937)"
+    },
 
-  midnight: {
-    bg: `
-      radial-gradient(circle at 20% 30%, #1e293b, transparent 55%),
-      radial-gradient(circle at 80% 70%, #020617, transparent 65%),
-      #010409
-    `,
-    accent: "#38bdf8",
-    animated: true,
-    preview: "linear-gradient(135deg, #020617, #1e293b)"
-  },
+    midnight: {
+      bg: `
+        radial-gradient(circle at 20% 30%, #1e293b, transparent 55%),
+        radial-gradient(circle at 80% 70%, #020617, transparent 65%),
+        #010409
+      `,
+      accent: "#38bdf8",
+      animated: true,
+      preview: "linear-gradient(135deg, #020617, #1e293b)"
+    },
 
-  violet: {
-    bg: `
-      radial-gradient(circle at 30% 20%, #4c1d95, transparent 55%),
-      radial-gradient(circle at 70% 80%, #1e1b4b, transparent 65%),
-      #0a061a
-    `,
-    accent: "#a78bfa",
-    animated: true,
-    preview: "linear-gradient(135deg, #1e1b4b, #4c1d95)"
-  },
+    violet: {
+      bg: `
+        radial-gradient(circle at 30% 20%, #4c1d95, transparent 55%),
+        radial-gradient(circle at 70% 80%, #1e1b4b, transparent 65%),
+        #0a061a
+      `,
+      accent: "#a78bfa",
+      animated: true,
+      preview: "linear-gradient(135deg, #1e1b4b, #4c1d95)"
+    },
 
-  deepblue: {
-    bg: `
-      radial-gradient(circle at 25% 25%, #1e40af, transparent 55%),
-      radial-gradient(circle at 75% 75%, #0c1a2b, transparent 65%),
-      #010c18
-    `,
-    accent: "#60a5fa",
-    animated: true,
-    preview: "linear-gradient(135deg, #0c4a6e, #1e40af)"
-  },
+    deepblue: {
+      bg: `
+        radial-gradient(circle at 25% 25%, #1e40af, transparent 55%),
+        radial-gradient(circle at 75% 75%, #0c1a2b, transparent 65%),
+        #010c18
+      `,
+      accent: "#60a5fa",
+      animated: true,
+      preview: "linear-gradient(135deg, #0c4a6e, #1e40af)"
+    },
 
-  dusk: {
-    bg: `
-      radial-gradient(circle at 30% 30%, #6b21a8, transparent 55%),
-      radial-gradient(circle at 70% 70%, #2e1065, transparent 65%),
-      #0a0414
-    `,
-    accent: "#c084fc",
-    animated: true,
-    preview: "linear-gradient(135deg, #2e1065, #6b21a8)"
-  },
+    dusk: {
+      bg: `
+        radial-gradient(circle at 30% 30%, #6b21a8, transparent 55%),
+        radial-gradient(circle at 70% 70%, #2e1065, transparent 65%),
+        #0a0414
+      `,
+      accent: "#c084fc",
+      animated: true,
+      preview: "linear-gradient(135deg, #2e1065, #6b21a8)"
+    },
 
-  emerald: {
-    bg: `
-      radial-gradient(circle at 20% 30%, #065f46, transparent 55%),
-      radial-gradient(circle at 80% 70%, #022c22, transparent 65%),
-      #010f0c
-    `,
-    accent: "#34d399",
-    animated: true,
-    preview: "linear-gradient(135deg, #064e3b, #065f46)"
-  }
-};
-  
+    emerald: {
+      bg: `
+        radial-gradient(circle at 20% 30%, #065f46, transparent 55%),
+        radial-gradient(circle at 80% 70%, #022c22, transparent 65%),
+        #010f0c
+      `,
+      accent: "#34d399",
+      animated: true,
+      preview: "linear-gradient(135deg, #064e3b, #065f46)"
+    }
+  };
+
   function applyTheme(theme) {
     document.body.style.background = theme.bg;
     document.body.style.backgroundSize = "200% 200%";
@@ -137,18 +136,14 @@ const themes = {
     document.documentElement.style.setProperty("--accent", theme.accent);
     document.documentElement.style.setProperty("--accent-soft", theme.accent + "33");
 
-    if (theme.animated) {
-      document.body.classList.add("animated-bg");
-    } else {
-      document.body.classList.remove("animated-bg");
-    }
+    if (theme.animated) document.body.classList.add("animated-bg");
+    else document.body.classList.remove("animated-bg");
 
     localStorage.setItem("themeData", JSON.stringify(theme));
     localStorage.removeItem("customBg");
   }
 
-  /* ===== MENU CONTROL ===== */
-
+  /* MENU */
   btn.addEventListener("click", (e) => {
     e.preventDefault();
     menu.classList.add("open");
@@ -164,52 +159,41 @@ const themes = {
     }
   });
 
-  /* ===== PREVIEW ===== */
-
+  /* PREVIEW */
   input.addEventListener("input", () => {
     preview.style.backgroundImage = `url(${input.value})`;
   });
 
-  /* ===== APPLY (FIXED) ===== */
+  /* APPLY */
+  apply.addEventListener("click", () => {
+    const url = input.value;
 
-apply.addEventListener("click", () => {
-  const url = input.value;
-
-  if (url) {
-    document.body.style.background = `url(${url}) center/cover no-repeat fixed`;
-
-    localStorage.setItem("customBg", url);
-    localStorage.removeItem("themeData");
-  }
-
-  // 🔥 ALWAYS CLOSE — even if empty
-  menu.classList.remove("open");
-});
-
-  /* ===== RESET ===== */
-
-  reset.addEventListener("click", () => {
-    document.body.style.background = "#0f0f14";
-
-    localStorage.removeItem("customBg");
-    localStorage.removeItem("themeData");
+    if (url) {
+      document.body.style.background = `url(${url}) center/cover no-repeat fixed`;
+      localStorage.setItem("customBg", url);
+      localStorage.removeItem("themeData");
+    }
 
     menu.classList.remove("open");
   });
 
-  /* ===== THEMES ===== */
+  /* RESET */
+  reset.addEventListener("click", () => {
+    document.body.style.background = "#0f0f14";
+    localStorage.removeItem("customBg");
+    localStorage.removeItem("themeData");
+    menu.classList.remove("open");
+  });
 
+  /* THEMES */
   document.querySelectorAll(".theme-circle").forEach(c => {
     const theme = themes[c.dataset.theme];
     c.style.background = theme.preview;
 
-    c.addEventListener("click", () => {
-      applyTheme(theme);
-    });
+    c.addEventListener("click", () => applyTheme(theme));
   });
 
-  /* ===== LOAD ===== */
-
+  /* LOAD */
   const savedBg = localStorage.getItem("customBg");
   const savedTheme = localStorage.getItem("themeData");
 
@@ -220,18 +204,6 @@ apply.addEventListener("click", () => {
   }
 
 });
-
-  const adjustBtn = document.getElementById("adjust-bg");
-
-let adjusting = false;
-let isDragging = false;
-
-let startX = 0;
-let startY = 0;
-
-let bgPosX = 50;
-let bgPosY = 50;
-  
 </script>
 
 </body>
