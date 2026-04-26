@@ -255,6 +255,7 @@ box-shadow:
   position: relative;
   width: 420px;
   height: 225px;
+  transition: transform 0.28s ease, opacity 0.28s ease;
 }
 
 .count-card iframe {
