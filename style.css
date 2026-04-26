@@ -157,36 +157,40 @@ html {
 
 /* ================= CARDS ================= */
 
-/* 🔥 OUTER CARD (THIS MOVES WITH FLIP + HOVER) */
+/* ===== COUNTDOWN CARDS ===== */
+
 .count-card {
   position: relative;
   width: 420px;
   height: 225px;
 
-  transform: translateZ(0); /* prevents flicker */
+  /* 🔥 ONLY for FLIP animation */
   will-change: transform;
-
-  transition: transform 0.35s ease, opacity 0.25s ease;
 }
 
-/* 🔥 HOVER NOW MOVES WHOLE CARD */
-.count-card:hover {
-  transform: translateY(-6px) scale(1.02);
-}
-
-/* INNER WRAPPER (visual only) */
+/* wrapper to separate hover from FLIP */
 .count-inner {
   width: 100%;
   height: 100%;
-  border-radius: 14px;
-  overflow: hidden;
-
-  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-  transition: box-shadow 0.25s ease;
 }
 
-/* glow on hover */
-.count-card:hover .count-inner {
+/* iframe stays EXACTLY like your original design */
+.count-inner iframe {
+  width: 100%;
+  height: 100%;
+  border-radius: 14px;
+  border: none;
+  display: block;
+
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* 🔥 HOVER = VISUAL (no conflict with FLIP) */
+.count-card:hover .count-inner iframe {
+  transform: translateY(-6px) scale(1.02);
+
   box-shadow:
     0 14px 35px rgba(0,0,0,0.4),
     0 0 20px rgba(125, 211, 252, 0.25),
