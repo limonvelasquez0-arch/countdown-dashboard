@@ -170,6 +170,11 @@ cards.forEach(card => {
 
   });
 
+  // remove AFTER animation starts
+setTimeout(() => {
+  toRemove.forEach(card => card.remove());
+}, 250);
+
 }
 
 
