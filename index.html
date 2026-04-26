@@ -65,79 +65,68 @@ function save() {
   localStorage.setItem("counts", JSON.stringify(items));
 }
 
-/* ================= RENDER ================= */
+/* ================= CREATE CARD ================= */
+function createCard(url) {
+  const card = document.createElement("div");
+  card.className = "count-card";
+  card.dataset.url = url;
+  card.draggable = true;
+
+  const iframe = document.createElement("iframe");
+  iframe.src = url;
+  iframe.loading = "lazy";
+
+  const del = document.createElement("button");
+  del.className = "delete-btn";
+  del.innerText = "✕";
+
+  del.onclick = () => {
+    card.classList.add("exit");
+
+    setTimeout(() => {
+      items = items.filter(item => item !== url);
+      save();
+      render();
+    }, 250);
+  };
+
+  card.addEventListener("dragstart", () => card.classList.add("dragging"));
+  card.addEventListener("dragend", () => card.classList.remove("dragging"));
+
+  card.appendChild(iframe);
+  card.appendChild(del);
+
+  return card;
+}
+
+/* ================= RENDER (FLIP SAFE) ================= */
 function render() {
 
   const cards = Array.from(dashboard.children);
 
-  // 1. Save FIRST positions
+  // 1. FIRST positions
   const first = new Map();
   cards.forEach(card => {
     first.set(card.dataset.url, card.getBoundingClientRect());
   });
 
-  const existing = new Map();
-  cards.forEach(card => {
-    existing.set(card.dataset.url, card);
-  });
+  // 2. CLEAR and rebuild (safe + consistent)
+  dashboard.innerHTML = "";
 
-  const active = new Set(items);
-
-  // 2. REMOVE deleted cards (with animation)
-  cards.forEach(card => {
-    if (!active.has(card.dataset.url)) {
-      card.classList.add("exit");
-
-      setTimeout(() => {
-        card.remove();
-      }, 250);
-    }
-  });
-
-  // 3. ADD new cards
   items.forEach(url => {
-
-    if (existing.has(url)) return;
-
-    const card = document.createElement("div");
-    card.className = "count-card enter";
-    card.dataset.url = url;
-    card.draggable = true;
-
-    const iframe = document.createElement("iframe");
-    iframe.src = url;
-    iframe.loading = "lazy";
-
-    const del = document.createElement("button");
-    del.className = "delete-btn";
-    del.innerText = "✕";
-
-    del.onclick = () => {
-      items = items.filter(item => item !== url);
-      save();
-      render();
-    };
-
-    card.addEventListener("dragstart", () => card.classList.add("dragging"));
-    card.addEventListener("dragend", () => card.classList.remove("dragging"));
-
-    card.appendChild(iframe);
-    card.appendChild(del);
-    dashboard.appendChild(card);
-
-    requestAnimationFrame(() => {
-      card.classList.remove("enter");
-    });
+    dashboard.appendChild(createCard(url));
   });
 
-  // 4. FORCE layout update
+  const newCards = Array.from(dashboard.children);
+
+  // 3. LAST positions
   const last = new Map();
-  Array.from(dashboard.children).forEach(card => {
+  newCards.forEach(card => {
     last.set(card.dataset.url, card.getBoundingClientRect());
   });
 
-  // 5. ANIMATE movement
-  Array.from(dashboard.children).forEach(card => {
+  // 4. FLIP animation
+  newCards.forEach(card => {
 
     const f = first.get(card.dataset.url);
     const l = last.get(card.dataset.url);
@@ -149,8 +138,8 @@ function render() {
 
     if (dx !== 0 || dy !== 0) {
 
-      card.style.transition = "none";
       card.style.transform = `translate(${dx}px, ${dy}px)`;
+      card.style.transition = "none";
 
       requestAnimationFrame(() => {
         card.style.transition = "transform 0.35s ease";
@@ -161,65 +150,11 @@ function render() {
         card.style.transition = "";
       }, 350);
     }
-
   });
 
 }
 
-    card.addEventListener("dragstart", () => card.classList.add("dragging"));
-    card.addEventListener("dragend", () => card.classList.remove("dragging"));
-
-    card.appendChild(iframe);
-    card.appendChild(del);
-    dashboard.appendChild(card);
-
-    requestAnimationFrame(() => {
-      card.classList.remove("enter");
-    });
-  });
-
-  // REMOVE DELETED
-  cards.forEach(card => {
-    if (!active.has(card.dataset.url)) {
-      card.classList.add("exit");
-      setTimeout(() => card.remove(), 250);
-    }
-  });
-
-  // 🔥 SAFE ANIMATION
-  requestAnimationFrame(() => {
-
-    const newCards = [...document.querySelectorAll(".count-card")];
-
-    newCards.forEach(card => {
-
-      const old = positions.get(card.dataset.url);
-      if (!old) return; // skip new ones
-
-      const now = card.getBoundingClientRect();
-
-      const dx = old.left - now.left;
-      const dy = old.top - now.top;
-
-      if (dx !== 0 || dy !== 0) {
-        card.style.transform = `translate(${dx}px, ${dy}px)`;
-
-        requestAnimationFrame(() => {
-          card.style.transition = "transform 0.35s ease";
-          card.style.transform = "";
-        });
-
-        setTimeout(() => {
-          card.style.transition = "";
-        }, 350);
-      }
-
-    });
-
-  });
-}
-
-/* DRAG */
+/* ================= DRAG ================= */
 dashboard.addEventListener("dragover", (e) => {
   if (!editMode) return;
   e.preventDefault();
@@ -250,14 +185,14 @@ function getAfterElement(container, y) {
   }, { offset: Number.NEGATIVE_INFINITY }).element;
 }
 
-/* EDIT MODE */
+/* ================= EDIT MODE ================= */
 editBtn.onclick = (e) => {
   e.preventDefault();
   editMode = !editMode;
   document.body.classList.toggle("edit-mode", editMode);
 };
 
-/* ADD */
+/* ================= ADD ================= */
 addBtn.onclick = (e) => {
   e.preventDefault();
   countMenu.classList.add("open");
@@ -278,6 +213,7 @@ addCount.onclick = () => {
   render();
 };
 
+/* INIT */
 render();
 
 });
