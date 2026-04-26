@@ -84,15 +84,14 @@ function render() {
   const active = new Set(items);
 
   // 2. REMOVE deleted cards (keep animation)
-  cards.forEach(card => {
-    if (!active.has(card.dataset.url)) {
-      card.classList.add("exit");
+const toRemove = [];
 
-      setTimeout(() => {
-        card.remove();
-      }, 250);
-    }
-  });
+cards.forEach(card => {
+  if (!active.has(card.dataset.url)) {
+    card.classList.add("exit");
+    toRemove.push(card); // ⬅️ delay actual removal
+  }
+});
 
   // 3. ADD new cards (same logic, unchanged)
   items.forEach(url => {
