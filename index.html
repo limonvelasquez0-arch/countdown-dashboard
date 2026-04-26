@@ -68,14 +68,24 @@ function save() {
 /* ================= RENDER ================= */
 function render() {
 
-  dashboard.innerHTML = "";
+  const existingCards = new Map();
+
+  document.querySelectorAll(".count-card").forEach((card) => {
+    existingCards.set(card.dataset.url, card);
+  });
+
+  const newSet = new Set();
 
   items.forEach((url, index) => {
 
-    const card = document.createElement("div");
+    newSet.add(url);
+
+    let card = existingCards.get(url);
+    if (card) return;
+
+    card = document.createElement("div");
     card.className = "count-card enter";
-    card.dataset.index = index;
-    card.dataset.url = url; // ✅ IMPORTANT FIX
+    card.dataset.url = url;
     card.draggable = true;
 
     const iframe = document.createElement("iframe");
@@ -90,14 +100,32 @@ function render() {
       card.classList.add("exit");
 
       setTimeout(() => {
-        const urlToDelete = card.dataset.url;
-
-        items = items.filter(item => item !== urlToDelete); // ✅ FIXED DELETE
-
+        items = items.filter(item => item !== url);
         save();
         render();
       }, 250);
     };
+
+    card.addEventListener("dragstart", () => card.classList.add("dragging"));
+    card.addEventListener("dragend", () => card.classList.remove("dragging"));
+
+    card.appendChild(iframe);
+    card.appendChild(del);
+    dashboard.appendChild(card);
+
+    requestAnimationFrame(() => {
+      card.classList.remove("enter");
+    });
+  });
+
+  // 🔥 remove only cards that no longer exist
+  document.querySelectorAll(".count-card").forEach((card) => {
+    if (!newSet.has(card.dataset.url)) {
+      card.classList.add("exit");
+      setTimeout(() => card.remove(), 250);
+    }
+  });
+}
 
     card.addEventListener("dragstart", () => card.classList.add("dragging"));
     card.addEventListener("dragend", () => card.classList.remove("dragging"));
