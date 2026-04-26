@@ -68,29 +68,20 @@ function save() {
 /* ================= RENDER ================= */
 function render() {
 
-  const existingCards = new Map();
-
-  document.querySelectorAll(".count-card").forEach((card) => {
-    existingCards.set(card.dataset.index, card);
-  });
-
-  const newSet = new Set();
+  // 🔥 CLEAR everything first (prevents ghost/invisible cards)
+  dashboard.innerHTML = "";
 
   items.forEach((url, index) => {
 
-    newSet.add(String(index));
-
-    let card = existingCards.get(String(index));
-    if (card) return;
-
-    card = document.createElement("div");
+    const card = document.createElement("div");
     card.className = "count-card enter";
     card.dataset.index = index;
     card.draggable = true;
 
-   const iframe = document.createElement("iframe");
-iframe.src = url;
-iframe.loading = "lazy";
+    const iframe = document.createElement("iframe");
+    iframe.src = url;
+    iframe.loading = "lazy";
+
     const del = document.createElement("button");
     del.className = "delete-btn";
     del.innerText = "✕";
@@ -101,7 +92,7 @@ iframe.loading = "lazy";
       setTimeout(() => {
         items.splice(index, 1);
         save();
-        render();
+        render(); // 🔥 full clean rebuild
       }, 250);
     };
 
@@ -116,6 +107,7 @@ iframe.loading = "lazy";
       card.classList.remove("enter");
     });
   });
+}
 
   document.querySelectorAll(".count-card").forEach((card) => {
     if (!newSet.has(card.dataset.index)) {
