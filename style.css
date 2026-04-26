@@ -31,18 +31,6 @@ html {
   box-sizing: border-box;
 }
 
-/* ================= PANELS ================= */
-
-iframe {
-  width: 420px;
-  height: 225px;
-  border-radius: 14px;
-  border: none;
-  display: block;
-
-  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-}
-
 /* ================= TOP BAR ================= */
 
 .top-buttons {
@@ -82,7 +70,7 @@ iframe {
   transform: translateY(-2px);
 }
 
-/* ================= THEME VARS ================= */
+/* ================= THEME ================= */
 
 :root {
   --accent: #6366f1;
@@ -105,7 +93,6 @@ iframe {
   pointer-events: none;
 
   transition: opacity 0.25s ease;
-
   z-index: 3000;
 }
 
@@ -143,42 +130,6 @@ iframe {
 .bg-menu.open .bg-panel {
   transform: translateY(0) scale(1);
   opacity: 1;
-}
-
-/* ================= CLOSE BUTTON ================= */
-
-.close-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-
-  width: 22px;
-  height: 22px;
-
-  font-size: 12px;
-
-  border-radius: 6px;
-  border: 1px solid rgba(255,255,255,0.08);
-
-  background: rgba(255,255,255,0.05);
-  color: #cbd5f5;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  cursor: pointer;
-
-  transition: 0.25s ease;
-}
-
-.close-btn:hover {
-  border-color: var(--accent);
-  color: var(--accent);
-
-  box-shadow: 0 0 6px var(--accent-soft);
-
-  background: rgba(255,255,255,0.08);
 }
 
 /* ================= INPUT ================= */
@@ -230,7 +181,41 @@ iframe {
   box-shadow: 0 0 6px var(--accent-soft);
 }
 
-/* ===== COUNTDOWN CARDS ===== */
+/* ================= CLOSE ================= */
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+
+  width: 22px;
+  height: 22px;
+
+  font-size: 12px;
+
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.08);
+
+  background: rgba(255,255,255,0.05);
+  color: #cbd5f5;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  transition: 0.25s ease;
+}
+
+.close-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+
+  box-shadow: 0 0 6px var(--accent-soft);
+}
+
+/* ================= COUNTDOWN CARDS ================= */
 
 .count-card {
   position: relative;
@@ -239,29 +224,40 @@ iframe {
 
   overflow: visible;
 
-  /* 🔥 FIXED HOVER TARGET */
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-  will-change: transform;
+  /* 🔥 prevents flicker + keeps FLIP animation clean */
+  will-change: transform, opacity;
+  backface-visibility: hidden;
 }
 
-/* 🔥 HOVER NOW APPLIES TO WHOLE CARD */
-.count-card:hover {
+/* 🔥 wrapper separates hover from JS animation */
+.count-inner {
+  width: 100%;
+  height: 100%;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.count-inner iframe {
+  width: 100%;
+  height: 100%;
+  border-radius: 14px;
+  border: none;
+
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+}
+
+/* ✅ smooth hover on FULL card */
+.count-card:hover .count-inner {
   transform: translateY(-6px) scale(1.02);
+}
+
+.count-card:hover .count-inner iframe {
   box-shadow:
     0 14px 35px rgba(0,0,0,0.4),
     0 0 20px rgba(125, 211, 252, 0.25),
     0 0 35px rgba(167, 139, 250, 0.18);
 }
 
-/* iframe stays stable */
-.count-card iframe {
-  width: 100%;
-  height: 100%;
-  border-radius: 14px;
-  border: none;
-}
-
-/* DELETE BUTTON */
+/* ================= DELETE ================= */
 
 .delete-btn {
   position: absolute;
@@ -272,7 +268,6 @@ iframe {
   height: 28px;
 
   border-radius: 10px;
-
   border: 1px solid rgba(255,255,255,0.08);
 
   background: rgba(0,0,0,0.25);
@@ -290,7 +285,6 @@ iframe {
   transition: all 0.25s ease;
 
   backdrop-filter: blur(8px);
-
   cursor: pointer;
 }
 
@@ -302,10 +296,9 @@ iframe {
 .count-card:hover .delete-btn {
   transform: translateY(-6px) scale(1.05);
   box-shadow: 0 0 14px var(--accent-soft);
-  border-color: var(--accent);
 }
 
-/* ENTRY / EXIT */
+/* ================= ENTRY / EXIT ================= */
 
 .count-card.enter {
   opacity: 0;
@@ -314,5 +307,12 @@ iframe {
 
 .count-card.exit {
   opacity: 0;
-  transform: translateY(18px) scale(0.92) scaleX(0.98);
+  transform: translateY(18px) scale(0.92);
+}
+
+.count-card.collapsing {
+  opacity: 0;
+  height: 0;
+  margin: 0;
+  pointer-events: none;
 }
