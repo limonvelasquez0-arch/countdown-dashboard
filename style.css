@@ -18,7 +18,7 @@ html {
   width: 100%;
   min-height: 100%;
   overflow-x: hidden;
-  }
+}
 
 /* ================= DASHBOARD ================= */
 
@@ -42,14 +42,13 @@ iframe {
   display: block;
 
   box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: box-shadow 0.25s ease; /* 🔧 removed transform from here */
 }
 
 iframe:hover {
-  transform: translateY(-6px) scale(1.02);
-box-shadow:
-  0 14px 30px rgba(0,0,0,0.35),
-  0 0 15px rgba(125, 211, 252, 0.18);
+  box-shadow:
+    0 14px 30px rgba(0,0,0,0.35),
+    0 0 15px rgba(125, 211, 252, 0.18);
 }
 
 /* ================= TOP BAR ================= */
@@ -123,7 +122,6 @@ box-shadow:
   pointer-events: all;
 }
 
-/* PANEL (SMOOTH FIX) */
 .bg-panel {
   position: relative;
 
@@ -155,7 +153,7 @@ box-shadow:
   opacity: 1;
 }
 
-/* ================= CLOSE BUTTON (FIXED) ================= */
+/* ================= CLOSE BUTTON ================= */
 
 .close-btn {
   position: absolute;
@@ -213,9 +211,6 @@ box-shadow:
   box-shadow: 0 0 0 1px var(--accent-soft);
 }
 
-/* ================= PREVIEW ================= */
-
-
 /* ================= BUTTONS ================= */
 
 .bg-actions {
@@ -244,11 +239,6 @@ box-shadow:
   box-shadow: 0 0 6px var(--accent-soft);
 }
 
-/* ================= THEMES ================= */
-
-
-
-
 /* ===== COUNTDOWN CARDS ===== */
 
 .count-card {
@@ -256,8 +246,10 @@ box-shadow:
   width: 420px;
   height: 225px;
 
-  /* IMPORTANT */
   overflow: visible;
+
+  /* 🔧 KEY FIX: allow FLIP + hover to coexist */
+  transition: transform 0.25s ease, opacity 0.25s ease;
 }
 
 .count-card iframe {
@@ -266,11 +258,15 @@ box-shadow:
   border-radius: 14px;
   border: none;
   box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: box-shadow 0.25s ease;
+}
+
+/* 🔧 HOVER NOW MOVES THE WHOLE CARD */
+.count-card:hover {
+  transform: translateY(-6px) scale(1.02);
 }
 
 .count-card:hover iframe {
-  transform: translateY(-6px) scale(1.02);
   box-shadow:
     0 14px 35px rgba(0,0,0,0.4),
     0 0 20px rgba(125, 211, 252, 0.25),
@@ -309,15 +305,9 @@ box-shadow:
   cursor: pointer;
 }
 
-/* show only in edit mode */
 .edit-mode .delete-btn {
   opacity: 1;
   transform: translateY(0) scale(1);
-}
-
-/* 👇 THIS FIXES THE "STATIC BUTTON" ISSUE */
-.count-card {
-  position: relative;
 }
 
 .count-card:hover .delete-btn {
@@ -327,7 +317,6 @@ box-shadow:
   color: var(--accent);
 }
 
-/* 👇 THEME AWARE GLOW IMPROVEMENT */
 .bg-panel,
 .delete-btn {
   box-shadow: 0 0 10px var(--accent-soft);
@@ -343,22 +332,4 @@ box-shadow:
 .count-card.exit {
   opacity: 0;
   transform: translateY(18px) scale(0.92) scaleX(0.98);
-}
-
-/* smooth vertical collapse effect */
-.count-card {
-  transition: 
-    transform 0.25s ease,
-    opacity 0.25s ease,
-    margin 0.25s ease,
-    height 0.25s ease;
-  overflow: hidden;
-}
-
-/* when deleting */
-.count-card.collapsing {
-  opacity: 0;
-  height: 0;
-  margin: 0;
-  pointer-events: none;
 }
