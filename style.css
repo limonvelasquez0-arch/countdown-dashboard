@@ -255,7 +255,9 @@ box-shadow:
   position: relative;
   width: 420px;
   height: 225px;
-  transition: transform 0.28s ease, opacity 0.28s ease;
+
+  /* IMPORTANT */
+  overflow: visible;
 }
 
 .count-card iframe {
@@ -329,14 +331,6 @@ box-shadow:
 .bg-panel,
 .delete-btn {
   box-shadow: 0 0 10px var(--accent-soft);
-}
-
-.count-card {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-  transition: opacity 0.28s ease, transform 0.28s ease;
-  will-change: transform, opacity;
-  backface-visibility: hidden;
 }
 
 /* ENTRY animation */
