@@ -68,17 +68,23 @@ function save() {
 /* ================= RENDER ================= */
 function render() {
 
-  const existing = new Map();
+  const firstPositions = new Map();
 
+  // 📍 1. Save current positions
+  document.querySelectorAll(".count-card").forEach(card => {
+    firstPositions.set(card.dataset.url, card.getBoundingClientRect());
+  });
+
+  const existing = new Map();
   document.querySelectorAll(".count-card").forEach(card => {
     existing.set(card.dataset.url, card);
   });
 
   const active = new Set(items);
 
+  // 📦 Create new ones (no change here)
   items.forEach(url => {
 
-    // already exists → do nothing
     if (existing.has(url)) return;
 
     const card = document.createElement("div");
@@ -103,6 +109,57 @@ function render() {
         render();
       }, 250);
     };
+
+    card.addEventListener("dragstart", () => card.classList.add("dragging"));
+    card.addEventListener("dragend", () => card.classList.remove("dragging"));
+
+    card.appendChild(iframe);
+    card.appendChild(del);
+    dashboard.appendChild(card);
+
+    requestAnimationFrame(() => {
+      card.classList.remove("enter");
+    });
+  });
+
+  // ❌ Remove deleted (no change)
+  document.querySelectorAll(".count-card").forEach(card => {
+    if (!active.has(card.dataset.url)) {
+      card.classList.add("exit");
+      setTimeout(() => card.remove(), 250);
+    }
+  });
+
+  // 🎯 2. Animate movement (THIS is the new part)
+  requestAnimationFrame(() => {
+
+    document.querySelectorAll(".count-card").forEach(card => {
+
+      const first = firstPositions.get(card.dataset.url);
+      if (!first) return;
+
+      const last = card.getBoundingClientRect();
+
+      const dx = first.left - last.left;
+      const dy = first.top - last.top;
+
+      if (dx || dy) {
+        card.style.transform = `translate(${dx}px, ${dy}px)`;
+
+        requestAnimationFrame(() => {
+          card.style.transition = "transform 0.35s ease";
+          card.style.transform = "";
+        });
+
+        card.addEventListener("transitionend", () => {
+          card.style.transition = "";
+        }, { once: true });
+      }
+
+    });
+
+  });
+}
 
     card.addEventListener("dragstart", () => card.classList.add("dragging"));
     card.addEventListener("dragend", () => card.classList.remove("dragging"));
