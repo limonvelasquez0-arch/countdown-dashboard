@@ -155,8 +155,6 @@ html {
   box-shadow: 0 0 6px var(--accent-soft);
 }
 
-/* ================= CARDS ================= */
-
 /* ===== COUNTDOWN CARDS ===== */
 
 .count-card {
@@ -164,20 +162,21 @@ html {
   width: 420px;
   height: 225px;
 
-  /* 🔥 ONLY for FLIP animation */
+  /* FLIP animation uses this */
   will-change: transform;
 }
 
-/* wrapper to separate hover from FLIP */
+/* wrapper just passes size */
 .count-inner {
   width: 100%;
   height: 100%;
 }
 
-/* iframe stays EXACTLY like your original design */
+/* 🔥 THIS restores your original look EXACTLY */
 .count-inner iframe {
-  width: 100%;
-  height: 100%;
+  width: 420px;
+  height: 225px;
+
   border-radius: 14px;
   border: none;
   display: block;
@@ -187,7 +186,7 @@ html {
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-/* 🔥 HOVER = VISUAL (no conflict with FLIP) */
+/* 🔥 HOVER EXACTLY LIKE BEFORE */
 .count-card:hover .count-inner iframe {
   transform: translateY(-6px) scale(1.02);
 
@@ -197,16 +196,7 @@ html {
     0 0 35px rgba(167, 139, 250, 0.18);
 }
 
-/* iframe stays stable (NO transform here anymore) */
-.count-inner iframe {
-  width: 100%;
-  height: 100%;
-  border: none;
-  display: block;
-}
-
-/* ================= DELETE BUTTON ================= */
-
+/* DELETE BUTTON stays unchanged */
 .delete-btn {
   position: absolute;
   top: 12px;
