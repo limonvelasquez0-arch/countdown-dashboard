@@ -83,15 +83,15 @@ function render() {
 
   const active = new Set(items);
 
-  // 2. REMOVE deleted cards (keep animation)
-const toRemove = [];
+  // ✅ FIXED PART (ONLY CHANGE)
+  const toRemove = [];
 
-cards.forEach(card => {
-  if (!active.has(card.dataset.url)) {
-    card.classList.add("exit");
-    toRemove.push(card); // ⬅️ delay actual removal
-  }
-});
+  cards.forEach(card => {
+    if (!active.has(card.dataset.url)) {
+      card.classList.add("exit");
+      toRemove.push(card);
+    }
+  });
 
   // 3. ADD new cards (same logic, unchanged)
   items.forEach(url => {
@@ -153,7 +153,6 @@ cards.forEach(card => {
 
       if (dx !== 0 || dy !== 0) {
 
-        // start from old position
         card.style.transform = `translate(${dx}px, ${dy}px)`;
 
         requestAnimationFrame(() => {
@@ -168,12 +167,12 @@ cards.forEach(card => {
 
     });
 
-  });
+    // ✅ DELAYED REMOVAL (KEY FIX)
+    setTimeout(() => {
+      toRemove.forEach(card => card.remove());
+    }, 250);
 
-  // remove AFTER animation starts
-setTimeout(() => {
-  toRemove.forEach(card => card.remove());
-}, 250);
+  });
 
 }
 
