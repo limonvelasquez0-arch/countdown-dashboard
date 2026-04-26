@@ -70,7 +70,7 @@ function render() {
 
   const cards = Array.from(dashboard.children);
 
-  // 1. Save FIRST positions
+  // 1. FIRST positions (before changes)
   const first = new Map();
   cards.forEach(card => {
     first.set(card.dataset.url, card.getBoundingClientRect());
@@ -83,7 +83,7 @@ function render() {
 
   const active = new Set(items);
 
-  // 2. REMOVE deleted cards (with animation)
+  // 2. REMOVE deleted cards (keep animation)
   cards.forEach(card => {
     if (!active.has(card.dataset.url)) {
       card.classList.add("exit");
@@ -94,7 +94,7 @@ function render() {
     }
   });
 
-  // 3. ADD new cards
+  // 3. ADD new cards (same logic, unchanged)
   items.forEach(url => {
 
     if (existing.has(url)) return;
@@ -130,37 +130,44 @@ function render() {
     });
   });
 
-  // 4. FORCE layout update
-  const last = new Map();
-  Array.from(dashboard.children).forEach(card => {
-    last.set(card.dataset.url, card.getBoundingClientRect());
-  });
+  // 🔥 4. WAIT one frame so layout updates BEFORE measuring
+  requestAnimationFrame(() => {
 
-  // 5. ANIMATE movement
-  Array.from(dashboard.children).forEach(card => {
+    const allCards = Array.from(dashboard.children);
 
-    const f = first.get(card.dataset.url);
-    const l = last.get(card.dataset.url);
+    // LAST positions (after layout)
+    const last = new Map();
+    allCards.forEach(card => {
+      last.set(card.dataset.url, card.getBoundingClientRect());
+    });
 
-    if (!f || !l) return;
+    // 5. Animate movement
+    allCards.forEach(card => {
 
-    const dx = f.left - l.left;
-    const dy = f.top - l.top;
+      const f = first.get(card.dataset.url);
+      const l = last.get(card.dataset.url);
 
-    if (dx !== 0 || dy !== 0) {
+      if (!f || !l) return;
 
-      card.style.transition = "none";
-      card.style.transform = `translate(${dx}px, ${dy}px)`;
+      const dx = f.left - l.left;
+      const dy = f.top - l.top;
 
-      requestAnimationFrame(() => {
-        card.style.transition = "transform 0.35s ease";
-        card.style.transform = "";
-      });
+      if (dx !== 0 || dy !== 0) {
 
-      setTimeout(() => {
-        card.style.transition = "";
-      }, 350);
-    }
+        // start from old position
+        card.style.transform = `translate(${dx}px, ${dy}px)`;
+
+        requestAnimationFrame(() => {
+          card.style.transition = "transform 0.35s ease";
+          card.style.transform = "";
+        });
+
+        card.addEventListener("transitionend", () => {
+          card.style.transition = "";
+        }, { once: true });
+      }
+
+    });
 
   });
 
