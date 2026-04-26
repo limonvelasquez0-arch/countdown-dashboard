@@ -68,21 +68,22 @@ function save() {
 /* ================= RENDER ================= */
 function render() {
 
-  const firstPositions = new Map();
+  const cards = [...document.querySelectorAll(".count-card")];
 
-  // 📍 1. Save current positions
-  document.querySelectorAll(".count-card").forEach(card => {
+  // 📍 store ONLY existing cards positions
+  const firstPositions = new Map();
+  cards.forEach(card => {
     firstPositions.set(card.dataset.url, card.getBoundingClientRect());
   });
 
   const existing = new Map();
-  document.querySelectorAll(".count-card").forEach(card => {
+  cards.forEach(card => {
     existing.set(card.dataset.url, card);
   });
 
   const active = new Set(items);
 
-  // 📦 Create new ones (no change here)
+  // ➕ create new cards (UNCHANGED LOGIC)
   items.forEach(url => {
 
     if (existing.has(url)) return;
@@ -122,22 +123,22 @@ function render() {
     });
   });
 
-  // ❌ Remove deleted (no change)
-  document.querySelectorAll(".count-card").forEach(card => {
+  // ❌ remove deleted cards (UNCHANGED)
+  cards.forEach(card => {
     if (!active.has(card.dataset.url)) {
       card.classList.add("exit");
       setTimeout(() => card.remove(), 250);
     }
   });
 
-  // 🎯 2. Animate movement (THIS is the new part)
+  // 🎯 animate ONLY cards that still exist
   requestAnimationFrame(() => {
 
     document.querySelectorAll(".count-card").forEach(card => {
 
-      const first = firstPositions.get(card.dataset.url);
-      if (!first) return;
+      if (!firstPositions.has(card.dataset.url)) return; // 🔥 key safety line
 
+      const first = firstPositions.get(card.dataset.url);
       const last = card.getBoundingClientRect();
 
       const dx = first.left - last.left;
