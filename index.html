@@ -88,9 +88,9 @@ function render() {
     card.dataset.index = index;
     card.draggable = true;
 
-    const iframe = document.createElement("iframe");
-    iframe.src = url;
-
+   const iframe = document.createElement("iframe");
+iframe.src = url;
+iframe.loading = "lazy";
     const del = document.createElement("button");
     del.className = "delete-btn";
     del.innerText = "✕";
