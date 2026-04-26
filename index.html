@@ -166,58 +166,6 @@ function render() {
 
 }
 
-    card.addEventListener("dragstart", () => card.classList.add("dragging"));
-    card.addEventListener("dragend", () => card.classList.remove("dragging"));
-
-    card.appendChild(iframe);
-    card.appendChild(del);
-    dashboard.appendChild(card);
-
-    requestAnimationFrame(() => {
-      card.classList.remove("enter");
-    });
-  });
-
-  // REMOVE DELETED
-  cards.forEach(card => {
-    if (!active.has(card.dataset.url)) {
-      card.classList.add("exit");
-      setTimeout(() => card.remove(), 250);
-    }
-  });
-
-  // 🔥 SAFE ANIMATION
-  requestAnimationFrame(() => {
-
-    const newCards = [...document.querySelectorAll(".count-card")];
-
-    newCards.forEach(card => {
-
-      const old = positions.get(card.dataset.url);
-      if (!old) return; // skip new ones
-
-      const now = card.getBoundingClientRect();
-
-      const dx = old.left - now.left;
-      const dy = old.top - now.top;
-
-      if (dx !== 0 || dy !== 0) {
-        card.style.transform = `translate(${dx}px, ${dy}px)`;
-
-        requestAnimationFrame(() => {
-          card.style.transition = "transform 0.35s ease";
-          card.style.transform = "";
-        });
-
-        setTimeout(() => {
-          card.style.transition = "";
-        }, 350);
-      }
-
-    });
-
-  });
-}
 
 /* DRAG */
 dashboard.addEventListener("dragover", (e) => {
