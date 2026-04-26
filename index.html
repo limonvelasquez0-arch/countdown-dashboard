@@ -96,56 +96,51 @@ const themes = {
 
   midnight: {
     bg: `
-      radial-gradient(circle at 20% 30%, #1b2a44, transparent 60%),
-      radial-gradient(circle at 80% 70%, #0a1222, transparent 65%),
-      radial-gradient(circle at 50% 50%, #121a2e, transparent 70%),
-      #05070d
+      radial-gradient(circle at 20% 30%, #1f2a44, transparent 60%),
+      radial-gradient(circle at 80% 70%, #0b1020, transparent 65%),
+      #070a12
     `,
-    accent: "#5b8cff",
+    accent: "#7aa2ff",
     animated: true
   },
 
   violet: {
     bg: `
-      radial-gradient(circle at 25% 25%, #5b3fd6, transparent 60%),
-      radial-gradient(circle at 75% 70%, #2a1240, transparent 65%),
-      radial-gradient(circle at 50% 50%, #140a22, transparent 75%),
-      #07050c
+      radial-gradient(circle at 30% 20%, #3b2a5a, transparent 60%),
+      radial-gradient(circle at 70% 80%, #1a1428, transparent 65%),
+      #080611
     `,
-    accent: "#b89cff",
+    accent: "#b39df3",
     animated: true
   },
 
   deepblue: {
     bg: `
-      radial-gradient(circle at 20% 25%, #1f66ff, transparent 60%),
-      radial-gradient(circle at 80% 75%, #081a2e, transparent 65%),
-      radial-gradient(circle at 50% 50%, #0a1624, transparent 75%),
-      #04070d
+      radial-gradient(circle at 25% 25%, #1a3a6b, transparent 60%),
+      radial-gradient(circle at 75% 75%, #0a1626, transparent 65%),
+      #050a12
     `,
-    accent: "#4fb6ff",
+    accent: "#6fb6ff",
     animated: true
   },
 
   dusk: {
     bg: `
-      radial-gradient(circle at 25% 25%, #ff4f9a, transparent 60%),
-      radial-gradient(circle at 75% 70%, #3a1630, transparent 65%),
-      radial-gradient(circle at 50% 50%, #1a0c16, transparent 75%),
-      #06040a
+      radial-gradient(circle at 30% 30%, #4a2a5e, transparent 60%),
+      radial-gradient(circle at 70% 70%, #1b1024, transparent 65%),
+      #07050c
     `,
-    accent: "#ff7fbf",
+    accent: "#c49bff",
     animated: true
   },
 
   emerald: {
     bg: `
-      radial-gradient(circle at 20% 30%, #1fd6a3, transparent 60%),
-      radial-gradient(circle at 80% 70%, #0a3a2e, transparent 65%),
-      radial-gradient(circle at 50% 50%, #0a1c18, transparent 75%),
-      #040a07
+      radial-gradient(circle at 20% 30%, #1f4a3a, transparent 60%),
+      radial-gradient(circle at 80% 70%, #0a1f18, transparent 65%),
+      #050b09
     `,
-    accent: "#4fffd0",
+    accent: "#5fd6a6",
     animated: true
   }
 };
@@ -176,58 +171,71 @@ const defaultCounts = [
 "https://count.live/?date=2026-04-23T18%3A00%3A00-07%3A00&title=Beta%20Access"
 ];
 
-let items;
+let items = JSON.parse(localStorage.getItem("counts"));
+if (!items || items.length === 0) items = [...defaultCounts];
 
-try {
-  items = JSON.parse(localStorage.getItem("counts"));
-} catch (e) {
-  items = null;
-}
-
-if (!Array.isArray(items)) {
-  items = defaultCounts.map(url => ({
-    id: crypto.randomUUID(),
-    url
-  }));
-  save();
-}
-
-  function save() {
+function save() {
   localStorage.setItem("counts", JSON.stringify(items));
 }
+
 /* ================= RENDER ================= */
 function render() {
-  dashboard.innerHTML = "";
-  const currentIds = new Set(items.map(i => i.id));
 
-  items.forEach((item) => {
-    const card = document.createElement("div");
-    card.className = "count-card";
-    card.dataset.id = item.id;
+  const existingCards = new Map();
+
+  document.querySelectorAll(".count-card").forEach((card) => {
+    existingCards.set(card.dataset.index, card);
+  });
+
+  const newSet = new Set();
+
+  items.forEach((url, index) => {
+
+    newSet.add(String(index));
+
+    let card = existingCards.get(String(index));
+    if (card) return;
+
+    card = document.createElement("div");
+    card.className = "count-card enter";
+    card.dataset.index = index;
     card.draggable = true;
 
     const iframe = document.createElement("iframe");
-    iframe.src = item.url;
+    iframe.src = url;
 
     const del = document.createElement("button");
     del.className = "delete-btn";
     del.innerText = "✕";
 
     del.onclick = () => {
-      items = items.filter(i => i.id !== item.id);
-      save();
-      render();
+      card.classList.add("exit");
+
+      setTimeout(() => {
+        items.splice(index, 1);
+        save();
+        render();
+      }, 250);
     };
+
+    card.addEventListener("dragstart", () => card.classList.add("dragging"));
+    card.addEventListener("dragend", () => card.classList.remove("dragging"));
 
     card.appendChild(iframe);
     card.appendChild(del);
-    const currentIds = new Set(items.map(i => i.id));
+    dashboard.appendChild(card);
+
+    requestAnimationFrame(() => {
+      card.classList.remove("enter");
+    });
   });
-  document.querySelectorAll(".count-card").forEach(card => {
-  if (!currentIds.has(card.dataset.id)) {
-    card.remove();
-  }
-});
+
+  document.querySelectorAll(".count-card").forEach((card) => {
+    if (!newSet.has(card.dataset.index)) {
+      card.classList.add("exit");
+      setTimeout(() => card.remove(), 250);
+    }
+  });
 }
 
 /* ================= THEME CIRCLE FIX (ADDED) ================= */
@@ -299,11 +307,7 @@ addCount.onclick = () => {
   const url = countInput.value.trim();
   if (!url) return;
 
-  items.push({
-  id: crypto.randomUUID(),
-  url
-});
-
+  items.push(url);
   save();
 
   countInput.value = "";
@@ -311,6 +315,7 @@ addCount.onclick = () => {
 
   render();
 };
+
 /* BG */
 bgBtn.onclick = (e) => {
   e.preventDefault();
