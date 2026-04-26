@@ -7,7 +7,6 @@ body {
 
   background-color: #0f0f14;
 
-  /* 🔥 REAL FIX (no tiling, full screen always) */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -18,7 +17,7 @@ html {
   width: 100%;
   min-height: 100%;
   overflow-x: hidden;
-  }
+}
 
 /* ================= DASHBOARD ================= */
 
@@ -42,14 +41,6 @@ iframe {
   display: block;
 
   box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-
-iframe:hover {
-  transform: translateY(-6px) scale(1.02);
-box-shadow:
-  0 14px 30px rgba(0,0,0,0.35),
-  0 0 15px rgba(125, 211, 252, 0.18);
 }
 
 /* ================= TOP BAR ================= */
@@ -123,7 +114,6 @@ box-shadow:
   pointer-events: all;
 }
 
-/* PANEL (SMOOTH FIX) */
 .bg-panel {
   position: relative;
 
@@ -155,7 +145,7 @@ box-shadow:
   opacity: 1;
 }
 
-/* ================= CLOSE BUTTON (FIXED) ================= */
+/* ================= CLOSE BUTTON ================= */
 
 .close-btn {
   position: absolute;
@@ -186,8 +176,7 @@ box-shadow:
   border-color: var(--accent);
   color: var(--accent);
 
-  box-shadow:
-    0 0 6px var(--accent-soft);
+  box-shadow: 0 0 6px var(--accent-soft);
 
   background: rgba(255,255,255,0.08);
 }
@@ -212,9 +201,6 @@ box-shadow:
   border-color: var(--accent);
   box-shadow: 0 0 0 1px var(--accent-soft);
 }
-
-/* ================= PREVIEW ================= */
-
 
 /* ================= BUTTONS ================= */
 
@@ -244,11 +230,6 @@ box-shadow:
   box-shadow: 0 0 6px var(--accent-soft);
 }
 
-/* ================= THEMES ================= */
-
-
-
-
 /* ===== COUNTDOWN CARDS ===== */
 
 .count-card {
@@ -256,26 +237,31 @@ box-shadow:
   width: 420px;
   height: 225px;
 
-  /* IMPORTANT */
   overflow: visible;
-}
 
-.count-card iframe {
-  width: 100%;
-  height: 100%;
-  border-radius: 14px;
-  border: none;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  /* 🔥 FIXED HOVER TARGET */
   transition: transform 0.25s ease, box-shadow 0.25s ease;
+  will-change: transform;
 }
 
-.count-card:hover iframe {
+/* 🔥 HOVER NOW APPLIES TO WHOLE CARD */
+.count-card:hover {
   transform: translateY(-6px) scale(1.02);
   box-shadow:
     0 14px 35px rgba(0,0,0,0.4),
     0 0 20px rgba(125, 211, 252, 0.25),
     0 0 35px rgba(167, 139, 250, 0.18);
 }
+
+/* iframe stays stable */
+.count-card iframe {
+  width: 100%;
+  height: 100%;
+  border-radius: 14px;
+  border: none;
+}
+
+/* DELETE BUTTON */
 
 .delete-btn {
   position: absolute;
@@ -297,7 +283,6 @@ box-shadow:
   justify-content: center;
 
   font-size: 14px;
-  line-height: 1;
 
   opacity: 0;
   transform: translateY(-6px) scale(0.9);
@@ -309,56 +294,25 @@ box-shadow:
   cursor: pointer;
 }
 
-/* show only in edit mode */
 .edit-mode .delete-btn {
   opacity: 1;
   transform: translateY(0) scale(1);
-}
-
-/* 👇 THIS FIXES THE "STATIC BUTTON" ISSUE */
-.count-card {
-  position: relative;
 }
 
 .count-card:hover .delete-btn {
   transform: translateY(-6px) scale(1.05);
   box-shadow: 0 0 14px var(--accent-soft);
   border-color: var(--accent);
-  color: var(--accent);
 }
 
-/* 👇 THEME AWARE GLOW IMPROVEMENT */
-.bg-panel,
-.delete-btn {
-  box-shadow: 0 0 10px var(--accent-soft);
-}
+/* ENTRY / EXIT */
 
-/* ENTRY animation */
 .count-card.enter {
   opacity: 0;
   transform: translateY(18px) scale(0.96);
 }
 
-/* EXIT animation */
 .count-card.exit {
   opacity: 0;
   transform: translateY(18px) scale(0.92) scaleX(0.98);
-}
-
-/* smooth vertical collapse effect */
-.count-card {
-  transition: 
-    transform 0.25s ease,
-    opacity 0.25s ease,
-    margin 0.25s ease,
-    height 0.25s ease;
-  overflow: hidden;
-}
-
-/* when deleting */
-.count-card.collapsing {
-  opacity: 0;
-  height: 0;
-  margin: 0;
-  pointer-events: none;
 }
