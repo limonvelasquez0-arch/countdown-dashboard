@@ -70,10 +70,10 @@ function render() {
 
   const cards = [...document.querySelectorAll(".count-card")];
 
-  // 📍 store ONLY existing cards positions
-  const firstPositions = new Map();
+  // store positions
+  const positions = new Map();
   cards.forEach(card => {
-    firstPositions.set(card.dataset.url, card.getBoundingClientRect());
+    positions.set(card.dataset.url, card.getBoundingClientRect());
   });
 
   const existing = new Map();
@@ -83,7 +83,7 @@ function render() {
 
   const active = new Set(items);
 
-  // ➕ create new cards (UNCHANGED LOGIC)
+  // CREATE NEW
   items.forEach(url => {
 
     if (existing.has(url)) return;
@@ -123,7 +123,7 @@ function render() {
     });
   });
 
-  // ❌ remove deleted cards (UNCHANGED)
+  // REMOVE DELETED
   cards.forEach(card => {
     if (!active.has(card.dataset.url)) {
       card.classList.add("exit");
@@ -131,20 +131,22 @@ function render() {
     }
   });
 
-  // 🎯 animate ONLY cards that still exist
+  // 🔥 SAFE ANIMATION
   requestAnimationFrame(() => {
 
-    document.querySelectorAll(".count-card").forEach(card => {
+    const newCards = [...document.querySelectorAll(".count-card")];
 
-      if (!firstPositions.has(card.dataset.url)) return; // 🔥 key safety line
+    newCards.forEach(card => {
 
-      const first = firstPositions.get(card.dataset.url);
-      const last = card.getBoundingClientRect();
+      const old = positions.get(card.dataset.url);
+      if (!old) return; // skip new ones
 
-      const dx = first.left - last.left;
-      const dy = first.top - last.top;
+      const now = card.getBoundingClientRect();
 
-      if (dx || dy) {
+      const dx = old.left - now.left;
+      const dy = old.top - now.top;
+
+      if (dx !== 0 || dy !== 0) {
         card.style.transform = `translate(${dx}px, ${dy}px)`;
 
         requestAnimationFrame(() => {
@@ -152,34 +154,13 @@ function render() {
           card.style.transform = "";
         });
 
-        card.addEventListener("transitionend", () => {
+        setTimeout(() => {
           card.style.transition = "";
-        }, { once: true });
+        }, 350);
       }
 
     });
 
-  });
-}
-
-    card.addEventListener("dragstart", () => card.classList.add("dragging"));
-    card.addEventListener("dragend", () => card.classList.remove("dragging"));
-
-    card.appendChild(iframe);
-    card.appendChild(del);
-    dashboard.appendChild(card);
-
-    requestAnimationFrame(() => {
-      card.classList.remove("enter");
-    });
-  });
-
-  // remove ONLY cards that no longer exist
-  document.querySelectorAll(".count-card").forEach(card => {
-    if (!active.has(card.dataset.url)) {
-      card.classList.add("exit");
-      setTimeout(() => card.remove(), 250);
-    }
   });
 }
 
