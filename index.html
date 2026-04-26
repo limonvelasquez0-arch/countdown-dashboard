@@ -68,12 +68,12 @@ function save() {
 /* ================= RENDER ================= */
 function render() {
 
-  const cards = [...document.querySelectorAll(".count-card")];
+  const cards = Array.from(dashboard.children);
 
-  // store positions
-  const positions = new Map();
+  // 1. Save FIRST positions
+  const first = new Map();
   cards.forEach(card => {
-    positions.set(card.dataset.url, card.getBoundingClientRect());
+    first.set(card.dataset.url, card.getBoundingClientRect());
   });
 
   const existing = new Map();
@@ -83,7 +83,18 @@ function render() {
 
   const active = new Set(items);
 
-  // CREATE NEW
+  // 2. REMOVE deleted cards (with animation)
+  cards.forEach(card => {
+    if (!active.has(card.dataset.url)) {
+      card.classList.add("exit");
+
+      setTimeout(() => {
+        card.remove();
+      }, 250);
+    }
+  });
+
+  // 3. ADD new cards
   items.forEach(url => {
 
     if (existing.has(url)) return;
@@ -101,21 +112,59 @@ function render() {
     del.className = "delete-btn";
     del.innerText = "✕";
 
-   del.onclick = () => {
+    del.onclick = () => {
+      items = items.filter(item => item !== url);
+      save();
+      render();
+    };
 
-  const height = card.offsetHeight;
-  card.style.height = height + "px"; // lock height first
+    card.addEventListener("dragstart", () => card.classList.add("dragging"));
+    card.addEventListener("dragend", () => card.classList.remove("dragging"));
 
-  requestAnimationFrame(() => {
-    card.classList.add("collapsing");
+    card.appendChild(iframe);
+    card.appendChild(del);
+    dashboard.appendChild(card);
+
+    requestAnimationFrame(() => {
+      card.classList.remove("enter");
+    });
   });
 
-  setTimeout(() => {
-    items = items.filter(item => item !== url);
-    save();
-    render();
-  }, 250);
-};
+  // 4. FORCE layout update
+  const last = new Map();
+  Array.from(dashboard.children).forEach(card => {
+    last.set(card.dataset.url, card.getBoundingClientRect());
+  });
+
+  // 5. ANIMATE movement
+  Array.from(dashboard.children).forEach(card => {
+
+    const f = first.get(card.dataset.url);
+    const l = last.get(card.dataset.url);
+
+    if (!f || !l) return;
+
+    const dx = f.left - l.left;
+    const dy = f.top - l.top;
+
+    if (dx !== 0 || dy !== 0) {
+
+      card.style.transition = "none";
+      card.style.transform = `translate(${dx}px, ${dy}px)`;
+
+      requestAnimationFrame(() => {
+        card.style.transition = "transform 0.35s ease";
+        card.style.transform = "";
+      });
+
+      setTimeout(() => {
+        card.style.transition = "";
+      }, 350);
+    }
+
+  });
+
+}
 
     card.addEventListener("dragstart", () => card.classList.add("dragging"));
     card.addEventListener("dragend", () => card.classList.remove("dragging"));
