@@ -104,29 +104,74 @@ function render() {
 
   const cards = Array.from(dashboard.children);
 
-  // 1. FIRST positions
+  // FIRST positions
   const first = new Map();
   cards.forEach(card => {
     first.set(card.dataset.url, card.getBoundingClientRect());
   });
 
-  // 2. CLEAR and rebuild (safe + consistent)
-  dashboard.innerHTML = "";
-
-  items.forEach(url => {
-    dashboard.appendChild(createCard(url));
+  const existing = new Map();
+  cards.forEach(card => {
+    existing.set(card.dataset.url, card);
   });
 
-  const newCards = Array.from(dashboard.children);
+  const active = new Set(items);
 
-  // 3. LAST positions
+  // REMOVE deleted cards
+  cards.forEach(card => {
+    if (!active.has(card.dataset.url)) {
+      card.classList.add("exit");
+
+      setTimeout(() => {
+        card.remove();
+      }, 250);
+    }
+  });
+
+  // ADD new cards (NO CLEAR)
+  items.forEach(url => {
+
+    if (existing.has(url)) return;
+
+    const card = document.createElement("div");
+    card.className = "count-card enter";
+    card.dataset.url = url;
+    card.draggable = true;
+
+    const iframe = document.createElement("iframe");
+    iframe.src = url;
+    iframe.loading = "lazy";
+
+    const del = document.createElement("button");
+    del.className = "delete-btn";
+    del.innerText = "✕";
+
+    del.onclick = () => {
+      items = items.filter(item => item !== url);
+      save();
+      render();
+    };
+
+    card.addEventListener("dragstart", () => card.classList.add("dragging"));
+    card.addEventListener("dragend", () => card.classList.remove("dragging"));
+
+    card.appendChild(iframe);
+    card.appendChild(del);
+    dashboard.appendChild(card);
+
+    requestAnimationFrame(() => {
+      card.classList.remove("enter");
+    });
+  });
+
+  // LAST positions
   const last = new Map();
-  newCards.forEach(card => {
+  Array.from(dashboard.children).forEach(card => {
     last.set(card.dataset.url, card.getBoundingClientRect());
   });
 
-  // 4. FLIP animation
-  newCards.forEach(card => {
+  // FLIP animation (no flicker)
+  Array.from(dashboard.children).forEach(card => {
 
     const f = first.get(card.dataset.url);
     const l = last.get(card.dataset.url);
@@ -136,10 +181,8 @@ function render() {
     const dx = f.left - l.left;
     const dy = f.top - l.top;
 
-    if (dx !== 0 || dy !== 0) {
-
+    if (dx || dy) {
       card.style.transform = `translate(${dx}px, ${dy}px)`;
-      card.style.transition = "none";
 
       requestAnimationFrame(() => {
         card.style.transition = "transform 0.35s ease";
@@ -150,6 +193,7 @@ function render() {
         card.style.transition = "";
       }, 350);
     }
+
   });
 
 }
