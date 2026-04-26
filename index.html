@@ -68,7 +68,6 @@ function save() {
 /* ================= RENDER ================= */
 function render() {
 
-  // 🔥 CLEAR everything first (prevents ghost/invisible cards)
   dashboard.innerHTML = "";
 
   items.forEach((url, index) => {
@@ -76,6 +75,7 @@ function render() {
     const card = document.createElement("div");
     card.className = "count-card enter";
     card.dataset.index = index;
+    card.dataset.url = url; // ✅ IMPORTANT FIX
     card.draggable = true;
 
     const iframe = document.createElement("iframe");
@@ -90,9 +90,12 @@ function render() {
       card.classList.add("exit");
 
       setTimeout(() => {
-        items.splice(index, 1);
+        const urlToDelete = card.dataset.url;
+
+        items = items.filter(item => item !== urlToDelete); // ✅ FIXED DELETE
+
         save();
-        render(); // 🔥 full clean rebuild
+        render();
       }, 250);
     };
 
@@ -106,14 +109,6 @@ function render() {
     requestAnimationFrame(() => {
       card.classList.remove("enter");
     });
-  });
-}
-
-  document.querySelectorAll(".count-card").forEach((card) => {
-    if (!newSet.has(card.dataset.index)) {
-      card.classList.add("exit");
-      setTimeout(() => card.remove(), 250);
-    }
   });
 }
 
