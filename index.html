@@ -93,8 +93,13 @@ function createCard(url) {
   card.addEventListener("dragstart", () => card.classList.add("dragging"));
   card.addEventListener("dragend", () => card.classList.remove("dragging"));
 
-  card.appendChild(iframe);
-  card.appendChild(del);
+  const inner = document.createElement("div");
+inner.className = "count-inner";
+
+inner.appendChild(iframe);
+card.appendChild(inner);
+card.appendChild(del);
+
 
   return card;
 }
