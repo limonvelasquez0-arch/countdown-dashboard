@@ -67,7 +67,7 @@ iframe:hover {
 
 .top-btn {
   background: rgba(30, 64, 175, 0.25);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(6px);
 
   color: #c7d2fe;
   text-decoration: none;
