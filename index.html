@@ -134,46 +134,43 @@ card.appendChild(inner);
   // 🔥 WAIT for layout to settle
   requestAnimationFrame(() => {
 
-    const allCards = Array.from(dashboard.children);
+  const allCards = Array.from(dashboard.children);
 
-    const last = new Map();
-    allCards.forEach(card => {
-      last.set(card.dataset.url, card.getBoundingClientRect());
-    });
-
-    allCards.forEach(card => {
-
-      const f = first.get(card.dataset.url);
-      const l = last.get(card.dataset.url);
-
-      if (!f || !l) return;
-
-      const dx = f.left - l.left;
-      const dy = f.top - l.top;
-
-      if (dx !== 0 || dy !== 0) {
-
-        // start from old position
-       const inner = card.querySelector(".count-card-inner");
-
-inner.style.transition = "none";
-inner.style.transform = `translate(${dx}px, ${dy}px)`;
-
-requestAnimationFrame(() => {
-  inner.style.transition = "transform 0.35s ease";
-  inner.style.transform = "";
-});
-
-        card.addEventListener("transitionend", () => {
-          card.style.transition = "";
-        }, { once: true });
-      }
-
-    });
-
-    // remove instantly BEFORE measuring final layout
-toRemove.forEach(card => card.remove());
+  const last = new Map();
+  allCards.forEach(card => {
+    last.set(card.dataset.url, card.getBoundingClientRect());
   });
+
+  // 1. animate movement ON THE CARD (NOT inner)
+  allCards.forEach(card => {
+
+    const f = first.get(card.dataset.url);
+    const l = last.get(card.dataset.url);
+
+    if (!f || !l) return;
+
+    const dx = f.left - l.left;
+    const dy = f.top - l.top;
+
+    if (dx !== 0 || dy !== 0) {
+
+      card.style.transition = "none";
+      card.style.transform = `translate(${dx}px, ${dy}px)`;
+
+      requestAnimationFrame(() => {
+        card.style.transition = "transform 0.35s ease";
+        card.style.transform = "";
+      });
+    }
+
+  });
+
+  // 2. REMOVE AFTER ANIMATION FRAME (not immediately)
+  requestAnimationFrame(() => {
+    toRemove.forEach(card => card.remove());
+  });
+
+});
 
 }
 
