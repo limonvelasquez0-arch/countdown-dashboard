@@ -73,7 +73,7 @@ function render() {
 // 🔥 SNAPSHOT BEFORE ANYTHING CHANGES
 const first = new Map();
 for (const card of cards) {
-  first.set(card.dataset.url, card.getBoundingClientRect());
+  first.set(card.dataset.url, card.parentElement.getBoundingClientRect());
 }
 
   const existing = new Map();
@@ -124,7 +124,12 @@ inner.appendChild(iframe);
 
 card.appendChild(inner);
     card.appendChild(del);
-    dashboard.appendChild(card);
+    const slot = document.createElement("div");
+slot.className = "card-slot";
+slot.dataset.url = url;
+
+slot.appendChild(card);
+dashboard.appendChild(slot);
 
     requestAnimationFrame(() => {
       card.classList.remove("enter");
@@ -155,7 +160,15 @@ card.appendChild(inner);
     if (dx !== 0 || dy !== 0) {
 
       card.style.transition = "none";
-      card.style.transform = `translate(${dx}px, ${dy}px)`;
+      const slot = card.parentElement;
+
+slot.style.transition = "none";
+slot.style.transform = `translate(${dx}px, ${dy}px)`;
+
+requestAnimationFrame(() => {
+  slot.style.transition = "transform 0.35s ease";
+  slot.style.transform = "";
+});
 
       requestAnimationFrame(() => {
         card.style.transition = "transform 0.35s ease";
