@@ -68,12 +68,12 @@ function save() {
 /* ================= RENDER ================= */
 function render() {
 
- const cards = Array.from(dashboard.querySelectorAll(".count-card"));
+ const cards = Array.from(dashboard.children);
 
 // 🔥 SNAPSHOT BEFORE ANYTHING CHANGES
 const first = new Map();
 for (const card of cards) {
-  first.set(card.dataset.url, card.getBoundingClientRect());
+  first.set(card.dataset.url, card.parentElement.getBoundingClientRect());
 }
 
   const existing = new Map();
@@ -150,8 +150,7 @@ dashboard.appendChild(slot);
   allCards.forEach(card => {
 
   const f = first.get(card.dataset.url);
-  const l = card.getBoundingClientRect();
-
+  const l = card.parentElement.getBoundingClientRect();
   if (!f || !l) return;
 
   const dx = f.left - l.left;
@@ -162,7 +161,15 @@ dashboard.appendChild(slot);
     const slot = card.parentElement;
 
     slot.style.transition = "none";
-    slot.style.transform = `translate(${dx}px, ${dy}px)`;
+    const slot = card.parentElement;
+
+slot.style.transition = "none";
+slot.style.transform = `translate(${dx}px, ${dy}px)`;
+
+requestAnimationFrame(() => {
+  slot.style.transition = "transform 0.35s ease";
+  slot.style.transform = "";
+});
 
     requestAnimationFrame(() => {
       slot.style.transition = "transform 0.35s ease";
