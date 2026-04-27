@@ -248,7 +248,9 @@ iframe:hover {
 
   overflow: visible;
 
-  transition: opacity 0.25s ease;
+  /* 🔥 IMPORTANT: enables smooth FLIP movement */
+  transition: transform 0.35s ease, opacity 0.25s ease;
+  will-change: transform;
 }
 
 .count-card-inner {
