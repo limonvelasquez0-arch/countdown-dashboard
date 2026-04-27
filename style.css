@@ -345,3 +345,16 @@ iframe:hover {
   opacity: 0;
   transform: translateY(18px) scale(0.92) scaleX(0.98);
 }
+
+.card-slot {
+  width: 420px;
+  height: 225px;
+  position: relative;
+}
+
+.count-card {
+  position: absolute;
+  inset: 0;
+  transition: transform 0.35s ease, opacity 0.25s ease;
+  will-change: transform;
+}
