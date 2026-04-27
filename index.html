@@ -154,9 +154,10 @@ function render() {
       if (dx !== 0 || dy !== 0) {
 
        card.style.transition = "none";
+card.style.transition = "none";
 card.style.transform = `translate(${dx}px, ${dy}px)`;
 
-/* 🔥 FORCE the browser to apply the starting position */
+// 🔴 FORCE browser to apply the transform BEFORE animating
 card.getBoundingClientRect();
 
 requestAnimationFrame(() => {
