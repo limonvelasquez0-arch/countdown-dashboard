@@ -333,3 +333,8 @@ iframe:hover {
   opacity: 0;
   transform: translateY(18px) scale(0.92) scaleX(0.98);
 }
+
+/* 🔥 Disable hover transform while FLIP animation is running */
+.count-card[style*="translate"] {
+  transform: none !important;
+}
