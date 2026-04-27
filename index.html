@@ -83,101 +83,103 @@ function render() {
 
   const active = new Set(items);
 
-  // ✅ FIXED PART (ONLY CHANGE)
- // 2. MARK removals (DO NOT remove yet)
-const toRemove = [];
+  // 2. MARK removals (DO NOT remove yet)
+  const toRemove = [];
 
-cards.forEach(card => {
-  if (!active.has(card.dataset.url)) {
-    card.classList.add("exit");
-    toRemove.push(card);
-  }
-});
-
-// 3. ADD new cards (unchanged behavior)
-items.forEach(url => {
-
-  if (existing.has(url)) return;
-
-  const card = document.createElement("div");
-  card.className = "count-card enter";
-  card.dataset.url = url;
-  card.draggable = true;
-
-  const iframe = document.createElement("iframe");
-  iframe.src = url;
-  iframe.loading = "lazy";
-
-  const del = document.createElement("button");
-  del.className = "delete-btn";
-  del.innerText = "✕";
-
-  del.onclick = () => {
-    items = items.filter(item => item !== url);
-    save();
-    render();
-  };
-
-  card.addEventListener("dragstart", () => card.classList.add("dragging"));
-  card.addEventListener("dragend", () => card.classList.remove("dragging"));
-
-  card.appendChild(iframe);
-  card.appendChild(del);
-  dashboard.appendChild(card);
-
-  requestAnimationFrame(() => {
-    card.classList.remove("enter");
-  });
-});
-
-// 4. 🔥 REORDER ONLY ONCE (CRITICAL)
-const fragment = document.createDocumentFragment();
-
-items.forEach(url => {
-  const card = dashboard.querySelector(`[data-url="${url}"]`);
-  if (card) fragment.appendChild(card);
-});
-
-dashboard.appendChild(fragment);
-
-  requestAnimationFrame(() => {
-
-  const allCards = Array.from(dashboard.children);
-
-  const last = new Map();
-  allCards.forEach(card => {
-    last.set(card.dataset.url, card.getBoundingClientRect());
-  });
-
-  allCards.forEach(card => {
-
-    const f = first.get(card.dataset.url);
-    const l = last.get(card.dataset.url);
-
-    if (!f || !l) return;
-
-    const dx = f.left - l.left;
-    const dy = f.top - l.top;
-
-    if (dx || dy) {
-
-      card.style.transition = "none";
-      card.style.transform = `translate(${dx}px, ${dy}px)`;
-
-      // force layout ONCE
-      card.offsetHeight;
-
-      requestAnimationFrame(() => {
-        card.style.transition = "transform 0.35s ease";
-        card.style.transform = "";
-      });
-
-      setTimeout(() => {
-        card.style.transition = "";
-      }, 350);
+  cards.forEach(card => {
+    if (!active.has(card.dataset.url)) {
+      card.classList.add("exit");
+      toRemove.push(card);
     }
   });
-});
+
+  // 3. ADD new cards
+  items.forEach(url => {
+
+    if (existing.has(url)) return;
+
+    const card = document.createElement("div");
+    card.className = "count-card enter";
+    card.dataset.url = url;
+    card.draggable = true;
+
+    const iframe = document.createElement("iframe");
+    iframe.src = url;
+    iframe.loading = "lazy";
+
+    const del = document.createElement("button");
+    del.className = "delete-btn";
+    del.innerText = "✕";
+
+    del.onclick = () => {
+      items = items.filter(item => item !== url);
+      save();
+      render();
+    };
+
+    card.addEventListener("dragstart", () => card.classList.add("dragging"));
+    card.addEventListener("dragend", () => card.classList.remove("dragging"));
+
+    card.appendChild(iframe);
+    card.appendChild(del);
+    dashboard.appendChild(card);
+
+    requestAnimationFrame(() => {
+      card.classList.remove("enter");
+    });
+  });
+
+  // 4. 🔥 REORDER (ONLY ONCE, CLEAN)
+  const fragment = document.createDocumentFragment();
+  items.forEach(url => {
+    const card = dashboard.querySelector(`[data-url="${url}"]`);
+    if (card) fragment.appendChild(card);
+  });
+  dashboard.appendChild(fragment);
+
+  // 5. WAIT for layout
+  requestAnimationFrame(() => {
+
+    const allCards = Array.from(dashboard.children);
+
+    const last = new Map();
+    allCards.forEach(card => {
+      last.set(card.dataset.url, card.getBoundingClientRect());
+    });
+
+    // 6. FLIP animation
+    allCards.forEach(card => {
+
+      const f = first.get(card.dataset.url);
+      const l = last.get(card.dataset.url);
+
+      if (!f || !l) return;
+
+      const dx = f.left - l.left;
+      const dy = f.top - l.top;
+
+      if (dx || dy) {
+
+        card.style.transform = `translate(${dx}px, ${dy}px)`;
+        card.style.transition = "none";
+
+        requestAnimationFrame(() => {
+          card.style.transition = "transform 0.35s ease";
+          card.style.transform = "";
+        });
+
+        card.addEventListener("transitionend", () => {
+          card.style.transition = "";
+        }, { once: true });
+      }
+    });
+
+    // 7. ✅ REMOVE AFTER animation (ONLY ONCE — THIS FIXES FLICKER)
+    setTimeout(() => {
+      toRemove.forEach(card => card.remove());
+    }, 250);
+
+  });
 
 }
 
