@@ -310,8 +310,8 @@ iframe:hover {
   transform: translateY(0) scale(1);
 }
 
-.count-card:hover .delete-btn {
-  transform: translateY(-6px) scale(1.05);
+.count-card:hover iframe {
+  transform: translateY(-6px) scale(1.02);
   box-shadow: 0 0 14px var(--accent-soft);
   border-color: var(--accent);
   color: var(--accent);
