@@ -94,46 +94,46 @@ function render() {
   });
 
   // 3. ADD new cards (same logic, unchanged)
-  items.forEach(url => {
+ items.forEach(url => {
 
-    if (existing.has(url)) return;
+  if (existing.has(url)) return;
 
-    const card = document.createElement("div");
-    card.className = "count-card enter";
-    card.dataset.url = url;
-    card.draggable = true;
+  const card = document.createElement("div");
+  card.className = "count-card enter";
+  card.dataset.url = url;
+  card.draggable = true;
 
-    const iframe = document.createElement("iframe");
-    iframe.src = url;
-    iframe.loading = "lazy";
+  const iframe = document.createElement("iframe");
+  iframe.src = url;
+  iframe.loading = "lazy";
 
-    const del = document.createElement("button");
-    del.className = "delete-btn";
-    del.innerText = "✕";
+  const del = document.createElement("button");
+  del.className = "delete-btn";
+  del.innerText = "✕";
 
-    del.onclick = () => {
-      items = items.filter(item => item !== url);
-      save();
-      render();
-    };
+  del.onclick = () => {
+    items = items.filter(item => item !== url);
+    save();
+    render();
+  };
 
-    card.addEventListener("dragstart", () => card.classList.add("dragging"));
-    card.addEventListener("dragend", () => card.classList.remove("dragging"));
+  card.addEventListener("dragstart", () => card.classList.add("dragging"));
+  card.addEventListener("dragend", () => card.classList.remove("dragging"));
 
-    card.appendChild(iframe);
-    card.appendChild(del);
-    dashboard.appendChild(card);
+  card.appendChild(iframe);
+  card.appendChild(del);
+  dashboard.appendChild(card);
 
-    // 🔥 FORCE DOM ORDER TO MATCH items (THIS WAS MISSING)
+  requestAnimationFrame(() => {
+    card.classList.remove("enter");
+  });
+});
+
+// ✅ ONLY ONCE, AFTER LOOP
 items.forEach(url => {
   const card = dashboard.querySelector(`[data-url="${url}"]`);
   if (card) dashboard.appendChild(card);
 });
-
-    requestAnimationFrame(() => {
-      card.classList.remove("enter");
-    });
-  });
 
   // 🔥 4. WAIT one frame so layout updates BEFORE measuring
   requestAnimationFrame(() => {
