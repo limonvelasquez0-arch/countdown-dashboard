@@ -249,7 +249,7 @@ iframe:hover {
   overflow: visible;
 
   /* 🔧 KEY FIX: allow FLIP + hover to coexist */
-  transition: transform 0.25s ease, opacity 0.25s ease;
+  transition: opacity 0.25s ease;
 }
 
 .count-card iframe {
