@@ -248,16 +248,13 @@ iframe:hover {
 
   overflow: visible;
 
-  /* 🔥 IMPORTANT: enables smooth FLIP movement */
-  transition: transform 0.35s ease, opacity 0.25s ease;
-  will-change: transform;
+  transition: opacity 0.25s ease;
 }
 
 .count-card-inner {
   width: 100%;
   height: 100%;
-  transition: transform 0.35s ease;
-  will-change: transform;
+  transition: transform 0.25s ease;
 }
 
 .count-card:hover .count-card-inner {
@@ -344,17 +341,4 @@ iframe:hover {
 .count-card.exit {
   opacity: 0;
   transform: translateY(18px) scale(0.92) scaleX(0.98);
-}
-
-.card-slot {
-  width: 420px;
-  height: 225px;
-  position: relative;
-}
-
-.count-card {
-  position: absolute;
-  inset: 0;
-  transition: transform 0.35s ease, opacity 0.25s ease;
-  will-change: transform;
 }
