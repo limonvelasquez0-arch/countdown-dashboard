@@ -68,7 +68,7 @@ function save() {
 /* ================= RENDER ================= */
 function render() {
 
- const cards = Array.from(dashboard.querySelectorAll(".count-card"));
+  const cards = Array.from(dashboard.children);
 
   // 1. FIRST positions (before changes)
   const first = new Map();
@@ -83,7 +83,7 @@ function render() {
 
   const active = new Set(items);
 
-  // 2. MARK removals (DO NOT remove yet)
+  // ✅ FIXED PART (ONLY CHANGE)
   const toRemove = [];
 
   cards.forEach(card => {
@@ -93,7 +93,7 @@ function render() {
     }
   });
 
-  // 3. ADD new cards
+  // 3. ADD new cards (same logic, unchanged)
   items.forEach(url => {
 
     if (existing.has(url)) return;
@@ -129,27 +129,18 @@ function render() {
     });
   });
 
-  // 4. 🔥 REORDER (ONLY ONCE, CLEAN)
- // 4. 🔥 REORDER ONLY ONCE (FLIP SAFE)
-const fragment = document.createDocumentFragment();
-
-items.forEach(url => {
-  const card = dashboard.querySelector(`[data-url="${url}"]`);
-  if (card) fragment.appendChild(card);
-});
-
-dashboard.appendChild(fragment);
-  // 5. WAIT for layout
+  // 🔥 4. WAIT one frame so layout updates BEFORE measuring
   requestAnimationFrame(() => {
 
     const allCards = Array.from(dashboard.children);
 
+    // LAST positions (after layout)
     const last = new Map();
     allCards.forEach(card => {
       last.set(card.dataset.url, card.getBoundingClientRect());
     });
 
-    // 6. FLIP animation
+    // 5. Animate movement
     allCards.forEach(card => {
 
       const f = first.get(card.dataset.url);
@@ -160,10 +151,9 @@ dashboard.appendChild(fragment);
       const dx = f.left - l.left;
       const dy = f.top - l.top;
 
-      if (dx || dy) {
+      if (dx !== 0 || dy !== 0) {
 
         card.style.transform = `translate(${dx}px, ${dy}px)`;
-        card.style.transition = "none";
 
         requestAnimationFrame(() => {
           card.style.transition = "transform 0.35s ease";
@@ -174,9 +164,10 @@ dashboard.appendChild(fragment);
           card.style.transition = "";
         }, { once: true });
       }
+
     });
 
-    // 7. ✅ REMOVE AFTER animation (ONLY ONCE — THIS FIXES FLICKER)
+    // ✅ DELAYED REMOVAL (KEY FIX)
     setTimeout(() => {
       toRemove.forEach(card => card.remove());
     }, 250);
