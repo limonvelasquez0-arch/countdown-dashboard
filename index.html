@@ -53,13 +53,21 @@ let editMode = false;
 
 /* ================= DATA ================= */
 const defaultCounts = [
-"https://count.live/?date=2026-04-29T01%3A00%3A00-07%3A00&title=Heidemarie%20(CZN)",
-"https://count.live/?date=2026-05-13T15%3A00%3A00-07%3A00&title=Evanescia%20(HSR)",
-"https://count.live/?date=2026-04-23T18%3A00%3A00-07%3A00&title=Beta%20Access"
+  { id: "default_1", url: "https://count.live/?date=2026-04-29T01%3A00%3A00-07%3A00&title=Heidemarie%20(CZN)" },
+  { id: "default_2", url: "https://count.live/?date=2026-05-13T15%3A00%3A00-07%3A00&title=Evanescia%20(HSR)" },
+  { id: "default_3", url: "https://count.live/?date=2026-04-23T18%3A00%3A00-07%3A00&title=Beta%20Access" }
 ];
 
 let items = JSON.parse(localStorage.getItem("counts"));
 if (!items || items.length === 0) items = [...defaultCounts];
+
+// Migrate old format (string URLs) to new format (objects with id and url)
+items = items.map((item, idx) => {
+  if (typeof item === 'string') {
+    return { id: `migrated_${Date.now()}_${idx}`, url: item };
+  }
+  return item;
+});
 
 function save() {
   localStorage.setItem("counts", JSON.stringify(items));
@@ -70,109 +78,105 @@ function render() {
 
   const cards = Array.from(dashboard.children);
 
-  // 🔥 FIX: capture positions BEFORE anything changes
+  // Step 1: Capture positions of existing cards BEFORE any changes - BY CARD ID, not index
   const first = new Map();
-  cards.forEach(card => {
-    first.set(card.dataset.url, card.getBoundingClientRect());
-  });
-
-  const existing = new Map();
-  cards.forEach(card => {
-    existing.set(card.dataset.url, card);
-  });
-
-  const active = new Set(items);
-
-  const toRemove = [];
-
-  cards.forEach(card => {
-    if (!active.has(card.dataset.url)) {
-      card.classList.add("exit");
-      toRemove.push(card);
+  cards.forEach((card) => {
+    // Only capture positions for cards that should stay
+    if (items.some(item => item.id === card.dataset.cardId)) {
+      first.set(card.dataset.cardId, card.getBoundingClientRect());
     }
   });
 
-  items.forEach(url => {
+  const toAnimate = new Set(first.keys());
 
-    if (existing.has(url)) return;
+  // Step 2: Immediately remove cards that are no longer in items
+  cards.forEach(card => {
+    const cardId = card.dataset.cardId;
+    const exists = items.some(item => item.id === cardId);
+    
+    if (!exists) {
+      card.remove();
+    }
+  });
 
-    const card = document.createElement("div");
-    card.className = "count-card enter";
-    card.dataset.url = url;
-    card.draggable = true;
+  // Step 3: Add/reorder cards to match items order
+  items.forEach((item, idx) => {
+    let card = document.querySelector(`[data-card-id="${item.id}"]`);
+    
+    if (!card) {
+      // Create new card
+      card = document.createElement("div");
+      card.className = "count-card enter";
+      card.dataset.cardId = item.id;
+      card.dataset.url = item.url;
+      card.draggable = true;
 
-    const iframe = document.createElement("iframe");
-    iframe.src = url;
-    iframe.loading = "lazy";
+      const iframe = document.createElement("iframe");
+      iframe.src = item.url;
+      iframe.loading = "lazy";
 
-    const del = document.createElement("button");
-    del.className = "delete-btn";
-    del.innerText = "✕";
+      const del = document.createElement("button");
+      del.className = "delete-btn";
+      del.innerText = "✕";
 
-    del.onclick = () => {
-      items = items.filter(item => item !== url);
-      save();
-      render();
-    };
+      card.addEventListener("dragstart", () => card.classList.add("dragging"));
+      card.addEventListener("dragend", () => card.classList.remove("dragging"));
 
-    card.addEventListener("dragstart", () => card.classList.add("dragging"));
-    card.addEventListener("dragend", () => card.classList.remove("dragging"));
-
-    const inner = document.createElement("div");
+      const inner = document.createElement("div");
 inner.className = "count-card-inner";
 inner.appendChild(iframe);
 
 card.appendChild(inner);
-    card.appendChild(del);
-    dashboard.appendChild(card);
+      card.appendChild(del);
+      dashboard.appendChild(card);
 
-    requestAnimationFrame(() => {
-      card.classList.remove("enter");
-    });
+      // Trigger entry animation
+      requestAnimationFrame(() => {
+        card.classList.remove("enter");
+      });
+    } else {
+      // Reorder card if needed
+      if (dashboard.children[idx] !== card) {
+        dashboard.insertBefore(card, dashboard.children[idx] || null);
+      }
+    }
   });
 
-  // 🔥 WAIT for layout to settle
+  // Step 4: Animate cards that moved
   requestAnimationFrame(() => {
-
     const allCards = Array.from(dashboard.children);
-
+    
     const last = new Map();
-    allCards.forEach(card => {
-      last.set(card.dataset.url, card.getBoundingClientRect());
+    allCards.forEach((card) => {
+      last.set(card.dataset.cardId, card.getBoundingClientRect());
     });
 
-    allCards.forEach(card => {
+    allCards.forEach((card) => {
+      const cardId = card.dataset.cardId;
+      
+      if (!toAnimate.has(cardId)) {
+        // New card, no animation needed
+        return;
+      }
 
-      const f = first.get(card.dataset.url);
-      const l = last.get(card.dataset.url);
+      const f = first.get(cardId);
+      const l = last.get(cardId);
 
       if (!f || !l) return;
 
       const dx = f.left - l.left;
       const dy = f.top - l.top;
 
-      if (dx !== 0 || dy !== 0) {
-
-        // start from old position
-        card.style.transition = "none";
+      if (Math.abs(dx) > 1 || Math.abs(dy) > 1) {
         card.style.transform = `translate(${dx}px, ${dy}px)`;
+        card.style.transition = "none";
 
         requestAnimationFrame(() => {
-          card.style.transition = "transform 0.35s ease";
-          card.style.transform = "";
+          card.style.transition = "transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+          card.style.transform = "translate(0, 0)";
         });
-
-        card.addEventListener("transitionend", () => {
-          card.style.transition = "";
-        }, { once: true });
       }
-
     });
-
-    setTimeout(() => {
-      toRemove.forEach(card => card.remove());
-    }, 250);
-
   });
 
 }
@@ -191,6 +195,26 @@ dashboard.addEventListener("dragover", (e) => {
     dashboard.appendChild(dragging);
   } else {
     dashboard.insertBefore(dragging, after);
+  }
+});
+
+// DELETE via event delegation
+dashboard.addEventListener("click", (e) => {
+  if (e.target.classList.contains("delete-btn")) {
+    e.preventDefault();
+    e.stopPropagation();
+    const card = e.target.closest(".count-card");
+    if (card) {
+      const cardId = card.dataset.cardId;
+      // Add exit animation class
+      card.classList.add("exit");
+      // Remove from items and re-render after animation completes
+      setTimeout(() => {
+        items = items.filter(item => item.id !== cardId);
+        save();
+        render();
+      }, 300);
+    }
   }
 });
 
@@ -227,7 +251,7 @@ addCount.onclick = () => {
   const url = countInput.value.trim();
   if (!url) return;
 
-  items.push(url);
+  items.push({ id: `item_${Date.now()}`, url });
   save();
 
   countInput.value = "";
