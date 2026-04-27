@@ -68,12 +68,12 @@ function save() {
 /* ================= RENDER ================= */
 function render() {
 
- const cards = Array.from(dashboard.children);
+ const cards = Array.from(dashboard.querySelectorAll(".count-card"));
 
 // 🔥 SNAPSHOT BEFORE ANYTHING CHANGES
 const first = new Map();
 for (const card of cards) {
-  first.set(card.dataset.url, card.parentElement.getBoundingClientRect());
+  first.set(card.dataset.url, card.getBoundingClientRect());
 }
 
   const existing = new Map();
@@ -139,7 +139,7 @@ dashboard.appendChild(slot);
   // 🔥 WAIT for layout to settle
   requestAnimationFrame(() => {
 
-  const allCards = Array.from(dashboard.children);
+  const allCards = Array.from(dashboard.querySelectorAll(".count-card"));
 
   const last = new Map();
   allCards.forEach(card => {
@@ -149,34 +149,28 @@ dashboard.appendChild(slot);
   // 1. animate movement ON THE CARD (NOT inner)
   allCards.forEach(card => {
 
-    const f = first.get(card.dataset.url);
-    const l = last.get(card.dataset.url);
+  const f = first.get(card.dataset.url);
+  const l = card.getBoundingClientRect();
 
-    if (!f || !l) return;
+  if (!f || !l) return;
 
-    const dx = f.left - l.left;
-    const dy = f.top - l.top;
+  const dx = f.left - l.left;
+  const dy = f.top - l.top;
 
-    if (dx !== 0 || dy !== 0) {
+  if (dx || dy) {
 
-      card.style.transition = "none";
-      const slot = card.parentElement;
+    const slot = card.parentElement;
 
-slot.style.transition = "none";
-slot.style.transform = `translate(${dx}px, ${dy}px)`;
+    slot.style.transition = "none";
+    slot.style.transform = `translate(${dx}px, ${dy}px)`;
 
-requestAnimationFrame(() => {
-  slot.style.transition = "transform 0.35s ease";
-  slot.style.transform = "";
+    requestAnimationFrame(() => {
+      slot.style.transition = "transform 0.35s ease";
+      slot.style.transform = "";
+    });
+  }
+
 });
-
-      requestAnimationFrame(() => {
-        card.style.transition = "transform 0.35s ease";
-        card.style.transform = "";
-      });
-    }
-
-  });
 
   // 2. REMOVE AFTER ANIMATION FRAME (not immediately)
   requestAnimationFrame(() => {
