@@ -70,12 +70,11 @@ function render() {
 
   const cards = Array.from(dashboard.children);
 
-  // 1. FIRST positions (before changes)
-  // 1. FIRST positions (before ANY DOM changes)
-const first = new Map();
-Array.from(dashboard.children).forEach(card => {
-  first.set(card.dataset.url, card.getBoundingClientRect());
-});
+  // 🔥 FIX: capture positions BEFORE anything changes
+  const first = new Map();
+  cards.forEach(card => {
+    first.set(card.dataset.url, card.getBoundingClientRect());
+  });
 
   const existing = new Map();
   cards.forEach(card => {
@@ -84,7 +83,6 @@ Array.from(dashboard.children).forEach(card => {
 
   const active = new Set(items);
 
-  // ✅ FIXED PART (ONLY CHANGE)
   const toRemove = [];
 
   cards.forEach(card => {
@@ -94,7 +92,6 @@ Array.from(dashboard.children).forEach(card => {
     }
   });
 
-  // 3. ADD new cards (same logic, unchanged)
   items.forEach(url => {
 
     if (existing.has(url)) return;
@@ -130,18 +127,16 @@ Array.from(dashboard.children).forEach(card => {
     });
   });
 
-  // 🔥 4. WAIT one frame so layout updates BEFORE measuring
+  // 🔥 WAIT for layout to settle
   requestAnimationFrame(() => {
 
     const allCards = Array.from(dashboard.children);
 
-    // LAST positions (after layout)
     const last = new Map();
     allCards.forEach(card => {
       last.set(card.dataset.url, card.getBoundingClientRect());
     });
 
-    // 5. Animate movement
     allCards.forEach(card => {
 
       const f = first.get(card.dataset.url);
@@ -154,6 +149,8 @@ Array.from(dashboard.children).forEach(card => {
 
       if (dx !== 0 || dy !== 0) {
 
+        // start from old position
+        card.style.transition = "none";
         card.style.transform = `translate(${dx}px, ${dy}px)`;
 
         requestAnimationFrame(() => {
@@ -168,7 +165,6 @@ Array.from(dashboard.children).forEach(card => {
 
     });
 
-    // ✅ DELAYED REMOVAL (KEY FIX)
     setTimeout(() => {
       toRemove.forEach(card => card.remove());
     }, 250);
@@ -176,7 +172,6 @@ Array.from(dashboard.children).forEach(card => {
   });
 
 }
-
 
 /* DRAG */
 dashboard.addEventListener("dragover", (e) => {
