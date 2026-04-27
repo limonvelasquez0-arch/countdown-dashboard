@@ -68,7 +68,7 @@ function save() {
 /* ================= RENDER ================= */
 function render() {
 
-  const cards = Array.from(dashboard.children);
+ const cards = Array.from(dashboard.querySelectorAll(".count-card"));
 
   // 1. FIRST positions (before changes)
   const first = new Map();
@@ -131,10 +131,14 @@ function render() {
 
   // 4. 🔥 REORDER (ONLY ONCE, CLEAN)
  // 4. 🔥 REORDER ONLY ONCE (FLIP SAFE)
+const fragment = document.createDocumentFragment();
+
 items.forEach(url => {
   const card = dashboard.querySelector(`[data-url="${url}"]`);
-  if (card) dashboard.appendChild(card);
+  if (card) fragment.appendChild(card);
 });
+
+dashboard.appendChild(fragment);
   // 5. WAIT for layout
   requestAnimationFrame(() => {
 
