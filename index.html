@@ -154,13 +154,15 @@ card.appendChild(inner);
       if (dx !== 0 || dy !== 0) {
 
         // start from old position
-        card.style.transition = "none";
-        card.style.transform = `translate(${dx}px, ${dy}px)`;
+       const inner = card.querySelector(".count-card-inner");
 
-        requestAnimationFrame(() => {
-          card.style.transition = "transform 0.35s ease";
-          card.style.transform = "";
-        });
+inner.style.transition = "none";
+inner.style.transform = `translate(${dx}px, ${dy}px)`;
+
+requestAnimationFrame(() => {
+  inner.style.transition = "transform 0.35s ease";
+  inner.style.transform = "";
+});
 
         card.addEventListener("transitionend", () => {
           card.style.transition = "";
