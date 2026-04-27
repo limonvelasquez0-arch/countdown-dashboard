@@ -256,7 +256,8 @@ iframe:hover {
 .count-card-inner {
   width: 100%;
   height: 100%;
-  transition: transform 0.25s ease;
+  transition: transform 0.35s ease;
+  will-change: transform;
 }
 
 .count-card:hover .count-card-inner {
