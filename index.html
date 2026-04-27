@@ -124,6 +124,12 @@ function render() {
     card.appendChild(del);
     dashboard.appendChild(card);
 
+    // 🔥 FORCE DOM ORDER TO MATCH items (THIS WAS MISSING)
+items.forEach(url => {
+  const card = dashboard.querySelector(`[data-url="${url}"]`);
+  if (card) dashboard.appendChild(card);
+});
+
     requestAnimationFrame(() => {
       card.classList.remove("enter");
     });
