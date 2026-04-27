@@ -84,17 +84,18 @@ function render() {
   const active = new Set(items);
 
   // ✅ FIXED PART (ONLY CHANGE)
-  const toRemove = [];
+ // 2. MARK removals (DO NOT remove yet)
+const toRemove = [];
 
-  cards.forEach(card => {
-    if (!active.has(card.dataset.url)) {
-      card.classList.add("exit");
-      toRemove.push(card);
-    }
-  });
+cards.forEach(card => {
+  if (!active.has(card.dataset.url)) {
+    card.classList.add("exit");
+    toRemove.push(card);
+  }
+});
 
-  // 3. ADD new cards (same logic, unchanged)
- items.forEach(url => {
+// 3. ADD new cards (unchanged behavior)
+items.forEach(url => {
 
   if (existing.has(url)) return;
 
@@ -129,54 +130,60 @@ function render() {
   });
 });
 
-// ✅ ONLY ONCE, AFTER LOOP
+// 4. 🔥 REORDER ONLY ONCE (CRITICAL)
+const fragment = document.createDocumentFragment();
+
 items.forEach(url => {
   const card = dashboard.querySelector(`[data-url="${url}"]`);
-  if (card) dashboard.appendChild(card);
+  if (card) fragment.appendChild(card);
 });
 
-  // 🔥 4. WAIT one frame so layout updates BEFORE measuring
+dashboard.appendChild(fragment);
+
   requestAnimationFrame(() => {
 
-    const allCards = Array.from(dashboard.children);
+  const allCards = Array.from(dashboard.children);
 
-    // LAST positions (after layout)
-    const last = new Map();
-    allCards.forEach(card => {
-      last.set(card.dataset.url, card.getBoundingClientRect());
-    });
+  const last = new Map();
+  allCards.forEach(card => {
+    last.set(card.dataset.url, card.getBoundingClientRect());
+  });
 
-    // 5. Animate movement
-    allCards.forEach(card => {
+  allCards.forEach(card => {
 
-      const f = first.get(card.dataset.url);
-      const l = last.get(card.dataset.url);
+    const f = first.get(card.dataset.url);
+    const l = last.get(card.dataset.url);
 
-      if (!f || !l) return;
+    if (!f || !l) return;
 
-      const dx = f.left - l.left;
-      const dy = f.top - l.top;
+    const dx = f.left - l.left;
+    const dy = f.top - l.top;
 
-      if (dx !== 0 || dy !== 0) {
+    if (dx || dy) {
 
-       card.style.transition = "none";
-card.style.transition = "none";
-card.style.transform = `translate(${dx}px, ${dy}px)`;
+      card.style.transition = "none";
+      card.style.transform = `translate(${dx}px, ${dy}px)`;
 
-// 🔴 FORCE browser to apply the transform BEFORE animating
-card.getBoundingClientRect();
+      // force layout ONCE
+      card.offsetHeight;
 
-requestAnimationFrame(() => {
-  card.style.transition = "transform 0.35s ease";
-  card.style.transform = "";
+      requestAnimationFrame(() => {
+        card.style.transition = "transform 0.35s ease";
+        card.style.transform = "";
+      });
+
+      setTimeout(() => {
+        card.style.transition = "";
+      }, 350);
+    }
+  });
+
+  // 🔥 REMOVE AFTER animation (no flicker)
+  setTimeout(() => {
+    toRemove.forEach(card => card.remove());
+  }, 250);
+
 });
-
-        setTimeout(() => {
-  card.style.transition = "";
-}, 350);
-      }
-
-    });
 
     // ✅ DELAYED REMOVAL (KEY FIX)
     setTimeout(() => {
