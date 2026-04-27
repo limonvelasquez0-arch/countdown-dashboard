@@ -130,13 +130,11 @@ function render() {
   });
 
   // 4. 🔥 REORDER (ONLY ONCE, CLEAN)
-  const fragment = document.createDocumentFragment();
-  items.forEach(url => {
-    const card = dashboard.querySelector(`[data-url="${url}"]`);
-    if (card) fragment.appendChild(card);
-  });
-  dashboard.appendChild(fragment);
-
+ // 4. 🔥 REORDER ONLY ONCE (FLIP SAFE)
+items.forEach(url => {
+  const card = dashboard.querySelector(`[data-url="${url}"]`);
+  if (card) dashboard.appendChild(card);
+});
   // 5. WAIT for layout
   requestAnimationFrame(() => {
 
