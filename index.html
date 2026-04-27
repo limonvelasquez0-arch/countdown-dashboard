@@ -177,12 +177,6 @@ dashboard.appendChild(fragment);
       }, 350);
     }
   });
-
-  // 🔥 REMOVE AFTER animation (no flicker)
-  setTimeout(() => {
-    toRemove.forEach(card => card.remove());
-  }, 250);
-
 });
 
     // ✅ DELAYED REMOVAL (KEY FIX)
