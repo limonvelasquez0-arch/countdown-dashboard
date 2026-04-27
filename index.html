@@ -164,9 +164,9 @@ requestAnimationFrame(() => {
   card.style.transform = "";
 });
 
-        card.addEventListener("transitionend", () => {
-          card.style.transition = "";
-        }, { once: true });
+        setTimeout(() => {
+  card.style.transition = "";
+}, 350);
       }
 
     });
