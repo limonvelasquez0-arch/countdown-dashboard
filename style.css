@@ -247,8 +247,6 @@ iframe:hover {
   height: 225px;
 
   overflow: visible;
-
-  transition: opacity 0.25s ease;
 }
 
 .count-card-inner {
@@ -335,10 +333,12 @@ iframe:hover {
 .count-card.enter {
   opacity: 0;
   transform: translateY(18px) scale(0.96);
+  transition: opacity 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 /* EXIT animation */
 .count-card.exit {
   opacity: 0;
   transform: translateY(18px) scale(0.92) scaleX(0.98);
+  transition: opacity 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
