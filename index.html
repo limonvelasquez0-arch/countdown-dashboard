@@ -68,13 +68,13 @@ function save() {
 /* ================= RENDER ================= */
 function render() {
 
-  const cards = Array.from(dashboard.children);
+ const cards = Array.from(dashboard.children);
 
-  // 🔥 FIX: capture positions BEFORE anything changes
-  const first = new Map();
-  cards.forEach(card => {
-    first.set(card.dataset.url, card.getBoundingClientRect());
-  });
+// 🔥 SNAPSHOT BEFORE ANYTHING CHANGES
+const first = new Map();
+for (const card of cards) {
+  first.set(card.dataset.url, card.getBoundingClientRect());
+}
 
   const existing = new Map();
   cards.forEach(card => {
@@ -169,10 +169,8 @@ card.appendChild(inner);
 
     });
 
-    setTimeout(() => {
-      toRemove.forEach(card => card.remove());
-    }, 250);
-
+    // remove instantly BEFORE measuring final layout
+toRemove.forEach(card => card.remove());
   });
 
 }
