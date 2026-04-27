@@ -71,10 +71,11 @@ function render() {
   const cards = Array.from(dashboard.children);
 
   // 1. FIRST positions (before changes)
-  const first = new Map();
-  cards.forEach(card => {
-    first.set(card.dataset.url, card.getBoundingClientRect());
-  });
+  // 1. FIRST positions (before ANY DOM changes)
+const first = new Map();
+Array.from(dashboard.children).forEach(card => {
+  first.set(card.dataset.url, card.getBoundingClientRect());
+});
 
   const existing = new Map();
   cards.forEach(card => {
