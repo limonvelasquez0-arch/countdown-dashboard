@@ -248,8 +248,17 @@ iframe:hover {
 
   overflow: visible;
 
-  /* 🔧 KEY FIX: allow FLIP + hover to coexist */
-  transition: transform 0.25s ease, opacity 0.25s ease;
+  transition: opacity 0.25s ease;
+}
+
+.count-card-inner {
+  width: 100%;
+  height: 100%;
+  transition: transform 0.25s ease;
+}
+
+.count-card:hover .count-card-inner {
+  transform: translateY(-6px) scale(1.02);
 }
 
 .count-card iframe {
@@ -263,7 +272,7 @@ iframe:hover {
 
 /* 🔧 HOVER NOW MOVES THE WHOLE CARD */
 .count-card:hover {
-  transform: translateY(-6px) scale(1.02);
+  /* removed transform here intentionally */
 }
 
 .count-card:hover iframe {
